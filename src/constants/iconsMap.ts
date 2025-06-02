@@ -1,24 +1,17 @@
 import { GoHomeFill } from "react-icons/go";
-import { CgSearch } from "react-icons/cg";
-import { MdExplore } from "react-icons/md";
+import { CgSearch, CgAddR, CgBookmark } from "react-icons/cg";
+import { MdExplore, MdOutlineGridOn } from "react-icons/md";
 import { CiHeart } from "react-icons/ci";
-import { CgAddR } from "react-icons/cg";
-import { FiUser } from "react-icons/fi";
-import { FaInstagram } from "react-icons/fa6";
-import { PiUserSquare } from "react-icons/pi";
-import { CgBookmark } from "react-icons/cg";
+import { FiUser, FiMenu, FiSend } from "react-icons/fi";
+import { FaInstagram, FaRegCircle, FaRegComment } from "react-icons/fa";
+import { PiUserSquare, PiThreadsLogo } from "react-icons/pi";
 import { BiArrowBack } from "react-icons/bi";
-import { MdOutlineGridOn } from "react-icons/md";
-import { FiMenu } from "react-icons/fi";
-import { PiThreadsLogo } from "react-icons/pi";
-import { FaRegCircle } from "react-icons/fa";
 import { RiHeartFill } from "react-icons/ri";
-import { FiSend } from "react-icons/fi";
-import { FaRegComment } from "react-icons/fa";
 import { BsThreeDots } from "react-icons/bs";
 import { TbPhotoVideo } from "react-icons/tb";
+import React from "react";
 
-export const ICONS = {
+export const ICONS: Record<string, JSX.Element> = {
   goHome: <GoHomeFill size={24} />,
   cgSearch: <CgSearch size={24} />,
   mdExplore: <MdExplore size={24} />,
