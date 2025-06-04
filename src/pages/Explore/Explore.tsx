@@ -1,0 +1,102 @@
+// import React, { useState } from "react";
+// import { UserPosts } from "@hooks/UserPosts";
+// import { useAuth } from "@/features/context/AuthContext";
+// import PostDetails from "@pages/Profile/components/PostDetails";
+// import { ICONS } from "@/assets/icons";
+// import { Skeleton } from "@/components/ui/skeleton";
+// import { useLocation, useNavigate, useParams } from "react-router-dom";
+// import { ROUTES } from "@/constants";
+
+// const Explore = () => {
+//   const [selectedPost, setSelectedPost] = useState(null);
+//   const [isModalOpen, setIsModalOpen] = useState(false);
+//   const { username } = useParams();
+//   const { user } = useAuth();
+
+//   const { posts, loading, error } = UserPosts(user?.uid);
+
+//   if (!posts) {
+//     return <div className="text-white">Loading kai sabar waka.......</div>;
+//   }
+
+//   /* <------------------------------- Implementing Route for PostDetails with id -------------------------------> */
+//   const navigate = useNavigate();
+//   const location = useLocation();
+//   const openPostModal = (posts) => {
+//     setSelectedPost(posts);
+//     navigate(`/p/${posts.id}`, {
+//       state: { backgroundLocation: location },
+//     });
+//     setIsModalOpen(true);
+//   };
+
+//   if (loading) {
+//     return (
+//       <section className="grid grid-cols-5 gap-4 mt-8">
+//         <div />
+//         <div className="col-span-3 grid grid-cols-3 gap-4">
+//           {[...Array(9)]?.map((_, idx) => (
+//             <Skeleton key={idx} className="h-[250px] bg-gray-800  w-full" />
+//           ))}
+//         </div>
+
+//         <div />
+//       </section>
+//     );
+//   }
+
+//   // if (error) return <p>Error: {error}</p>;
+
+//   const closePostModal = () => {
+//     setSelectedPost(null);
+//     setIsModalOpen(false);
+//     navigate(ROUTES.explore);
+//   };
+
+//   return (
+//     <>
+//       <section className="grid grid-cols-1 gap-0 xl:grid-cols-5 xl:gap-4 mt-0 xl:mt-8">
+//         <div />
+//         <div className="col-span-1 xl:col-span-3 grid grid-cols-3 gap-[6px] xl:gap-2">
+//           {posts?.map((post) => (
+//             <div
+//               key={post.id}
+//               className="relative group cursor-pointer aspect-square"
+//               onClick={() => openPostModal(post)}
+//             >
+//               <img
+//                 src={post?.imageUrl}
+//                 alt={post?.caption}
+//                 className="w-full h-full object-cover"
+//               />
+//               {/* Hover overlay */}
+//               <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+//                 <div className="text-white font-semibold flex items-center gap-6">
+//                   <span className="flex">
+//                     {ICONS.heartFilled}
+//                     {post?.likes?.length}
+//                   </span>
+//                   <span className="flex">
+//                     {ICONS.commentIcon} {post?.commentCount}
+//                   </span>
+//                 </div>
+//               </div>
+//             </div>
+//           ))}
+//         </div>
+//       </section>
+
+//       {selectedPost && (
+//         <PostDetails
+//           isOpen={isModalOpen}
+//           onClose={closePostModal}
+//           post={selectedPost}
+//           user={user}
+//           showDeleteButton={false}
+//         />
+//       )}
+//     </>
+//   );
+// };
+
+// export default Explore;
