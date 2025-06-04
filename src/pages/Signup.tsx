@@ -1,14 +1,12 @@
 import { useState } from "react";
-import InputField from "@components/common/InputField";
+import {InputField,Button,} from "@components";
 import { IoLogoFacebook } from "react-icons/io";
-import Button from "@components/common/Button";
-import AppFooter from "@components/footer";
 import playstore from "@assets/images/playstore.png";
 import microsoft from "@assets/images/microsoft.png";
 import { Link, useNavigate } from "react-router-dom";
 import { ROUTES } from "@constants";
 import { toast } from "react-toastify";
-import { useAuth } from "@features/context/AuthContext";
+// import { useAuth } from "@features/context/AuthContext";
 import { useForm } from "react-hook-form";
 
 const SignUp = () => {
@@ -22,7 +20,7 @@ const SignUp = () => {
   });
 
   const navigate = useNavigate();
-  const { signupUser, loading } = useAuth();
+//   const { signupUser, loading } = useAuth();
 
   const togglePasswordVisibility = () => {
     setShowPassword((prev) => !prev);
@@ -163,10 +161,10 @@ const SignUp = () => {
             </div>
             <Button
               type="submit"
-              disabled={loading}
+            //   disabled={loading}
               className="w-full bg-[#0095f6] text-white py-2 my-2 rounded font-semibold text-sm sm:text-base"
             >
-              {loading ? "Signing up..." : "Sign up"}
+              {/* {loading ? "Signing up..." : "Sign up"} */}
             </Button>
           </form>
           <div className="text-center flex flex-col py-2 border border-[#555555] mt-2 text-sm sm:text-base">
@@ -185,7 +183,7 @@ const SignUp = () => {
         </div>
       </div>
       <div className="mt-2 mb-10">
-        <AppFooter />
+        {/* <AppFooter /> */}
       </div>
     </section>
   );
