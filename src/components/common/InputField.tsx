@@ -1,6 +1,10 @@
-import { forwardRef } from "react";
+import { forwardRef,InputHTMLAttributes } from "react";
 
-const InputField = forwardRef(
+interface InputFieldProps extends InputHTMLAttributes<HTMLInputElement> {
+  label:string;
+  className?:string;
+}
+const InputField = forwardRef<HTMLInputElement, InputFieldProps>(
   ({ type, id, name, className, label, ...rest }, ref) => {
     return (
       <div className="relative">

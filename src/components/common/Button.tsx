@@ -1,6 +1,13 @@
-import React from "react";
+import React, { ReactNode } from "react";
 
-const Button = ({ children, className, onClick }) => {
+// Define prop types
+interface ButtonProps {
+  children: ReactNode;
+  className?: string;
+  onClick?: () => void;
+}
+
+const Button: React.FC<ButtonProps> = ({ children, className = "", onClick }) => {
   return (
     <button className={`hover:cursor-pointer ${className}`} onClick={onClick}>
       {children}
