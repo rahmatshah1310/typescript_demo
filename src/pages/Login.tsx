@@ -9,19 +9,23 @@ import microsoft from "@assets/images/microsoft.png";
 import {InputField,Button,} from "@components";
 import { FaFacebook } from "react-icons/fa";
 import { Link } from "react-router-dom";
-// import Spinner from "@components/common/Spinner";
 import { ROUTES } from "@constants";
-// import { useAuth } from "@features/context/AuthContext";
 import { useForm } from "react-hook-form";
+import { useLoginMutation } from "@api";
 
 const Login = () => {
   const [activeIndex, setActiveIndex] = useState(0);
-//   const { loginUser, user, loading, error } = useAuth();
+  const { mutate: loginUser, isLoading } = useLoginMutation();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
+
+  type LoginFormValues = {
+    email: string;
+    password: string;
+  };
 
   const images = [LoginPageImage_1, LoginPageImage_2, LoginPageImage_3];
   const [showPassword, setShowPassword] = useState(false);
@@ -29,13 +33,23 @@ const Login = () => {
     setShowPassword((prev) => !prev);
   };
 
-  const handleSubmitForm = async (data) => {
-    try {
-      await loginUser(data.email, data.password);
-    } catch (err) {
-      console.error(err);
-    }
-  };
+  //  const handleSubmitForm = async (data: LoginFormValues) => {
+  //   loginUser(data, {
+  //     onSuccess: () => {
+  //       alert("Login successful!.");
+  //     },
+  //     onError: () => {
+  //       alert("Log In failed. Please try again.");
+  //     },
+  //   });
+  // };
+  // const handleSubmitForm = async (data) => {
+  //   try {
+  //     await loginUser(data.email, data.password);
+  //   } catch (err) {
+  //     console.error(err);
+  //   }
+  // };
 
   // useEffect(() => {
   //   const interval = setInterval(() => {
@@ -121,6 +135,7 @@ const Login = () => {
               className="w-full bg-[#0069AD] text-white py-2 mt-2 mb-6 text-sm rounded-md"
             >
               {/* {loading ? <Spinner type="fade" /> : "Log in"} */}
+              Log In
             </Button>
 
             <div className="flex flex-col space-y-4 w-full max-w-xs mx-auto">
