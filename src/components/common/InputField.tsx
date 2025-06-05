@@ -1,35 +1,94 @@
-import { forwardRef,InputHTMLAttributes } from "react";
+import React, {
+  forwardRef,
+  InputHTMLAttributes,
+  useState,
+} from "react";
+import type { UseFormRegisterReturn } from "react-hook-form";
+import type { IconType } from "react-icons";
+import { ICONS } from "constants"; // Make sure this is correct
+import {ErrorMessage} from "@components";
+import Button from "./Button"; // Adjust path if needed
 
-interface InputFieldProps extends InputHTMLAttributes<HTMLInputElement> {
-  label:string;
-  className?:string;
+interface InputFieldProps
+  extends InputHTMLAttributes<HTMLInputElement> {
+  label?: string;
+  inputClassname?: string;
+  name?: string;
+  icon?: IconType;
+  size?: number;
+  color?: string;
+  error?: string;
+  register?: UseFormRegisterReturn;
+  isPassword?: boolean;
 }
+
 const InputField = forwardRef<HTMLInputElement, InputFieldProps>(
-  ({ type, id, name, className, label, ...rest }, ref) => {
+  (
+    {
+      label,
+      placeholder,
+      inputClassname,
+      name,
+      type = "text",
+      icon: Icon,
+      size = 18,
+      color = "#555",
+      error,
+      register,
+      isPassword = false,
+      ...rest
+    },
+    ref
+  ) => {
+    const [selectedType, setSelectedType] = useState<string>(type);
+
     return (
-      <div className="relative">
-        <input
-          type={type}
-          id={id}
-          name={name}
-          // value={value}
-          // onChange={onChange}
-          ref={ref}
-          {...rest}
-          className={`peer block py-2 w-full appearance-none border bg-transparent px-2.5 text-sm text-white border-[#555555] focus:outline-none focus:ring-0 focus:border-[#555555] ${className}`}
-          placeholder=" "
-        />
-        <label
-          htmlFor={id}
-          className="absolute top-2 left-2.5 z-10 origin-[0] transform text-base text-[#F5F5F5] transition-all duration-300
+      <div className="space-y-2">
+        <div className="relative w-full">
+          <input
+            {...register}
+            {...rest}
+            type={selectedType}
+            id={name}
+            name={name}
+            ref={ref}
+            placeholder=" "
+            className={`peer block py-2 w-full appearance-none border bg-transparent px-2.5 text-sm text-white border-[#555555] focus:outline-none focus:ring-0 focus:border-[#555555] ${inputClassname}`}
+          />
+          {Icon && (
+            <Icon
+              className="absolute top-1/2 -translate-y-1/2 left-3"
+              size={size}
+              color={color}
+            />
+          )}
+          {isPassword && (
+            <Button
+              type="button"
+              onClick={() =>
+                setSelectedType(
+                  selectedType === "password" ? "text" : "password"
+                )
+              }
+              className="absolute top-1/2 -translate-y-1/2 right-3"
+            >
+              {selectedType === "password" ? "Hide" : "Show"}
+            </Button>
+          )}
+          <label
+            htmlFor={name}
+            className="absolute top-2 left-2.5 z-10 origin-[0] transform text-base text-[#F5F5F5] transition-all duration-300
           peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100
           peer-focus:-translate-y-3 peer-focus:scale-75
           peer-not-placeholder-shown:-translate-y-3 peer-not-placeholder-shown:scale-75"
-        >
-          {label}
-        </label>
+          >
+            {label}
+          </label>
+        </div>
+        {error && <ErrorMessage error={error} />}
       </div>
     );
   }
 );
+
 export default InputField;
