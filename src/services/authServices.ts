@@ -1,25 +1,52 @@
 import axios from "axios";
-import type { LoginData, SignupData, User } from "@index";
+import { sendRequest } from "@utils";
 
-const API_URL = import.meta.env.VITE_API_BASE_URL;
 
-export const login = async (data: LoginData): Promise<User> => {
-  const response = await axios.post(`${API_URL}/auth/login`, data);
-  return response.data;
+export const login = async () => {
+  try {
+    const response = await sendRequest({
+      method: "POST",
+      url: "/auth/login",
+    });
+    return response.data.data;
+  } catch (error) {
+    console.log(`Auth Service [login] error: ${error}`);
+    throw error;
+  }
 };
 
-export const signup = async (data: SignupData): Promise<User> => {
-  const response = await axios.post(`${API_URL}/auth/signup`, data);
-  return response.data;
+export const signUp = async (data: unknown) => {
+  try {
+    const response = await sendRequest({
+      method: "POST",
+      url: "/auth/signup",
+      data,
+    });
+    return response.data;
+  } catch (error) {
+    console.log(`Auth Service [signUp] error: ${error}`);
+    throw error;
+  }
 };
 
-export const fetchCurrentUser = async (): Promise<User> => {
-  const response = await axios.get(`${API_URL}/auth/me`, {
-    withCredentials: true,
-  });
-  return response.data;
+export const me = async () => {
+  try {
+    const response = await sendRequest({
+      method: "GET",
+      url: "/auth/me",
+    });
+    return response.data.data;
+  } catch (error) {
+    console.log(`Auth Service [me] error: ${error}`);
+    throw error;
+  }
 };
 
-export const logout = async (): Promise<void> => {
-  await axios.post(`${API_URL}/auth/logout`, {}, { withCredentials: true });
-};
+
+
+
+
+
+
+
+
