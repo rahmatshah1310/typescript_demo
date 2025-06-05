@@ -1,43 +1,21 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import type { LoginData, SignupData, User } from "@types";
-import { login, signup, logout, fetchCurrentUser } from "@services";
+import { AuthService } from "services";
 
-export const useLoginMutation = () => {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: login,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["currentUser"] });
-    },
-  });
+export const login = async (data: Record<string, string>) => {
+  const response = await AuthService.login(data);
+  if (!response) throw new Error("Login failed");
+  return response.data;
 };
 
-
-export const useSignupMutation = () => {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: signup,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["currentUser"] });
-    },
-  });
+export const signup = async (data: Record<string, string>) => {
+  const response = await AuthService.signup(data);
+  if (!response) throw new Error("Signup failed");
+  return response.data;
 };
 
-
-export const useLogoutMutation = () => {
-  const queryClient = useQueryClient();
-  return useMutation<void, Error>(logout, {
-    onSuccess: () => {
-      queryClient.invalidateQueries(["currentUser"]);
-    },
-  });
+export const logout = async () => {
+  await AuthService.logout(); // if you have such a method
 };
 
-export const useCurrentUserQuery = () => {
-  return useQuery<User, Error>(["currentUser"], fetchCurrentUser, {
-    staleTime: 5 * 60 * 1000, // 5 minutes
-    retry: false,
-  });
+export const fetchCurrentUser = async () => {
+  return await AuthService.getCurrentUser();
 };
