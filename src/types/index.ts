@@ -1,3 +1,3 @@
-export * from "./authApi";
+export * from "./auth";
 export * from "./clientApi";
 export * from "./appointmentApi";
