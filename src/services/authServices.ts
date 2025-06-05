@@ -1,7 +1,7 @@
 import axios from "axios";
-import type { LoginData, SignupData, User } from "../types/auth";
+import type { LoginData, SignupData, User } from "@index";
 
-const API_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:4000/api";
+const API_URL = import.meta.env.VITE_API_BASE_URL;
 
 export const login = async (data: LoginData): Promise<User> => {
   const response = await axios.post(`${API_URL}/auth/login`, data);
@@ -15,7 +15,7 @@ export const signup = async (data: SignupData): Promise<User> => {
 
 export const fetchCurrentUser = async (): Promise<User> => {
   const response = await axios.get(`${API_URL}/auth/me`, {
-    withCredentials: true, // if using cookies for auth
+    withCredentials: true,
   });
   return response.data;
 };
