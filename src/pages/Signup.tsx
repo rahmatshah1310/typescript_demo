@@ -1,12 +1,12 @@
 import { useState } from "react";
-import {InputField,Button,} from "@components";
+import { InputField, Button } from "@components";
 import { IoLogoFacebook } from "react-icons/io";
 import playstore from "@assets/images/playstore.png";
 import microsoft from "@assets/images/microsoft.png";
 import { Link, useNavigate } from "react-router-dom";
 import { ROUTES } from "@constants";
 import { toast } from "react-toastify";
-// import { useAuth } from "@features/context/AuthContext";
+import { useSignupMutation } from "@api";
 import { useForm } from "react-hook-form";
 
 const SignUp = () => {
@@ -20,12 +20,11 @@ const SignUp = () => {
   });
 
   const navigate = useNavigate();
-//   const { signupUser, loading } = useAuth();
+  const { mutate: signup, isLoading } = useSignupMutation();
 
   const togglePasswordVisibility = () => {
     setShowPassword((prev) => !prev);
   };
-
   type SignupFormValues = {
     email: string;
     password: string;
@@ -33,14 +32,18 @@ const SignUp = () => {
     username: string;
   };
 
-  const handleSubmitForm = async (data: SignupFormValues) => {
-    try {
-      await signupUser(data.email, data.password, data.fullName, data.username);
-      navigate(ROUTES.login);
-    } catch {
-      toast.error("Signup failed. Please try again.");
-    }
-  };
+    const handleSubmitForm = async (data: SignupFormValues) => {
+      console.log(data)
+      signup(data, {
+        onSuccess: () => {
+          navigate(ROUTES.login);
+          alert("Signup successful! Please login.");
+        },
+        onError: () => {
+          alert("Signup failed. Please try again.");
+        },
+      });
+    };
 
   return (
     <section className="bg-black text-white mt-3 min-h-screen">
@@ -118,15 +121,13 @@ const SignUp = () => {
                   {errors.fullName.message}
                 </p>
               )}
-            </div>
-
-            {/* username input */}
+            </div>            {/* username input */}
             <div className="relative">
               <InputField
                 type="text"
                 id="username"
-                label="username"
-                {...register("username", { required: "username is required" })}
+                label="Username"
+                {...register("username", { required: "Username is required" })}
               />
               {errors.username && (
                 <p className="text-red-500 text-xs mt-1">
@@ -158,13 +159,12 @@ const SignUp = () => {
                 </Link>
                 .
               </p>
-            </div>
-            <Button
+            </div>            <Button
               type="submit"
-            //   disabled={loading}
+              disabled={isLoading}
               className="w-full bg-[#0095f6] text-white py-2 my-2 rounded font-semibold text-sm sm:text-base"
             >
-              {/* {loading ? "Signing up..." : "Sign up"} */}
+              {isLoading ? "Signing up..." : "Sign up"}
             </Button>
           </form>
           <div className="text-center flex flex-col py-2 border border-[#555555] mt-2 text-sm sm:text-base">
