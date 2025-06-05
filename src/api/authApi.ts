@@ -1,29 +1,34 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-// import type { LoginData, User } from "../types/auth";
-import { login, signup, logout, fetchCurrentUser } from "../services/authServices";
+import type { LoginData, SignupData, User } from "@types";
+import { login, signup, logout, fetchCurrentUser } from "@services";
 
 export const useLoginMutation = () => {
   const queryClient = useQueryClient();
-  return useMutation(login, {
+
+  return useMutation({
+    mutationFn: login,
     onSuccess: () => {
-      // Invalidate or refetch current user on successful login
-      queryClient.invalidateQueries(["currentUser"]);
+      queryClient.invalidateQueries({ queryKey: ["currentUser"] });
     },
   });
 };
+
 
 export const useSignupMutation = () => {
   const queryClient = useQueryClient();
-  return useMutation(signup, {
+
+  return useMutation({
+    mutationFn: signup,
     onSuccess: () => {
-      queryClient.invalidateQueries(["currentUser"]);
+      queryClient.invalidateQueries({ queryKey: ["currentUser"] });
     },
   });
 };
 
+
 export const useLogoutMutation = () => {
   const queryClient = useQueryClient();
-  return useMutation(logout, {
+  return useMutation<void, Error>(logout, {
     onSuccess: () => {
       queryClient.invalidateQueries(["currentUser"]);
     },
@@ -31,7 +36,7 @@ export const useLogoutMutation = () => {
 };
 
 export const useCurrentUserQuery = () => {
-  return useQuery(["currentUser"], fetchCurrentUser, {
+  return useQuery<User, Error>(["currentUser"], fetchCurrentUser, {
     staleTime: 5 * 60 * 1000, // 5 minutes
     retry: false,
   });
