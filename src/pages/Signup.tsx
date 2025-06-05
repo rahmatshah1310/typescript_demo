@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { InputField, Button } from "@components";
 import { IoLogoFacebook } from "react-icons/io";
 import playstore from "@assets/images/playstore.png";
@@ -8,41 +8,41 @@ import { ROUTES } from "@constants";
 import { toast } from "react-toastify";
 import { useSignupMutation } from "@api";
 import { useForm } from "react-hook-form";
+import { SignupData } from "@types";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 const SignUp = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
-  } = useForm<SignupFormValues>({
+  } = useForm<SignupData>({
+     resolver: zodResolver(SignupData),
     mode: "onBlur",
   });
 
   const navigate = useNavigate();
-  const { mutate: signup, isLoading } = useSignupMutation();
+  const signupMutation = useSignupMutation();
 
   const togglePasswordVisibility = () => {
     setShowPassword((prev) => !prev);
   };
-  type SignupFormValues = {
-    email: string;
-    password: string;
-    fullName: string;
-    username: string;
-  };
+  
 
-    const handleSubmitForm = async (data: SignupFormValues) => {
+  useEffect(() => {
+    if(signupMutation.status === "success") {
+      toast.success("Signup successful! Please login.");
+      reset();
+    }else if (signupMutation.status === "error") {
+      toast.error("Signup failed! Please try again.");
+    }
+  }, [signupMutation.status]);
+
+    const handleSubmitForm = async (data: SignupData) => {
       console.log(data)
-      signup(data, {
-        onSuccess: () => {
-          navigate(ROUTES.login);
-          alert("Signup successful! Please login.");
-        },
-        onError: () => {
-          alert("Signup failed. Please try again.");
-        },
-      });
+      signupMutation.mutate(data);
     };
 
   return (
@@ -121,17 +121,17 @@ const SignUp = () => {
                   {errors.fullName.message}
                 </p>
               )}
-            </div>            {/* username input */}
+            </div>            {/* userName input */}
             <div className="relative">
               <InputField
                 type="text"
-                id="username"
-                label="Username"
-                {...register("username", { required: "Username is required" })}
+                id="userName"
+                label="userName"
+                {...register("userName", { required: "userName is required" })}
               />
-              {errors.username && (
+              {errors.userName && (
                 <p className="text-red-500 text-xs mt-1">
-                  {errors.username.message}
+                  {errors.userName.message}
                 </p>
               )}
             </div>
@@ -149,7 +149,7 @@ const SignUp = () => {
                 <Link to="/terms" className="text-white">
                   Terms
                 </Link>
-                ,{" "}
+                ,
                 <Link to="/privacy-policy" className="text-white">
                   Privacy Policy
                 </Link>
