@@ -6,44 +6,42 @@ import microsoft from "@assets/images/microsoft.png";
 import { Link, useNavigate } from "react-router-dom";
 import { ROUTES } from "@constants";
 import { toast } from "react-toastify";
-import { useSignupMutation } from "@api";
 import { useForm } from "react-hook-form";
 import { SignupData } from "@types";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useSignupMutation } from "@api";
 
 const SignUp = () => {
-  const [showPassword, setShowPassword] = useState<boolean>(false);
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
   } = useForm<SignupData>({
-     resolver: zodResolver(SignupData),
+    resolver: zodResolver(SignupData),
     mode: "onBlur",
   });
 
   const navigate = useNavigate();
   const signupMutation = useSignupMutation();
 
-  const togglePasswordVisibility = () => {
-    setShowPassword((prev) => !prev);
+
+
+
+ useEffect(() => {
+  if (signupMutation.status === "success") {
+    alert("Signup successful! Please login.");
+    navigate(ROUTES.login);
+    reset();
+  } else if (signupMutation.status === "error") {
+    const errorMessage = signupMutation.error as string;
+    alert(`Signup failed!\n${errorMessage}`);
+  }
+}, [signupMutation.status]);
+
+  const handleSubmitForm = (data: SignupData) => {
+    signupMutation.mutate(data);
   };
-  
-
-  useEffect(() => {
-    if(signupMutation.status === "success") {
-      toast.success("Signup successful! Please login.");
-      reset();
-    }else if (signupMutation.status === "error") {
-      toast.error("Signup failed! Please try again.");
-    }
-  }, [signupMutation.status]);
-
-    const handleSubmitForm = async (data: SignupData) => {
-      console.log(data)
-      signupMutation.mutate(data);
-    };
 
   return (
     <section className="bg-black text-white mt-3 min-h-screen">
@@ -74,66 +72,44 @@ const SignUp = () => {
             {/* Email input */}
             <div className="relative">
               <InputField
-                type="text"
-                id="email"
-                label="Mobile Number or Email"
-                {...register("email", { required: "Email is required" })}
+                name="email"
+                type="email"
+                label="Phone number or email"
+                register={register("email")}
+                error={errors.email?.message}
               />
-              {errors.email && (
-                <p className="text-red-500 text-xs mt-1">
-                  {errors.email.message}
-                </p>
-              )}
             </div>
 
             {/* Password input */}
             <div className="relative">
               <InputField
-                type={showPassword ? "text" : "password"}
-                id="password"
+                name="password"
                 label="Password"
-                {...register("password", { required: "Password is required" })}
+                isPassword="true"
+                register={register("password")}
+                error={errors.password?.message}
+                className="block py-2 px-2.5 w-full text-sm text-[#F5F5F5] border border-[#555555] focus:outline-none focus:border-[#555555]"
               />
-              <button
-                type="button"
-                onClick={togglePasswordVisibility}
-                className="absolute translate-y-[-27px] end-2 flex items-center text-[#F5F5F5] text-xs sm:text-sm font-medium cursor-pointer"
-              >
-                {showPassword ? "Hide" : "Show"}
-              </button>
-              {errors.password && (
-                <p className="text-red-500 text-xs mt-1">
-                  {errors.password.message}
-                </p>
-              )}
             </div>
 
             {/* Full Name input */}
             <div className="relative">
               <InputField
-                type="text"
-                id="fullName"
+                name="fullName"
                 label="Full Name"
-                {...register("fullName", { required: "Fullname is required" })}
+                register={register("fullName")}
+                error={errors.fullName?.message}
+                className="block py-2 px-2.5 w-full text-sm text-[#F5F5F5] border border-[#555555] focus:outline-none focus:border-[#555555]"
               />
-              {errors.fullName && (
-                <p className="text-red-500 text-xs mt-1">
-                  {errors.fullName.message}
-                </p>
-              )}
             </div>            {/* userName input */}
             <div className="relative">
               <InputField
-                type="text"
-                id="userName"
-                label="userName"
-                {...register("userName", { required: "userName is required" })}
+                name="userName"
+                label="Username"
+                register={register("userName")}
+                error={errors.userName?.message}
+                className="block py-2 px-2.5 w-full text-sm text-[#F5F5F5] border border-[#555555] focus:outline-none focus:border-[#555555]"
               />
-              {errors.userName && (
-                <p className="text-red-500 text-xs mt-1">
-                  {errors.userName.message}
-                </p>
-              )}
             </div>
 
             <div className="flex flex-col text-xs sm:text-sm text-[#A8A8A8] text-center py-2 space-y-2">
@@ -161,10 +137,11 @@ const SignUp = () => {
               </p>
             </div>            <Button
               type="submit"
-              disabled={isLoading}
+              // disabled={isLoading}
               className="w-full bg-[#0095f6] text-white py-2 my-2 rounded font-semibold text-sm sm:text-base"
             >
-              {isLoading ? "Signing up..." : "Sign up"}
+              {/* {isLoading ? "Signing up..." : "Sign up"} */}
+              Sign Up
             </Button>
           </form>
           <div className="text-center flex flex-col py-2 border border-[#555555] mt-2 text-sm sm:text-base">
