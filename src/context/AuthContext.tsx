@@ -1,28 +1,54 @@
 import React, { useState, useContext, createContext, type ReactNode, useEffect } from "react"
 import type { AuthContextType, IUser } from "@types";
+import { AuthService } from "@services";
 
 export const AuthContext = createContext<AuthContextType | null>(null)
 
 export const AuthProvider: React.FC<{children: ReactNode}> = ({children}) => {
     const [userData, setUserData] = useState<IUser | null>(null);
     const [token, setToken] = useState<string | null>(null);
+    const [loading, setLoading] = useState<boolean>(true);
+
+    // Fetch current user data
+    const fetchCurrentUser = async (authToken: string) => {
+        try {
+            const response = await AuthService.me();
+            if (response?.data) {
+                setUserData(response.data);
+            }
+        } catch (error) {
+            console.error("Failed to fetch user data:", error);
+            handleLogout(); // Logout if token is invalid
+        } finally {
+            setLoading(false);
+        }
+    };
 
     // Load user data and token from storage on mount
     useEffect(() => {
         const storedToken = localStorage.getItem("accessToken");
-        const storedUser = localStorage.getItem("userData");
         
-        if (storedToken && storedUser) {
+        if (storedToken) {
             setToken(storedToken);
-            setUserData(JSON.parse(storedUser));
+            fetchCurrentUser(storedToken);
+        } else {
+            setLoading(false);
         }
     }, []);
+
+    // Refetch user data when token changes
+    useEffect(() => {
+        if (token) {
+            fetchCurrentUser(token);
+        }
+    }, [token]);
 
     const handleLogout = () => {
         localStorage.removeItem("accessToken");
         localStorage.removeItem("userData");
         setToken(null);
         setUserData(null);
+        alert("Logout Sucessfully")
     };
 
     const setAuthData = (responseData: any) => {
@@ -59,7 +85,8 @@ export const AuthProvider: React.FC<{children: ReactNode}> = ({children}) => {
             handleLogout, 
             setAuthData,
             getToken,
-            isAuthenticated: !!token 
+            isAuthenticated: !!token,
+            loading
         }}>
             {children}
         </AuthContext.Provider>
