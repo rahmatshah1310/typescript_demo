@@ -4,6 +4,7 @@
 // export * from "./comments/CommentLikesFooter";
 export {default as Button} from "./common/Button";
 export {default as ErrorMessage} from "./common/ErrorMessage";
+export {default as Spinner} from "./common/Spinner";
 // export * from "./common/Modal";
 // export * from "./common/Spinner";
 // export * from "./common/LoadingBar";
