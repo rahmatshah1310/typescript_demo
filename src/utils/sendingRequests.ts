@@ -5,7 +5,6 @@ export const sendRequest = async (
   configs: AxiosRequestConfig
 ): Promise<AxiosResponse> => {
   const token = localStorage.getItem("accessToken");
-  console.log("token", token);
 
   const headers = { ...(configs.headers || {}) } as Record<string, string>;
 
@@ -14,21 +13,45 @@ export const sendRequest = async (
   }
 
   const requestConfig: AxiosRequestConfig = {
-    baseURL: import.meta.env.VITE_API_URL as string,
+    baseURL: import.meta.env.VITE_API_BASE_URL as string,
     ...configs,
     headers,
   };
 
   try {
-    return await axios(requestConfig);
-  } catch (error) {
-    console.log(error)
-    if (axios.isAxiosError(error)) {
-      if (error.code === "ERR_CANCELED") return Promise.reject(error);
-      const responseError =
-        error.response?.data.data || error.response?.data.message;
-      if (responseError) return Promise.reject(responseError);
+  return await axios(requestConfig);
+} catch (error) {
+  console.log("AXIOS ERROR", error);
+
+  if (axios.isAxiosError(error)) {
+    if (error.code === "ERR_CANCELED") return Promise.reject(error);
+
+    const responseError =
+      error.response?.data?.data || error.response?.data?.message;
+
+    if (responseError) {
+      if (typeof responseError === "string") {
+        return Promise.reject(responseError);
+      }
+
+      // Flatten nested object (e.g., { email: ["error 1"], password: ["error 2"] })
+      if (typeof responseError === "object" && responseError !== null) {
+        const messages: string[] = [];
+
+        Object.entries(responseError).forEach(([field, value]) => {
+          if (Array.isArray(value)) {
+            value.forEach((msg) => messages.push(`${field}: ${msg}`));
+          } else {
+            messages.push(`${field}: ${value}`);
+          }
+        });
+
+        return Promise.reject(messages.join("\n"));
+      }
     }
-    return Promise.reject(error);
   }
+
+  // Fallback error
+  return Promise.reject("An unknown error occurred");
+}
 };
