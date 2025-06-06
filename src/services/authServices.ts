@@ -1,21 +1,6 @@
-import axios from "axios";
 import { sendRequest } from "@utils";
 
-
-export const login = async () => {
-  try {
-    const response = await sendRequest({
-      method: "POST",
-      url: "/auth/login",
-    });
-    return response.data.data;
-  } catch (error) {
-    console.log(`Auth Service [login] error: ${error}`);
-    throw error;
-  }
-};
-
-export const signUp = async (data: unknown) => {
+export const signup = async (data: unknown) => {
   try {
     const response = await sendRequest({
       method: "POST",
@@ -25,6 +10,20 @@ export const signUp = async (data: unknown) => {
     return response.data;
   } catch (error) {
     console.log(`Auth Service [signUp] error: ${error}`);
+    throw error;
+  }
+};
+
+export const login = async (data: unknown) => {
+  try {
+    const response = await sendRequest({
+      method: "POST",
+      url: "/auth/login",
+      data,
+    });
+    return response.data;
+  } catch (error) {
+    console.log(`Auth Service [login] error: ${error}`);
     throw error;
   }
 };
@@ -41,12 +40,3 @@ export const me = async () => {
     throw error;
   }
 };
-
-
-
-
-
-
-
-
-
