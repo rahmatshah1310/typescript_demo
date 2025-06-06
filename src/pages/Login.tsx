@@ -11,15 +11,17 @@ import { FaFacebook } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { ROUTES } from "@constants";
 import { useForm, type SubmitHandler } from "react-hook-form";
-import { useLogoutMutation } from "@api";
 import { LoginData } from "@types/";
+import { useLoginMutation } from "@api";
+import { useAuth } from "@context";
 
 
 
 const Login = () => {
   const [activeIndex, setActiveIndex] = useState(0);
-  const { mutate: loginUser, isLoading } = useLoginMutation();
-  const { mutate: logout } = useLogoutMutation();
+  const loginMutation = useLoginMutation();
+  const { setAuthData } = useAuth();
+  // const { mutate: logout } = useLogoutMutation();
 
   const {
     register,
@@ -32,18 +34,21 @@ const Login = () => {
 
   const images = [LoginPageImage_1, LoginPageImage_2, LoginPageImage_3];
 
- useEffect(() => {
-    if (signInMutation.status === "success") {
-      setUserData(signInMutation.data?.userData);
-    } else if (signInMutation.status === "error") {
-      alert("Authentication Failed", String(signInMutation.error));
-      reset();
-    }
-  }, [signInMutation.status]);  
+   useEffect(() => {
+      if (loginMutation.status === "success") {
+        setAuthData(loginMutation.data);
+        alert("Authentication Successful");
+        reset();
+        // navigate(ROUTES.home);
+      } else if (loginMutation.status === "error") {
+        const errorMessage = loginMutation.error as string;
+        alert(`Authentication failed!\n${errorMessage}`);
+      }
+    }, [loginMutation.status]);
 
-  const onSubmit: SubmitHandler<LoginData> = (e) => {
-    signInMutation.mutate(e);
-  };
+    const onSubmit: SubmitHandler<LoginData> = (data:LoginData) => {
+      loginMutation.mutate(data);
+    };
 
 
   useEffect(() => {
@@ -87,23 +92,25 @@ const Login = () => {
               Instagram
             </h1>
 
-            {/* Email Field */}
+            {/* Email/Username Field */}
             <div className="relative">
               <InputField
-                type="email"
-                label="Phone number or email"
-                placeholder="Enter email"
-                register={register("email")}
-                error={errors.email?.message}
+                id="identifier"
+                name="identifier"
+                type="text"
+                label="Phone number, username or email"
+                register={register("identifier")}
+                error={errors.identifier?.message}
               />
             </div>
 
             {/* Password Field */}
             <div className="relative">
               <InputField
+                id="password"
+                name="password"
                 label="Password"
-                placeholder="Enter password"
-                isPassword
+                isPassword="true"
                 register={register("password")}
                 error={errors.password?.message}
                 className="block py-2 px-2.5 w-full text-sm text-[#F5F5F5] border border-[#555555] focus:outline-none focus:border-[#555555]"
@@ -117,7 +124,7 @@ const Login = () => {
               {/* {isLoading ? "Logging in..." : "Log In"} */}
               Log In
             </Button>
-            <Button onClick={logout}>Log Out</Button>
+            {/* <Button onClick={logout}>Log Out</Button> */}
 
             <div className="flex flex-col space-y-4 w-full max-w-xs mx-auto">
               <div className="flex items-center gap-4">
