@@ -13,7 +13,7 @@ export default defineConfig({
       '@assets': path.resolve(__dirname, 'src/assets'),
       '@components': path.resolve(__dirname, 'src/components/components.ts'),
       '@constants': path.resolve(__dirname, 'src/constants/constants.ts'),
-      '@features': path.resolve(__dirname, 'src/features'),
+      '@context': path.resolve(__dirname, 'src/context/context.ts'),
       '@hooks': path.resolve(__dirname, 'src/hooks/hooks.ts'),
       '@pages': path.resolve(__dirname, 'src/pages/pages.ts'),
       '@services': path.resolve(__dirname, 'src/services/services.ts'),
