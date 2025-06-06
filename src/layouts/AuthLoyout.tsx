@@ -1,10 +1,10 @@
 // src/common/routes/AuthGuards.jsx
 import React from "react";
-import { Navigate, useLocation } from "react-router-dom";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { ROUTES } from "@constants";
 import instagramIcon from "@assets/images/instagramIcon.png";
 import metaText from "@assets/images/metaText.png";
-import { useAuth } from "@features/context/AuthContext";
+import { useAuth } from "@context";
 
 // Spinner component for reusability
 const LoadingScreen = () => (
@@ -18,35 +18,29 @@ const LoadingScreen = () => (
   </div>
 );
 
-export const PublicRoute = ({ children }) => {
-  const { user, loading } = useAuth();
+const AuthLayout:React.FC=()=>{
+  const { userData, loading } = useAuth();
   const location = useLocation();
 
   // While auth state is loading
   if (loading) return <LoadingScreen />;
 
   // If already logged in, redirect to their profile
-  if (user) {
+  if (userData) {
     return (
-      <Navigate to={`/${user?.username}`} replace state={{ from: location }} />
+      <Navigate to="/" replace state={{ from: location }} />
     );
   }
 
-  return children;
-};
-
-// In AuthGuards.jsx
-export const ProtectedRoute = ({ children }) => {
-  const { user, loading } = useAuth();
-  const location = useLocation();
-
-  if (loading) {
-    return <LoadingScreen />;
-  }
-
-  if (!user) {
+   if (!userData) {
     return <Navigate to={ROUTES.login} replace state={{ from: location }} />;
   }
 
-  return children;
-};
+  return(
+    <React.Fragment>
+      <Outlet/>
+    </React.Fragment>
+  )
+}
+
+export default AuthLayout;
