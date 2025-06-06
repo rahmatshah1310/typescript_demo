@@ -1,11 +1,10 @@
 import React, {
-  forwardRef,
   InputHTMLAttributes,
   useState,
 } from "react";
 import type { UseFormRegisterReturn } from "react-hook-form";
 import type { IconType } from "react-icons";
-import { ICONS } from "constants"; // Make sure this is correct
+// import { ICONS } from "constants"; // Make sure this is correct
 import {ErrorMessage} from "@components";
 import Button from "./Button"; // Adjust path if needed
 
@@ -22,7 +21,7 @@ interface InputFieldProps
   isPassword?: boolean;
 }
 
-const InputField = forwardRef<HTMLInputElement, InputFieldProps>(
+const InputField: React.FC<InputFieldProps> = (
   (
     {
       label,
@@ -38,7 +37,6 @@ const InputField = forwardRef<HTMLInputElement, InputFieldProps>(
       isPassword = false,
       ...rest
     },
-    ref
   ) => {
     const [selectedType, setSelectedType] = useState<string>(type);
 
@@ -51,8 +49,7 @@ const InputField = forwardRef<HTMLInputElement, InputFieldProps>(
             type={selectedType}
             id={name}
             name={name}
-            ref={ref}
-            placeholder=" "
+            placeholder={placeholder ?? ""}
             className={`peer block py-2 w-full appearance-none border bg-transparent px-2.5 text-sm text-white border-[#555555] focus:outline-none focus:ring-0 focus:border-[#555555] ${inputClassname}`}
           />
           {Icon && (
@@ -64,7 +61,6 @@ const InputField = forwardRef<HTMLInputElement, InputFieldProps>(
           )}
           {isPassword && (
             <Button
-              type="button"
               onClick={() =>
                 setSelectedType(
                   selectedType === "password" ? "text" : "password"
