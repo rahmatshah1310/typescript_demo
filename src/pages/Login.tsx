@@ -20,8 +20,7 @@ import { useAuth } from "@context";
 const Login = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const loginMutation = useLoginMutation();
-  const { setAuthData } = useAuth();
-  // const { mutate: logout } = useLogoutMutation();
+  const { setAuthData  } = useAuth();
 
   const {
     register,
@@ -124,8 +123,7 @@ const Login = () => {
               {/* {isLoading ? "Logging in..." : "Log In"} */}
               Log In
             </Button>
-            {/* <Button onClick={logout}>Log Out</Button> */}
-
+           
             <div className="flex flex-col space-y-4 w-full max-w-xs mx-auto">
               <div className="flex items-center gap-4">
                 <div className="flex-1 h-px bg-[#555555]" />
