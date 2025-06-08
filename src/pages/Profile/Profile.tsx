@@ -1,27 +1,23 @@
 import React, { useEffect, useState } from "react";
-import Tab from "@components/tabs";
-import { getDocs, collection, query, where } from "firebase/firestore";
-import Footer from "@footer";
-import PostTab from "./components/PostTab";
-import { tabs } from "@constants";
-import { useAuth } from "@features/context/AuthContext";
-import AvatarUpload from "./components/AvatarUpload";
+// import { getDocs, collection, query, where } from "firebase/firestore";
+// import Footer from "@footer";
+// import AvatarUpload from "./components/AvatarUpload";
+// import PostTab from "./components/PostTab";
+// import Tab from "./components/Tab";
+// import { Button,Skeleton, } from "@components";
+// import { tabs ,ROUTES,ICONS} from "@constants";
+import { useAuth } from "@context";
 import {
   Navigate,
   useLocation,
   useNavigate,
   useParams,
 } from "react-router-dom";
-import { fetchUserPosts } from "@/services/postService";
-import Button from "@/components/common/Button";
-import { ROUTES } from "@/constants";
-import PostDetails from "@pages/Profile/components/PostDetails";
-import { ICONS } from "@/assets/icons";
-import { UserPosts } from "@hooks/UserPosts";
-import { Skeleton } from "@/components/ui/skeleton";
-import FollowModal from "./components/FollowModal";
-import { firestore } from "@/firebase";
-import { useUser } from "@/features/context/FollowerContext";
+// import { fetchUserPosts } from "@/services/postService";
+// import PostDetails from "@pages";
+// import { UserPosts } from "@hooks/UserPosts";
+// import { firestore } from "@/firebase";
+// import { useUser } from "@/features/context/FollowerContext";
 
 const Profile = () => {
   const [activeTab, setActiveTab] = useState("posts");
@@ -34,7 +30,7 @@ const Profile = () => {
   const [followUsers, setFollowUsers] = useState([]);
   const { username } = useParams();
   const { user } = useAuth();
-  const { posts, loading } = UserPosts(user?.uid);
+  // const { posts, loading } = UserPosts(user?.uid);
   /* <------------------------------- Implementing Route for PostDetails with id -------------------------------> */
   const navigate = useNavigate();
   const location = useLocation();
@@ -240,7 +236,7 @@ const Profile = () => {
         </div>
       </div>
 
-      <Footer />
+      {/* <Footer /> */}
       <FollowModal
         isOpen={isFollowModalOpen}
         onClose={() => setIsFollowModalOpen(false)}
