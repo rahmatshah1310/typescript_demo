@@ -50,7 +50,7 @@ const InputField: React.FC<InputFieldProps> = (
             id={name}
             name={name}
             placeholder={placeholder ?? ""}
-            className={`peer block py-2 w-full appearance-none border bg-transparent px-2.5 text-sm text-white border-[#555555] focus:outline-none focus:ring-0 focus:border-[#555555] ${inputClassname}`}
+            className={`peer block py-2 w-full appearance-none border bg-transparent text-sm text-white border-[#555555] focus:outline-none focus:ring-0 focus:border-[#555555] ${inputClassname}`}
           />
           {Icon && (
             <Icon
