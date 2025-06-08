@@ -3,6 +3,6 @@ export const ROUTES = {
     login: "/auth/login",    // Updated to include parent path
     signup: "/auth/signup",  // Updated to include parent path
     home: "/",              // Changed to root path
-    profile: "/profile",
+   profile: (username) => `/${username}`,
     search: "/search",
 } as const;
