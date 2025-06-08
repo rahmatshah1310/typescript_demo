@@ -18,29 +18,25 @@ const LoadingScreen = () => (
   </div>
 );
 
-const AuthLayout:React.FC=()=>{
+const AuthLayout: React.FC = () => {
   const { userData, loading } = useAuth();
   const location = useLocation();
 
   // While auth state is loading
   if (loading) return <LoadingScreen />;
 
-  // If already logged in, redirect to their profile
+  // ✅ If already logged in, redirect them away from login/signup
   if (userData) {
-    return (
-      <Navigate to="/" replace state={{ from: location }} />
-    );
+    console.log(userData.userName)
+    return   <Navigate to={`/${userData?.userName}`} replace state={{ from: location }} />;
   }
 
-   if (!userData) {
-    return <Navigate to={ROUTES.login} replace state={{ from: location }} />;
-  }
-
-  return(
+  // ✅ Otherwise, show the login/signup pages (i.e., nested Outlet)
+  return (
     <React.Fragment>
-      <Outlet/>
+      <Outlet />
     </React.Fragment>
-  )
-}
+  );
+};
 
 export default AuthLayout;
