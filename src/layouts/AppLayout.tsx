@@ -5,6 +5,7 @@ import { ROUTES } from "@constants";
 // import Sidebar from "@components/layout/Sidebar";
 import {Spinner} from "@components";
 import { useAuth } from "@context";
+import {Sidebar} from "@components";
 
 const AppLayout = () => {
   const { userData, loading } = useAuth();
@@ -71,12 +72,12 @@ const AppLayout = () => {
         className={`flex flex-1 overflow-hidden ${isMobile ? "pt-16" : "pt-0"}`}
       >
         {/* Sidebar for Desktop/Tablet views - It's always positioned on the left */}
-        {/* <Sidebar
+        <Sidebar
           isCollapsed={isCollapsed}
           setIsCollapsed={setIsCollapsed}
           activeSection={activeSection}
           setActiveSection={setActiveSection}
-        /> */}
+        />
 
         {/* Main content area */}
         <div
