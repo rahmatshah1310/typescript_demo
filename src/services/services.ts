@@ -1,4 +1,5 @@
 export * as AuthService from "./authServices";
+export * as ProfileService from "./profileService";
 // export * as FollowServices from "./followServices";
 // export * as PostsServices from "./postsServices";
 // export * as ProfileServices from "./profileServices";
