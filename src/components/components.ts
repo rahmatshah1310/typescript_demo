@@ -5,7 +5,8 @@
 export {default as Button} from "./common/Button";
 export {default as ErrorMessage} from "./common/ErrorMessage";
 export {default as Spinner} from "./common/Spinner";
-// export * from "./common/Modal";
+export {default as Sidebar} from "./layout/Sidebar"
+export {default as Modal} from "./common/Modal";
 // export * from "./common/Spinner";
 // export * from "./common/LoadingBar";
 // export * from "./common/ShadcnPopover";
