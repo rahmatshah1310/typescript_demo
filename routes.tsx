@@ -3,7 +3,7 @@ import { ROUTES } from "@constants";
 import { SignUp ,Login} from "@pages";
 import { Routes as RouterRoutes, Route } from "react-router-dom";
 import {AuthLayout,AppLayout} from "@layouts";
-import {Home} from "@pages";
+import {Home,Profile} from "@pages";
 
 const AppRoutes: React.FC = () => {
   return (
@@ -15,6 +15,7 @@ const AppRoutes: React.FC = () => {
 
       <Route path="/" element={<AppLayout />}>
         <Route index element={<Home />} />
+          <Route path="/:username" element={<Profile />} />
       </Route>
     </RouterRoutes>
   );
