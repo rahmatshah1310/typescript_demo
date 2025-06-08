@@ -34,7 +34,6 @@ export const me = async () => {
       method: "GET",
       url: "/auth/me",
     });
-    console.log(response.data,"response of all data")
     return response.data;
   } catch (error) {
     console.log(`Auth Service [me] error: ${error}`);
