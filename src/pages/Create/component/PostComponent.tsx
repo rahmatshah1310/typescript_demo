@@ -1,47 +1,63 @@
 import React, { useRef, useState, useEffect } from "react";
-// import { usePost } from "@features/context/PostContext";
 import {InputField,Button,Modal} from "@components";
-// import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-// import { ICONS } from "@constants";
-import Spinner from "@/components/common/Spinner";
+import { ICONS } from "@constants";
+import {Spinner} from "@components";
+import { usePostMutation } from "@api";
 
 const postComponent = ({ isOpen, onClose }) => {
-  const { uploading, uploadedImageUrl, error, uploadImage } = usePost();
+  // const { uploading, uploadedImageUrl, error, uploadImage } = usePost();
   const fileInputRef = useRef(null);
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
   const [showCancelContainer, setShowCancelContainer] = useState(false);
   const [isPending, setIsPending] = useState(false);
 
-  useEffect(() => {
-    if (selectedFile) {
-      const objectUrl = URL.createObjectURL(selectedFile);
-      setPreviewUrl(objectUrl);
+  const {mutate:uploadPost}=usePostMutation()
+  // useEffect(() => {
+  //   if (selectedFile) {
+  //     const objectUrl = URL.createObjectURL(selectedFile);
+  //     setPreviewUrl(objectUrl);
 
-      return () => URL.revokeObjectURL(objectUrl);
-    }
-  }, [selectedFile]);
+  //     return () => URL.revokeObjectURL(objectUrl);
+  //   }
+  // }, [selectedFile]);
 
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file && file.type.startsWith("image/")) {
-      setSelectedFile(file);
-    } else {
-      console.error("Invalid file type.");
-    }
-  };
+  // const handleFileChange = (e) => {
+  //   const file = e.target.files[0];
+  //   if (file && file.type.startsWith("image/")) {
+  //     setSelectedFile(file);
+  //   } else {
+  //     console.error("Invalid file type.");
+  //   }
+  // };
 
-  const openFilePicker = () => {
-    fileInputRef.current.click();
-  };
+  // const openFilePicker = () => {
+  //   fileInputRef.current.click();
+  // };
 
-  const handleUpload = () => {
-    if (selectedFile) {
-      uploadImage(selectedFile);
-      uploading(selectedFile);
-      setShowCancelContainer(false);
-    }
-  };
+  // const handleUpload = () => {
+  //   if (selectedFile) {
+  //     uploadImage(selectedFile);
+  //     uploading(selectedFile);
+  //     setShowCancelContainer(false);
+  //   }
+  // };
+
+   const handlleUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+      const file = event.target.files?.[0];
+      if (file) {
+        const formData = new FormData();
+        formData.append("profilePic", file);
+        uploadPost(formData, {
+          onSuccess: () => {
+            alert("Profile picture updated!");
+          },
+          onError: (error: any) => {
+            alert("Upload failed");
+          },
+        });
+      }
+    };
 
   const toggleCancelContainer = () => {
     setShowCancelContainer(!showCancelContainer);
@@ -102,7 +118,7 @@ const postComponent = ({ isOpen, onClose }) => {
       )}
 
       {/* <---------------------------------------- Drag and Drop Area For Image -----------------------------------------> */}
-      <div className="w-full sm:w-[90%] md:w-[700px] mx-auto h-[300px] sm:h-[500px] md:h-[700px] bg-[#262626] flex flex-col justify-center relative">
+      <div className="w-full sm:w-[90%] md:w-full mx-auto h-[300px] sm:h-[500px] md:h-[700px] bg-[#262626] flex flex-col justify-center relative p-2">
         <div
           onDragOver={(e) => e.preventDefault()}
           onDrop={(e) => {
@@ -129,8 +145,8 @@ const postComponent = ({ isOpen, onClose }) => {
               <p className="text-gray-500">Drag Photos and Videos here</p>
               {!selectedFile && (
                 <Button
-                  onClick={openFilePicker}
-                  disabled={uploading}
+                  // onClick={openFilePicker}
+                  // disabled={uploading}
                   className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600  mx-auto"
                 >
                   Upload Post
@@ -145,10 +161,10 @@ const postComponent = ({ isOpen, onClose }) => {
           type="file"
           accept="image/*"
           ref={fileInputRef}
-          onChange={handleFileChange}
+          onChange={handlleUpload}
           className="hidden"
         />
-        {error && <p className="text-red-500 mt-2">{error}</p>}
+        {/* {error && <p className="text-red-500 mt-2">{error}</p>} */}
       </div>
     </section>
   );
