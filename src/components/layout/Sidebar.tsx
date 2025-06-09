@@ -1,11 +1,10 @@
 import React, { useState, useMemo, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useMediaQuery } from "react-responsive";
-// import { ICONS,InstagramText,ROUTES } from "@constants";
+import { ICONS,InstagramText,ROUTES } from "@constants";
 import { useAuth } from "@context";
 import {Create} from "@pages";
-// import ShadcnPopover from "@/components/common/ShadcnPopover";
-import {Button} from "@components";
+import {Button,ShadcnPopover,SearchComponent} from "@components";
 // import Messages from "@pages";
 // import SidebarHeader from "../chatsidebar/SidebarHeader";
 
@@ -119,7 +118,7 @@ const Sidebar = ({
   setActiveSection,
 }) => {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-  const { user, logout } = useAuth();
+  const { userData, handleLogout } = useAuth();
   const navigate = useNavigate();
 
   const isMobile = useMediaQuery({ maxWidth: 767 });
@@ -127,9 +126,9 @@ const Sidebar = ({
 
   // Memoized navigation links
   const navigationLinks = useMemo(() => {
-    const profileIcon = user?.profilePic ? (
+    const profileIcon = userData?.profilePic ? (
       <img
-        src={user.profilePic}
+        src={userData?.profilePic}
         alt="Profile"
         className="rounded-full object-cover border-2 border-white w-7 h-7 md:ml-[-5px] min-w-[1rem] min-h-[1rem]"
       />
@@ -154,12 +153,12 @@ const Sidebar = ({
         onClick: () => setIsCreateModalOpen(true),
         section: "create",
       },
-      { name: "Profile", icon: profileIcon, route: `/${user?.username}` },
+      { name: "Profile", icon: profileIcon, route: `/${userData?.userName}` },
       { name: "Meta AI", icon: ICONS.metaIcon, route: ROUTES.metaai },
       { name: "Threads", icon: ICONS.threadsLogo, route: ROUTES.threads },
-      { name: "More", icon: ICONS.moreIcon, onLogout: logout, section: "more" },
+      { name: "More", icon: ICONS.moreIcon, onLogout: handleLogout, section: "more" },
     ];
-  }, [user, logout]);
+  }, [userData, handleLogout]);
 
   // Map links for quick lookup
   const linkProperties = useMemo(
@@ -278,7 +277,7 @@ const Sidebar = ({
             link={link}
             isBottomBar
             onLinkClick={handleNavAction}
-            userProfilePic={user?.profilePic}
+            userProfilePic={userData?.profilePic}
           />
         ))}
       </div>
@@ -316,7 +315,7 @@ const Sidebar = ({
                   }
                   activeSection={activeSection}
                   onLinkClick={handleNavAction}
-                  userProfilePic={user?.profilePic}
+                  userProfilePic={userData?.profilePic}
                 />
               ))}
             </nav>
@@ -334,7 +333,7 @@ const Sidebar = ({
                   }
                   activeSection={activeSection}
                   onLinkClick={handleNavAction}
-                  userProfilePic={user?.profilePic}
+                  userProfilePic={userData?.profilePic}
                 />
               ))}
             </div>
