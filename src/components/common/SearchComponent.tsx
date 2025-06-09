@@ -1,7 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import InputField from "@components/common/InputField";
-import { collection, query, where, getDocs } from "firebase/firestore";
-import { firestore } from "@/firebase";
+import {InputField} from "@components";
 import { CommentSkeleton } from "@/components/skeletons/PostSkeleton";
 
 const SearchComponent = ({ className }) => {
@@ -10,6 +8,7 @@ const SearchComponent = ({ className }) => {
   const [loading, setLoading] = useState(false);
   const inputRef = useRef();
 
+  console.log(results,"results")
   const searchUsers = async (text) => {
     const usersRef = collection(firestore, "users");
     const q = query(
