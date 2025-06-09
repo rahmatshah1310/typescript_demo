@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 
-const AppFooter = () => {
-  const footerLinks = [
+const AppFooter:React.FC = () => {
+  const footerLinks:string[] = [
     "Meta",
     "About",
     "Blog",
