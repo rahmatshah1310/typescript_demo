@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { InputField, Button } from "@components";
+import { InputField, Button,AppFooter } from "@components";
 import { IoLogoFacebook } from "react-icons/io";
 import playstore from "@assets/images/playstore.png";
 import microsoft from "@assets/images/microsoft.png";
@@ -77,6 +77,7 @@ const SignUp = () => {
                 label="Phone number or email"
                 register={register("email")}
                 error={errors.email?.message}
+                inputClassname="block py-2 px-2.5 w-full text-sm text-[#F5F5F5] border border-[#555555] focus:outline-none focus:border-[#555555]"
               />
             </div>
 
@@ -88,7 +89,7 @@ const SignUp = () => {
                 isPassword="true"
                 register={register("password")}
                 error={errors.password?.message}
-                className="block py-2 px-2.5 w-full text-sm text-[#F5F5F5] border border-[#555555] focus:outline-none focus:border-[#555555]"
+                inputClassname="block py-2 px-2.5 w-full text-sm text-[#F5F5F5] border border-[#555555] focus:outline-none focus:border-[#555555]"
               />
             </div>
 
@@ -99,7 +100,7 @@ const SignUp = () => {
                 label="Full Name"
                 register={register("fullName")}
                 error={errors.fullName?.message}
-                className="block py-2 px-2.5 w-full text-sm text-[#F5F5F5] border border-[#555555] focus:outline-none focus:border-[#555555]"
+                inputClassname="block py-2 px-2.5 w-full text-sm text-[#F5F5F5] border border-[#555555] focus:outline-none focus:border-[#555555]"
               />
             </div>            {/* userName input */}
             <div className="relative">
@@ -108,7 +109,7 @@ const SignUp = () => {
                 label="Username"
                 register={register("userName")}
                 error={errors.userName?.message}
-                className="block py-2 px-2.5 w-full text-sm text-[#F5F5F5] border border-[#555555] focus:outline-none focus:border-[#555555]"
+                inputClassname="block py-2 px-2.5 w-full text-sm text-[#F5F5F5] border border-[#555555] focus:outline-none focus:border-[#555555]"
               />
             </div>
 
@@ -160,7 +161,7 @@ const SignUp = () => {
         </div>
       </div>
       <div className="mt-2 mb-10">
-        {/* <AppFooter /> */}
+        <AppFooter />
       </div>
     </section>
   );
