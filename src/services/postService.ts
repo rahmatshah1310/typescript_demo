@@ -16,3 +16,48 @@ export const createPost = async (data: FormData) => {
     throw error;
   }
 };
+
+export const updatePost = async (id: string, data: FormData) => {
+  try {
+    const response = await sendRequest({
+      method: "PUT", // or "PUT", depending on your backend
+      url: `/post/${id}`,
+      data,
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.log(`Update Post Service error: ${error}`);
+    throw error;
+  }
+};
+
+
+export const getAllPosts = async () => {
+  try {
+    const response = await sendRequest({
+      method: "GET",
+      url: "/post", // adjust if backend uses something like /posts
+    });
+    return response.data;
+  } catch (error) {
+    console.log(`Get All Posts Service error: ${error}`);
+    throw error;
+  }
+};
+
+
+export const getSinglePost = async (id: string) => {
+  try {
+    const response = await sendRequest({
+      method: "GET",
+      url: `/post/${id}`,
+    });
+    return response.data;
+  } catch (error) {
+    console.log(`Get Single Post Service error: ${error}`);
+    throw error;
+  }
+};
