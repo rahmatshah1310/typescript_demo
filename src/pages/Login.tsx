@@ -5,7 +5,7 @@ import LoginPageImage_3 from "@assets/images/LoginPageImage_3.png";
 import homePhones from "@assets/images/homePhones.png";
 import playstore from "@assets/images/playstore.png";
 import microsoft from "@assets/images/microsoft.png";
-import { InputField, Button } from "@components";
+import { InputField, Button,AppFooter } from "@components";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FaFacebook } from "react-icons/fa";
 import { Link } from "react-router-dom";
@@ -100,6 +100,7 @@ const Login = () => {
                 label="Phone number, username or email"
                 register={register("identifier")}
                 error={errors.identifier?.message}
+                inputClassname="px-2.5"
               />
             </div>
 
@@ -112,7 +113,7 @@ const Login = () => {
                 isPassword="true"
                 register={register("password")}
                 error={errors.password?.message}
-                className="block py-2 px-2.5 w-full text-sm text-[#F5F5F5] border border-[#555555] focus:outline-none focus:border-[#555555]"
+                inputClassname="block py-2 px-2.5 w-full text-sm text-[#F5F5F5] border border-[#555555] focus:outline-none focus:border-[#555555]"
               />
             </div>
 
@@ -164,6 +165,7 @@ const Login = () => {
           </div>
         </section>
       </div>
+        <AppFooter/>
     </section>
   );
 };
