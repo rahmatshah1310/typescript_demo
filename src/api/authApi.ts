@@ -29,6 +29,3 @@ export const useLogoutMutation = () => {
   });
 };
 
-export const useFetchCurrentUser = async () => {
-  return await AuthService.getCurrentUser();
-};
