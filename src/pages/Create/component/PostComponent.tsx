@@ -4,15 +4,15 @@ import { ICONS } from "@constants";
 import {Spinner} from "@components";
 import { usePostMutation } from "@api";
 
-const postComponent = ({ isOpen, onClose }) => {
-  // const { uploading, uploadedImageUrl, error, uploadImage } = usePost();
-  const fileInputRef = useRef(null);
-  const [selectedFile, setSelectedFile] = useState(null);
-  const [previewUrl, setPreviewUrl] = useState(null);
-  const [showCancelContainer, setShowCancelContainer] = useState(false);
+const PostComponent = ({ isOpen, onClose }) => {
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [showCancelContainer, setShowCancelContainer] = useState<boolean | null>(false);
   const [isPending, setIsPending] = useState(false);
 
-  const {mutate:uploadPost}=usePostMutation()
+
+  const {mutate:uploadPost,isLoading,error}=usePostMutation()
   // useEffect(() => {
   //   if (selectedFile) {
   //     const objectUrl = URL.createObjectURL(selectedFile);
@@ -22,18 +22,18 @@ const postComponent = ({ isOpen, onClose }) => {
   //   }
   // }, [selectedFile]);
 
-  // const handleFileChange = (e) => {
-  //   const file = e.target.files[0];
-  //   if (file && file.type.startsWith("image/")) {
-  //     setSelectedFile(file);
-  //   } else {
-  //     console.error("Invalid file type.");
-  //   }
-  // };
+  const handleFileSelect = (event:React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file && file.type.startsWith("image/")) {
+      setSelectedFile(file);
+    } else {
+      console.error("Invalid file type.");
+    }
+  };
 
-  // const openFilePicker = () => {
-  //   fileInputRef.current.click();
-  // };
+  const openFilePicker = () => {
+    fileInputRef.current.click();
+  };
 
   // const handleUpload = () => {
   //   if (selectedFile) {
@@ -43,14 +43,14 @@ const postComponent = ({ isOpen, onClose }) => {
   //   }
   // };
 
-   const handlleUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+   const handleUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
       const file = event.target.files?.[0];
       if (file) {
         const formData = new FormData();
         formData.append("profilePic", file);
         uploadPost(formData, {
           onSuccess: () => {
-            alert("Profile picture updated!");
+            alert("Profile picture uploaded!");
           },
           onError: (error: any) => {
             alert("Upload failed");
@@ -112,7 +112,7 @@ const postComponent = ({ isOpen, onClose }) => {
             {ICONS.backArrow}
           </Button>
           <Button onClick={handleUpload} className="text-blue-500">
-            {uploading ? <Spinner type="beat" color="blue" /> : "Next"}
+            {isLoading ? <Spinner type="beat" color="blue" /> : "Next"}
           </Button>
         </div>
       )}
@@ -145,8 +145,8 @@ const postComponent = ({ isOpen, onClose }) => {
               <p className="text-gray-500">Drag Photos and Videos here</p>
               {!selectedFile && (
                 <Button
-                  // onClick={openFilePicker}
-                  // disabled={uploading}
+                  onClick={openFilePicker}
+                  disabled={isLoading}
                   className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600  mx-auto"
                 >
                   Upload Post
@@ -161,13 +161,13 @@ const postComponent = ({ isOpen, onClose }) => {
           type="file"
           accept="image/*"
           ref={fileInputRef}
-          onChange={handlleUpload}
-          className="hidden"
+          onChange={handleFileSelect}
+          inputClassname="hidden"
         />
-        {/* {error && <p className="text-red-500 mt-2">{error}</p>} */}
+        {error && <p className="text-red-500 mt-2">{error.message}</p>}
       </div>
     </section>
   );
 };
 
-export default postComponent;
+export default PostComponent;
