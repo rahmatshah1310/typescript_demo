@@ -68,7 +68,7 @@ const InputField: React.FC<InputFieldProps> = (
               }
               className="absolute top-1/2 -translate-y-1/2 right-3"
             >
-              {selectedType === "password" ? "Hide" : "Show"}
+              {selectedType === "password" ? "Show" : "Hide"}
             </Button>
           )}
           <label
