@@ -45,7 +45,7 @@ export const useGetAllPosts = () => {
     queryKey: ["posts"],
     queryFn: async () => {
       const response = await PostService.getAllPosts();
-      return response;
+      return response.data;
     },
     onError: (error: any) => {
       alert(`Failed to fetch posts: ${error?.message || "Unknown error"}`);
@@ -59,7 +59,7 @@ export const useGetSinglePost = (id: string) => {
     queryKey: ["post", id],
     queryFn: async () => {
       const response = await PostService.getSinglePost(id);
-      return response;
+      return response.data;
     },
     enabled: !!id, // run query only if id exists
     onError: (error: any) => {
