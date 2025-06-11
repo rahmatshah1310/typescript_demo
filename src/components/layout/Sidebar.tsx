@@ -246,7 +246,7 @@ const Sidebar = ({
     activeSection === "messages"
       ? "w-16"
       : isCollapsed
-      ? "w-84"
+      ? "w-16"
       : "w-84";
 
   // Helper for panel common classes
