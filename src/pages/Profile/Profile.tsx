@@ -9,24 +9,17 @@ import { useAddProfilePicMutation } from "@api";
 // import FollowModal from "./components/FollowModal";
 // import PostDetails from "@pages";
 
-const Profile = () => {
+const Profile:React.FC = () => {
   const { userData } = useAuth()
 
-  const { mutate: uploadProfilePic } = useAddProfilePicMutation();
+  const { mutate: uploadProfilePic,isLoading } = useAddProfilePicMutation();
 
   const handleUploadProfilePic = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
       const formData = new FormData();
-      formData.append("profilePic", file);
-      uploadProfilePic(formData, {
-        onSuccess: () => {
-          alert("Profile picture updated!");
-        },
-        onError: (error: any) => {
-          alert("Upload failed");
-        },
-      });
+      formData.append("image", file);
+      uploadProfilePic(formData);
     }
   };
 
@@ -44,15 +37,15 @@ const Profile = () => {
                 />
               ) : (
                 <span className="text-gray-400">
-                  {/* {uploading ? "Uploading..." : "No Image"} */}
+                  {isLoading ? "Uploading..." : "No Image"}
                 </span>
               )}
               <InputField
                 type="file"
                 accept="image/*"
-                className="hidden"
+                inputClassname="hidden"
                 onChange={handleUploadProfilePic}
-              // disabled={uploading}
+              disabled={isLoading}
               />
             </label>
           </div>
