@@ -1,8 +1,12 @@
 import PostComponent from "./component/PostComponent";
-import {Modal,Button} from "@components";
-import { useState } from "react";
+import {Modal} from "@components";
 
-const CreatePost = ({ isOpen, onClose }) => {
+
+interface CreatePostProps{
+  isOpen?:boolean;
+  onClose?:()=>void;
+}
+const CreatePost:React.FC<CreatePostProps> = ({ isOpen, onClose }) => {
   return (
     <>
       <Modal
