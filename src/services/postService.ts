@@ -6,9 +6,6 @@ export const createPost = async (data: FormData) => {
       method: "POST",
      url: "/post",
       data,
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
     });
     return response.data;
   } catch (error) {
@@ -23,9 +20,6 @@ export const updatePost = async (id: string, data: FormData) => {
       method: "PUT", // or "PUT", depending on your backend
       url: `/post/${id}`,
       data,
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
     });
     return response.data;
   } catch (error) {
@@ -39,7 +33,7 @@ export const getAllPosts = async () => {
   try {
     const response = await sendRequest({
       method: "GET",
-      url: "/post", // adjust if backend uses something like /posts
+      url: "/post/my-posts", // adjust if backend uses something like /posts
     });
     return response.data;
   } catch (error) {
