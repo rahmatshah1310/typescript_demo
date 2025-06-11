@@ -1,7 +1,15 @@
 import React from "react";
 import { HashLoader, FadeLoader, BeatLoader } from "react-spinners";
 
-const Spinner = ({
+
+interface SpinnerProps{
+  type?:"fade" | "sync" | "beat";
+  color?:string;
+  size?:number;
+  width?:number;
+  height?:number;
+}
+const Spinner:React.FC<SpinnerProps> = ({
   type = "fade",
   color = "white",
   size = 15,
