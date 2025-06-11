@@ -8,7 +8,7 @@ import { useAuth } from "@context";
 import {Sidebar} from "@components";
 
 const AppLayout = () => {
-  const { userData, loading } = useAuth();
+  const { userData, isLoading } = useAuth();
 
   const isMobile = useMediaQuery({ maxWidth: 767 });
   const isMdOrLg = useMediaQuery({ minWidth: 768, maxWidth: 1279 });
@@ -32,7 +32,7 @@ const AppLayout = () => {
     }
   }, [isMdOrLg, isXlOrLarger, activeSection]);
 
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="flex items-center justify-center w-full h-screen bg-gray-900">
         <Spinner type="sync" />
