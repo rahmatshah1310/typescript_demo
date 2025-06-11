@@ -7,6 +7,7 @@
         url: "/profile-settings/profile-pic",
         data
       });
+      console.log(response.data)
       return response.data;
     } catch (error) {
       console.log(`Profile Service [addProfilePic] error: ${error}`);
@@ -18,7 +19,7 @@
     try {
       const response = await sendRequest({
         method: "PUT",
-        url: "/profile-settings/profile-pic",
+        url: "/profile-settings",
         data,
       });
       return response.data;
