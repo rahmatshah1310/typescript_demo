@@ -27,7 +27,6 @@ const AuthLayout: React.FC = () => {
 
   // ✅ If already logged in, redirect them away from login/signup
   if (userData) {
-    console.log(userData.userName)
     return   <Navigate to={`/${userData?.userName}`} replace state={{ from: location }} />;
   }
 
