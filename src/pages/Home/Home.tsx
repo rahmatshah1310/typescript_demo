@@ -8,11 +8,10 @@ import { useGetAllPosts } from "@api";
 const Home = () => {
   const { userData } = useAuth();
   const { data: posts, isLoading, error } = useGetAllPosts();
-  console.log(posts)
   const [isOptionsModalOpen, setIsOptionsModalOpen] = useState(false);
 
   if (isLoading) {
-    return (
+    return (  
       <section className="flex flex-col items-center gap-8 mt-10">
         <HomeUsersSkeleton />
         {[...Array(3)].map((_, idx) => (
