@@ -1,18 +1,53 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "@components";
 import { useAuth } from "@context";
-import { InputField } from "@components";
-import { useAddProfilePicMutation } from "@api";
+import { InputField, Skeleton,Tab } from "@components";
+import { useAddProfilePicMutation, useGetAllPosts } from "@api";
+import { ICONS,tabs } from "@constants"
+import PostTab from "./components/PostTab"
+import { useNavigate } from "react-router-dom";
+import PostDetails from "./components/PostDetails";
+import { toast } from "react-toastify";
 // import AvatarUpload from "./components/AvatarUpload";
 // import Tab from "./components/Tab";
 // import PostTab from "./components/PostTab";
 // import FollowModal from "./components/FollowModal";
 // import PostDetails from "@pages";
 
-const Profile:React.FC = () => {
+const Profile: React.FC = () => {
   const { userData } = useAuth()
+  const { posts, isLoading: isPostLoading, error } = useGetAllPosts();
+  console.log(posts)
+const uploadProfilePic = useAddProfilePicMutation();
+  const [activeTab, setActiveTab] = useState<string | null>("posts")
+  const [selectedPost, setSelectedPost] = useState(null);
+   const [isModalOpen, setIsModalOpen] = useState<boolean | null>(false);
+  const navigate=useNavigate()
 
-  const { mutate: uploadProfilePic,isLoading } = useAddProfilePicMutation();
+ useEffect(() => {
+    if (uploadProfilePic.status === "success") {
+      toast.success(uploadProfilePic.data?.message || "Post uploaded successfully!");
+    } else if (uploadProfilePic.status === "error") {
+      const errorMessage = uploadProfilePic.error as any;
+      toast.error(`Failed to create post!\n${errorMessage?.message || "Unknown error"}`);
+    }
+  }, [uploadProfilePic.status]);
+
+
+   const openPostModal = (posts) => {
+    setSelectedPost(posts);
+    navigate(`/p/${posts.id}`, {
+      state: { backgroundLocation: location },
+    });
+    setIsModalOpen(true);
+  };
+
+  
+  const closePostModal = () => {
+    setSelectedPost(null);
+    setIsModalOpen(false);
+    navigate(`/${userData.userName}`);
+  };
 
   const handleUploadProfilePic = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -22,6 +57,70 @@ const Profile:React.FC = () => {
       uploadProfilePic(formData);
     }
   };
+
+
+  const TabContent = () => {
+
+    if (isPostLoading) {
+      return (
+        <div className="mt-8 grid grid-cols-3 gap-4">
+          {[...Array(9)].map((_, idx) => (
+            <Skeleton
+              key={idx}
+              className="h-[250px] bg-gray-800 w-full rounded"
+            />
+          ))}
+        </div>
+      );
+    }
+
+    if (activeTab === "posts") {
+      return posts.length === 0 ? (
+        <PostTab />
+      ) : (
+        <div className="mt-8 grid grid-cols-3 gap-4">
+          {posts.map((post,index) => (
+            <div
+              key={index}
+              className="relative group cursor-pointer"
+              onClick={() => openPostModal(post)}
+            >
+              <img
+                src={post.imageUrls}
+                alt={post.caption}
+                className="w-full  md:h-[300px] rounded object-cover"
+              />
+              {/* Updated Overlay on hover */}
+              <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                <div className="text-white font-semibold flex items-center gap-4">
+                  <div className="flex items-center gap-1">
+                    {ICONS.heartFilled}
+                    <span>{post.likeCount}</span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    {ICONS.commentIcon}
+                    <span>{post.commentsCount || 0}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      );
+    }
+
+    if (activeTab === "saved") {
+      return <div className="mt-8">Saved content</div>;
+    }
+
+    if (activeTab === "tagged") {
+      return <div className="mt-8">Tagged content</div>;
+    }
+
+    return null;
+  };
+
+
 
   return (
     <>
@@ -37,7 +136,7 @@ const Profile:React.FC = () => {
                 />
               ) : (
                 <span className="text-gray-400">
-                  {isLoading ? "Uploading..." : "No Image"}
+                  {uploadProfilePic.isLoading ? "Uploading..." : "No Image"}
                 </span>
               )}
               <InputField
@@ -45,7 +144,7 @@ const Profile:React.FC = () => {
                 accept="image/*"
                 inputClassname="hidden"
                 onChange={handleUploadProfilePic}
-              disabled={isLoading}
+                disabled={uploadProfilePic.isLoading}
               />
             </label>
           </div>
@@ -82,26 +181,29 @@ const Profile:React.FC = () => {
             </div>
           </div>
         </div>
-
-        <div className="overflow-x-auto sm:overflow-visible border-b border-gray-700">
-          {/* <Tab /> */}
-          <div className="flex gap-6 text-center">
-            <Button className="py-2 px-4 border-b-2 border-white">Posts</Button>
-            <Button className="py-2 px-4">Saved</Button>
-            <Button className="py-2 px-4">Tagged</Button>
-          </div>
-        </div>
-
-        <div className="mt-8 grid grid-cols-3 gap-4">
-          {/* Dummy grid of posts */}
-          {[...Array(6)].map((_, index) => (
-            <div key={index} className="w-full h-[300px] bg-gray-800 rounded"></div>
-          ))}
-        </div>
       </div>
 
+      <Tab
+        tabs={tabs}
+        activeTab={activeTab}
+        onTabChange={setActiveTab}
+        className="overflow-x-auto sm:overflow-visible"
+      />
+
+      {/* Tab Content */}
+      <div className="px-2 sm:px-0">
+        <TabContent />
+      </div>
       {/* <FollowModal /> */}
-      {/* <PostDetails /> */}
+     {selectedPost && (
+        <PostDetails
+          isOpen={isModalOpen}
+          onClose={closePostModal}
+          post={selectedPost}
+          user={userData}
+          showDeleteButton={true}
+        />
+      )}
     </>
   );
 };
