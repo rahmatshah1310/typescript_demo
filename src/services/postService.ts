@@ -14,10 +14,24 @@ export const createPost = async (data: FormData) => {
   }
 };
 
+export const deletePost = async (id: string) => {
+  try {
+    const response = await sendRequest({
+      method: " DELETE",
+     url: `/post/${id}`,
+    });
+    return response.data;
+  } catch (error) {
+    console.log(`Delete Post Service error: ${error}`);
+    throw error;
+  }
+};
+
+
 export const updatePost = async (id: string, data: FormData) => {
   try {
     const response = await sendRequest({
-      method: "PUT", // or "PUT", depending on your backend
+      method: "PUT", 
       url: `/post/${id}`,
       data,
     });
