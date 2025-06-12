@@ -4,6 +4,7 @@ import { ICONS } from "@constants";
 import { Spinner } from "@components";
 import { usePostMutation } from "@api";
 import { useGetAllPosts } from "../../../api/postApi";
+import { toast } from "react-toastify";
 
 interface PostProps {
   isOpen?: boolean;
@@ -15,8 +16,16 @@ const PostComponent: React.FC<PostProps> = ({ isOpen, onClose }) => {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [showCancelContainer, setShowCancelContainer] = useState<boolean | null>(false);
 
-  const { mutate: uploadPost,isLoading,error} = usePostMutation()
+  const postMutation = usePostMutation();
 
+  useEffect(() => {
+    if (postMutation.status === "success") {
+      toast.success(postMutation.data?.message || "Post uploaded successfully!");
+    } else if (postMutation.status === "error") {
+      const errorMessage = postMutation.error as any;
+      toast.error(`Failed to create post!\n${errorMessage?.message || "Unknown error"}`);
+    }
+  }, [postMutation.status]);
 
 
 
@@ -33,7 +42,7 @@ const PostComponent: React.FC<PostProps> = ({ isOpen, onClose }) => {
     const file = event.target.files?.[0];
 
     if (file && file.type.startsWith("image/")) {
-    console.log(file.type)
+      console.log(file.type)
 
       setSelectedFile(file);
     } else {
@@ -45,13 +54,13 @@ const PostComponent: React.FC<PostProps> = ({ isOpen, onClose }) => {
     fileInputRef.current.click();
   };
 
-const handleUpload = () => {
-  if (selectedFile) {
-    const formData = new FormData();
-    formData.append("images", selectedFile);
-    uploadPost(formData);
-  }
-};
+  const handleUpload = () => {
+    if (selectedFile) {
+      const formData = new FormData();
+      formData.append("images", selectedFile);
+      postMutation.mutate(formData);
+    }
+  };
 
 
   const toggleCancelContainer = () => {
@@ -107,7 +116,7 @@ const handleUpload = () => {
             {ICONS.backArrow}
           </Button>
           <Button onClick={handleUpload} className="text-blue-500">
-            {isLoading ? <Spinner type="beat" color="blue" /> : "Next"}
+            {postMutation.isLoading ? <Spinner type="beat" color="blue" /> : "Next"}
           </Button>
         </div>
       )}
@@ -140,7 +149,7 @@ const handleUpload = () => {
               {!selectedFile && (
                 <Button
                   onClick={openFilePicker}
-                  disabled={isLoading}
+                  disabled={postMutation.isLoading}
                   className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600  mx-auto"
                 >
                   Upload Post
