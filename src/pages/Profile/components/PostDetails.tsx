@@ -3,20 +3,22 @@ import { ICONS } from "@constants";
 import {Button,Modal,CommentModal,CommentSkeleton,CommentLikesFooter} from "@components";
 import PostOptionsModal from "./PostOptionsModal";
 import { getShortTimeAgo } from "@utils";
+import { useGetSinglePost } from "@api";
 // import PostHeader from "@/components/header/PostHeader";
 
-const PostDetails = ({ isOpen, onClose, post, user, showDeleteButton }) => {
+const PostDetails = ({ isOpen, onClose, user, showDeleteButton }) => {
   const [comment, setComment] = useState([]);
   const [loadingComments, setLoadingComments] = useState(false);
   const [isOptionsModalOpen, setIsOptionsModalOpen] = useState(false);
   const [isCommentModalOpen, setIsCommentModalOpen] = useState(false);
   const [selectedCommentId, setSelectedCommentId] = useState(null);
   const [replyTo, setReplyTo] = useState("");
+  const {post}=useGetSinglePost()
 
-  const handleReply = (username) => {
-    setReplyTo(`@${username}`);
+  const handleReply = (userName) => {
+    setReplyTo(`@${userName}`);
   };
-
+console.log(post,"postdetails")
   if (!post) {
     return <div className="text-white">No Post Available.</div>;
   }
@@ -60,7 +62,7 @@ const PostDetails = ({ isOpen, onClose, post, user, showDeleteButton }) => {
         {/* Image section */}
         <div className="w-full md:w-[900px] aspect-square md:aspect-auto h-[200px] sm:h-[300px] md:h-[850px] bg-[#262626] flex items-center justify-center">
           <img
-            src={post?.imageUrl}
+            src={post?.imageUrls}
             alt="Post"
             className="object-cover w-full h-full"
           />
@@ -73,7 +75,7 @@ const PostDetails = ({ isOpen, onClose, post, user, showDeleteButton }) => {
             className="hidden md:flex items-center justify-between p-4"
           /> */}
           {/* Comments */}
-          <div className="hidden md:flex md:flex-col md:min-h-[650px] md:max-h-[200px] overflow-y-auto px-4 p-2 border-t border-gray-700 pt-4">
+          {/* <div className="hidden md:flex md:flex-col md:min-h-[650px] md:max-h-[200px] overflow-y-auto px-4 p-2 border-t border-gray-700 pt-4">
             {loadingComments ? (
               <>
                 {[...Array(3)].map((_, idx) => (
@@ -137,7 +139,7 @@ const PostDetails = ({ isOpen, onClose, post, user, showDeleteButton }) => {
                 </div>
               ))
             )}
-          </div>
+          </div> */}
           <CommentLikesFooter
             post={post}
             replyTo={replyTo}
