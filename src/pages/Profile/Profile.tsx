@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "@components";
 import { useAuth } from "@context";
-import { InputField, Skeleton,Tab } from "@components";
-import { useAddProfilePicMutation, useGetAllPosts } from "@api";
-import { ICONS,tabs } from "@constants"
+import { InputField, Skeleton, Tab } from "@components";
+import { useAddProfilePicMutation, useGetAllPosts,} from "@api";
+import { ICONS, tabs } from "@constants"
 import PostTab from "./components/PostTab"
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import PostDetails from "./components/PostDetails";
 import { toast } from "react-toastify";
+import { useLocation } from "react-router-dom";
+import { useGetSinglePost } from "../../api/postApi";
 // import AvatarUpload from "./components/AvatarUpload";
 // import Tab from "./components/Tab";
 // import PostTab from "./components/PostTab";
@@ -16,33 +18,37 @@ import { toast } from "react-toastify";
 
 const Profile: React.FC = () => {
   const { userData } = useAuth()
-  const { posts, isLoading: isPostLoading, error } = useGetAllPosts();
-  console.log(posts)
-const uploadProfilePic = useAddProfilePicMutation();
+  const {id}=useParams()
+  const { data:posts, isLoading: isPostLoading, error } = useGetAllPosts();
+  // const {data:post}=useGetSinglePost()
+  // console.log(post)
+const location = useLocation();
+
+  const uploadProfilePic = useAddProfilePicMutation();
   const [activeTab, setActiveTab] = useState<string | null>("posts")
   const [selectedPost, setSelectedPost] = useState(null);
-   const [isModalOpen, setIsModalOpen] = useState<boolean | null>(false);
-  const navigate=useNavigate()
+  const [isModalOpen, setIsModalOpen] = useState<boolean | null>(false);
+  const navigate = useNavigate()
 
- useEffect(() => {
-    if (uploadProfilePic.status === "success") {
-      toast.success(uploadProfilePic.data?.message || "Post uploaded successfully!");
-    } else if (uploadProfilePic.status === "error") {
-      const errorMessage = uploadProfilePic.error as any;
-      toast.error(`Failed to create post!\n${errorMessage?.message || "Unknown error"}`);
-    }
-  }, [uploadProfilePic.status]);
+    useEffect(() => {
+      if (uploadProfilePic.status === "success") {
+        toast.success(uploadProfilePic.data?.message || "Post uploaded successfully!");
+      } else if (uploadProfilePic.status === "error") {
+        const errorMessage = uploadProfilePic.error as any;
+        toast.error(`Failed to create post!\n${errorMessage?.message || "Unknown error"}`);
+      }
+    }, [uploadProfilePic.status]);
 
 
-   const openPostModal = (posts) => {
+  const openPostModal = (posts) => {
     setSelectedPost(posts);
-    navigate(`/p/${posts.id}`, {
-      state: { backgroundLocation: location },
+    navigate(`/p/${posts._id}`, {
+      state: { backgroundLocation: location.pathname },
     });
     setIsModalOpen(true);
   };
 
-  
+
   const closePostModal = () => {
     setSelectedPost(null);
     setIsModalOpen(false);
@@ -79,7 +85,7 @@ const uploadProfilePic = useAddProfilePicMutation();
         <PostTab />
       ) : (
         <div className="mt-8 grid grid-cols-3 gap-4">
-          {posts.map((post,index) => (
+          {posts.map((post, index) => (
             <div
               key={index}
               className="relative group cursor-pointer"
@@ -195,7 +201,7 @@ const uploadProfilePic = useAddProfilePicMutation();
         <TabContent />
       </div>
       {/* <FollowModal /> */}
-     {selectedPost && (
+      {selectedPost && (
         <PostDetails
           isOpen={isModalOpen}
           onClose={closePostModal}
