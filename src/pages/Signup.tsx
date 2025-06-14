@@ -30,12 +30,12 @@ const SignUp = () => {
 
  useEffect(() => {
   if (signupMutation.status === "success") {
-    alert("Signup successful! Please login.");
+    toast.success("Signup successful! Please login.");
     navigate(ROUTES.login);
     reset();
   } else if (signupMutation.status === "error") {
     const errorMessage = signupMutation.error as string;
-    alert(`Signup failed!\n${errorMessage}`);
+    toast.error(`Signup failed!\n${errorMessage}`);
   }
 }, [signupMutation.status]);
 
