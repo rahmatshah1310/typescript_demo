@@ -1,14 +1,17 @@
 import {
   Dialog,
-  DialogTrigger,
   DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-  DialogClose,
-} from "@/components/ui/dialog";
+} from "@components";
+import type { ReactNode } from "react";
 
-const Modal = ({ children, isOpen, onClose, className }) => {
+interface ModalProps{
+  children:ReactNode,
+  isOpen:boolean,
+  onClose:(open:boolean)=>void,
+  className?:string,
+}
+
+const Modal:React.FC<ModalProps> = ({ children, isOpen, onClose, className }) => {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className={`${className}`}>
