@@ -17,7 +17,7 @@ const PostComponent: React.FC<PostProps> = ({ isOpen, onClose }) => {
   const [showCancelContainer, setShowCancelContainer] = useState<boolean | null>(false);
 
   const postMutation = usePostMutation();
-
+;
   useEffect(() => {
     if (postMutation.status === "success") {
       toast.success(postMutation.data?.message || "Post uploaded successfully!");
