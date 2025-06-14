@@ -3,6 +3,7 @@ import { ICONS } from "@constants";
 import { useAuth } from "@context";
 import { HomeUsersSkeleton, PostSkeleton, Skeleton, Header, Button } from "@components";
 import { useGetAllPosts } from "@api";
+import FollowUnFollowModal from "./components/FollowUnFollowModal";
 // import FollowUnFollowModal from "./components/FollowUnFollowModal";
 
 const Home = () => {
@@ -108,11 +109,11 @@ const Home = () => {
           </div>
         ))}
 
-        {/* <FollowUnFollowModal
+        <FollowUnFollowModal
           post={posts[0]}
           isOpen={isOptionsModalOpen}
           onClose={() => setIsOptionsModalOpen(false)}
-        /> */}
+        />
       </section>
     </section>
   );
