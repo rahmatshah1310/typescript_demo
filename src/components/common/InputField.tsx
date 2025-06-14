@@ -1,7 +1,8 @@
-import React, {
-  InputHTMLAttributes,
+import {
   useState,
+  type InputHTMLAttributes,
 } from "react";
+
 import type { UseFormRegisterReturn } from "react-hook-form";
 import type { IconType } from "react-icons";
 // import { ICONS } from "constants"; // Make sure this is correct
