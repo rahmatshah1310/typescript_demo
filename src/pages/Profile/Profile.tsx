@@ -18,7 +18,7 @@ import { useGetSinglePost } from "../../api/postApi";
 
 const Profile: React.FC = () => {
   const { userData } = useAuth()
-  const {id}=useParams()
+const {id}=useParams()
   const { data:posts, isLoading: isPostLoading, error } = useGetAllPosts();
   // const {data:post}=useGetSinglePost()
   // console.log(post)
