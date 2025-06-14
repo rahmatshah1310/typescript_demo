@@ -1,4 +1,5 @@
 import { sendRequest } from "@utils";
+import { toast } from "react-toastify";
 
 export const createPost = async (data: FormData) => {
   try {
@@ -20,7 +21,7 @@ export const deletePost = async (id: string) => {
       method: " DELETE",
      url: `/post/${id}`,
     });
-    return response.data;
+    return response.data.data;
   } catch (error) {
     console.log(`Delete Post Service error: ${error}`);
     throw error;
@@ -49,7 +50,7 @@ export const getAllPosts = async () => {
       method: "GET",
       url: "/post/my-posts", // adjust if backend uses something like /posts
     });
-    return response.data;
+    return response.data.data;
   } catch (error) {
     console.log(`Get All Posts Service error: ${error}`);
     throw error;
@@ -65,7 +66,7 @@ export const getSinglePost = async (id: string) => {
     });
     return response.data;
   } catch (error) {
-    console.log(`Get Single Post Service error: ${error}`);
+    toast.error(`Get Single Post Service error: ${error}`);
     throw error;
   }
 };
