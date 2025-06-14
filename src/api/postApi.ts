@@ -1,4 +1,4 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { PostService } from "@services";
 
 // Create Post Mutation
@@ -24,13 +24,7 @@ export const useGetAllPosts = () => {
 export const useGetSinglePost = (id: string) => {
   return useQuery({
     queryKey: ["post", id],
-    queryFn: async () => {
-      const response = await PostService.getSinglePost(id);
-      return response.data;
-    },
-    enabled: !!id, // run query only if id exists
-    onError: (error: any) => {
-      alert(`Failed to fetch post: ${error?.message || "Unknown error"}`);
-    },
+    queryFn: PostService.getSinglePost(id),
+    enabled:!!id,
   });
 };
