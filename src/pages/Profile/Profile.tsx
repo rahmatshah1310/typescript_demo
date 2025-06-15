@@ -9,7 +9,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import PostDetails from "./components/PostDetails";
 import { toast } from "react-toastify";
 import { useLocation } from "react-router-dom";
-import { useGetSinglePost } from "../../api/postApi";
 // import AvatarUpload from "./components/AvatarUpload";
 // import Tab from "./components/Tab";
 // import PostTab from "./components/PostTab";
@@ -18,9 +17,7 @@ import { useGetSinglePost } from "../../api/postApi";
 
 const Profile: React.FC = () => {
   const { userData } = useAuth()
-const {id}=useParams()
-  const { data:posts, isLoading: isPostLoading, error } = useGetAllPosts();
-  // const {data:post}=useGetSinglePost()
+  const { data:posts, isLoading: isPostLoading, error,isSuccess} = useGetAllPosts();
   // console.log(post)
 const location = useLocation();
 
@@ -37,8 +34,9 @@ const location = useLocation();
         const errorMessage = uploadProfilePic.error as any;
         toast.error(`Failed to create post!\n${errorMessage?.message || "Unknown error"}`);
       }
-    }, [uploadProfilePic.status]);
+    }, [uploadProfilePic.status,uploadProfilePic]);
 
+    console.log(selectedPost)
 
   const openPostModal = (posts) => {
     setSelectedPost(posts);
@@ -205,7 +203,7 @@ const location = useLocation();
         <PostDetails
           isOpen={isModalOpen}
           onClose={closePostModal}
-          post={selectedPost}
+          postId={selectedPost._id}
           user={userData}
           showDeleteButton={true}
         />
