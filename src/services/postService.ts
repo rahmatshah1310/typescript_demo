@@ -58,11 +58,11 @@ export const getAllPosts = async () => {
 };
 
 
-export const getSinglePost = async (id: string) => {
+export const getSinglePost = async (_id: string) => {
   try {
     const response = await sendRequest({
       method: "GET",
-      url: `/post/${id}`,
+      url: `/post/${_id}`,
     });
     return response.data;
   } catch (error) {
