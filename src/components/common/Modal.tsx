@@ -1,7 +1,7 @@
 import {
   Dialog,
   DialogContent,
-} from "@components";
+} from "@/components/ui/dialog";
 import type { ReactNode } from "react";
 
 interface ModalProps{
