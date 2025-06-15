@@ -18,7 +18,7 @@ const AppRoutes: React.FC = () => {
       <Route path="/" element={<AppLayout />}>
         <Route index element={<Home />} />
         <Route path=":username" element={<Profile />} />
-        <Route path="/p/:postId" element={<PostDetails isOpen />} />
+        <Route path="p/:postId" element={<PostDetails isOpen />} />
       </Route>
     </RouterRoutes>
 
