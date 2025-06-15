@@ -21,10 +21,10 @@ export const useGetAllPosts = () => {
 
 
 // Get Single Post Query
-export const useGetSinglePost = (id: string) => {
+export const useGetSinglePost = (postId: string) => {
   return useQuery({
-    queryKey: ["post", id],
-    queryFn: PostService.getSinglePost(id),
-    enabled:!!id,
+    queryKey: ["singlePost", postId],
+    queryFn:()=> PostService.getSinglePost(postId),
+    enabled:!!postId,
   });
 };
