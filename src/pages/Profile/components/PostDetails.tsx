@@ -6,19 +6,33 @@ import { getShortTimeAgo } from "@utils";
 import { useGetSinglePost } from "@api";
 // import PostHeader from "@/components/header/PostHeader";
 
-const PostDetails = ({ isOpen, onClose, user, showDeleteButton }) => {
+
+interface postDetailsProps{
+  isOpen:boolean;
+  onClsoe:()=>void;
+  user:{
+    userName:string;
+    imageUrls:string;
+  }
+  showDeleteButton?:boolean;
+}
+
+const PostDetails:React.FC<postDetailsProps> = ({ isOpen, onClose, user, showDeleteButton,postId }) => {
   const [comment, setComment] = useState([]);
   const [loadingComments, setLoadingComments] = useState(false);
   const [isOptionsModalOpen, setIsOptionsModalOpen] = useState(false);
   const [isCommentModalOpen, setIsCommentModalOpen] = useState(false);
   const [selectedCommentId, setSelectedCommentId] = useState(null);
   const [replyTo, setReplyTo] = useState("");
-  const {post}=useGetSinglePost()
+  console.log(postId)
+ const {
+  data: post,
+} = useGetSinglePost(postId);
 
   const handleReply = (userName) => {
     setReplyTo(`@${userName}`);
   };
-console.log(post,"postdetails")
+console.log(post?.imageUrls,"postdetails")
   if (!post) {
     return <div className="text-white">No Post Available.</div>;
   }
