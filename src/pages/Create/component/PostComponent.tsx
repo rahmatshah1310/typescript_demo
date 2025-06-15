@@ -3,7 +3,6 @@ import { InputField, Button, Modal } from "@components";
 import { ICONS } from "@constants";
 import { Spinner } from "@components";
 import { usePostMutation } from "@api";
-import { useGetAllPosts } from "../../../api/postApi";
 import { toast } from "react-toastify";
 
 interface PostProps {
