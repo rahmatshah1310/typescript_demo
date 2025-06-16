@@ -7,7 +7,7 @@ import type { UseFormRegisterReturn } from "react-hook-form";
 import type { IconType } from "react-icons";
 // import { ICONS } from "constants"; // Make sure this is correct
 import {ErrorMessage} from "@components";
-import Button from "./Button"; // Adjust path if needed
+import Button from "./Button"; 
 
 interface InputFieldProps
   extends InputHTMLAttributes<HTMLInputElement> {
