@@ -8,7 +8,6 @@ import {Button,ShadcnPopover,SearchComponent} from "@components";
 // import Messages from "@pages";
 // import SidebarHeader from "../chatsidebar/SidebarHeader";
 
-// Helper component for individual navigation links - kept concise
 const NavLink = React.memo(
   ({
     link,
@@ -19,7 +18,6 @@ const NavLink = React.memo(
     onLinkClick,
     userProfilePic,
   }) => {
-    // Determine base classes
     let classes =
       "flex items-center text-white rounded-lg hover:bg-gray-700 cursor-pointer transition-colors";
     if (isBottomBar) classes += " flex-col justify-center p-2 text-xs w-1/5";
