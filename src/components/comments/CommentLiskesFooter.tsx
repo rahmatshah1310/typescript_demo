@@ -53,7 +53,6 @@ const CommentLikesFooter: React.FC<CommentLikesFooterProps> = ({ post, replyTo, 
         </Button>
       </div>
 
-      {/* Like count section - New */}
       <div className="h-4 pl-1">
         {likeCount > 0 ? (
           <p className="font-semibold text-xs  text-white">
