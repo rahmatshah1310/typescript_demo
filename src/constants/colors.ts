@@ -9,5 +9,5 @@ export const COLORS = {
   error: '#ED4956', // Instagram error red
   success: '#78C800', // Instagram success green
   white: '#FFFFFF', // White color
-  black: '#000000', // Black color
+  black: '#000000', 
 };
