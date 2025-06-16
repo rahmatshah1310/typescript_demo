@@ -11,7 +11,6 @@ export const useUpdatePostMutation = () => {
   return useMutation({mutationFn: PostService.updatePost})
 };
 
-// Get All Posts Query
 export const useGetAllPosts = () => {
   return useQuery({
     queryKey: ["posts"],
