@@ -15,16 +15,22 @@ import { useLocation } from "react-router-dom";
 // import FollowModal from "./components/FollowModal";
 // import PostDetails from "@pages";
 
+interface Post {
+  _id: string;
+  imageUrls: string;
+  caption?: string;
+  likeCount?: number;
+  commentsCount?: number;
+}
+
 const Profile: React.FC = () => {
   const { userData } = useAuth()
-  const { data:posts, isLoading: isPostLoading, error,isSuccess} = useGetAllPosts();
-  // console.log(post)
-const location = useLocation();
-
+  const { data: posts, isLoading: isPostLoading, error, isSuccess, isError } = useGetAllPosts();
+  const location = useLocation();
   const uploadProfilePic = useAddProfilePicMutation();
   const [activeTab, setActiveTab] = useState<string | null>("posts")
-  const [selectedPost, setSelectedPost] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState<boolean | null>(false);
+  const [selectedPost, setSelectedPost] = useState<Post | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const navigate = useNavigate()
 
     useEffect(() => {
@@ -36,11 +42,18 @@ const location = useLocation();
       }
     }, [uploadProfilePic.status,uploadProfilePic]);
 
-    console.log(selectedPost)
+    useEffect(() => {
+  if (isSuccess) {
+    toast.success("Posts loaded successfully!");
+  } else if (isError) {
+    toast.error(`Failed to get post!\n${(error as any)?.message || "Unknown error"}`);
+  }
+}, [isSuccess, isError, error]);
 
-  const openPostModal = (posts) => {
-    setSelectedPost(posts);
-    navigate(`/p/${posts._id}`, {
+
+  const openPostModal = (post: Post) => {
+    setSelectedPost(post);
+    navigate(`/${post._id}`, {
       state: { backgroundLocation: location.pathname },
     });
     setIsModalOpen(true);
@@ -82,10 +95,10 @@ const location = useLocation();
       return posts.length === 0 ? (
         <PostTab />
       ) : (
-        <div className="mt-8 grid grid-cols-3 gap-4">
+        <div className="mt-8 grid grid-cols-3 gap-4 px-2 sm:px-4 md:px-26">
           {posts.map((post, index) => (
             <div
-              key={index}
+              key={post._id}
               className="relative group cursor-pointer"
               onClick={() => openPostModal(post)}
             >
@@ -204,6 +217,7 @@ const location = useLocation();
           isOpen={isModalOpen}
           onClose={closePostModal}
           postId={selectedPost._id}
+          post={selectedPost}
           user={userData}
           showDeleteButton={true}
         />
