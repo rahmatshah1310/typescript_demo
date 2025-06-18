@@ -4,6 +4,7 @@ import {Button,Modal,CommentModal,CommentSkeleton,CommentLikesFooter} from "@com
 import PostOptionsModal from "./PostOptionsModal";
 import { getShortTimeAgo } from "@utils";
 import { useGetSinglePost } from "@api";
+import { toast } from "react-toastify";
 // import PostHeader from "@/components/header/PostHeader";
 
 
@@ -15,6 +16,7 @@ interface postDetailsProps{
     imageUrls:string;
   }
   showDeleteButton?:boolean;
+  postId:string;
 }
 
 const PostDetails:React.FC<postDetailsProps> = ({ isOpen, onClose, user, showDeleteButton,postId }) => {
@@ -27,15 +29,24 @@ const PostDetails:React.FC<postDetailsProps> = ({ isOpen, onClose, user, showDel
   console.log(postId)
  const {
   data: post,
+  isSuccess,isError,error
 } = useGetSinglePost(postId);
+   useEffect(() => {
+  if (isSuccess) {
+    toast.success(post?.message);
+  } else if (isError) {
+    toast.error(`Failed to get single post!\n${(error as any)?.message || "Unknown error"}`);
+  }
+}, [isSuccess, isError, error])
+
+console.log(postId,"this is the postid")
 
   const handleReply = (userName) => {
     setReplyTo(`@${userName}`);
   };
-console.log(post?.imageUrls,"postdetails")
-  if (!post) {
-    return <div className="text-white">No Post Available.</div>;
-  }
+  // if (!post) {
+  //   return <div className="text-white">No Post Available.</div>;
+  // }
 
 //   useEffect(() => {
 //     if (!post?.id) return;
@@ -76,7 +87,7 @@ console.log(post?.imageUrls,"postdetails")
         {/* Image section */}
         <div className="w-full md:w-[900px] aspect-square md:aspect-auto h-[200px] sm:h-[300px] md:h-[850px] bg-[#262626] flex items-center justify-center">
           <img
-            src={post?.imageUrls}
+            src={post?.post?.imageUrls}
             alt="Post"
             className="object-cover w-full h-full"
           />
@@ -89,7 +100,7 @@ console.log(post?.imageUrls,"postdetails")
             className="hidden md:flex items-center justify-between p-4"
           /> */}
           {/* Comments */}
-          {/* <div className="hidden md:flex md:flex-col md:min-h-[650px] md:max-h-[200px] overflow-y-auto px-4 p-2 border-t border-gray-700 pt-4">
+         <div className="hidden md:flex md:flex-col md:min-h-[650px] md:max-h-[200px] overflow-y-auto px-4 p-2 border-t border-gray-700 pt-4">
             {loadingComments ? (
               <>
                 {[...Array(3)].map((_, idx) => (
@@ -98,7 +109,7 @@ console.log(post?.imageUrls,"postdetails")
               </>
             ) : comment.length === 0 ? (
               <div className="text-gray-400 text-center py-4 h-screen flex flex-col items-center justify-center">
-                <span className="text-2xl"> No comments yet.</span>
+                <h1 className="text-2xl"> No comments yet.</h1>
                 <p> Start the conversation!</p>
               </div>
             ) : (
@@ -153,7 +164,7 @@ console.log(post?.imageUrls,"postdetails")
                 </div>
               ))
             )}
-          </div> */}
+          </div> 
           <CommentLikesFooter
             post={post}
             replyTo={replyTo}
