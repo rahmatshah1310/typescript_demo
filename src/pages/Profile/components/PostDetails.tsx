@@ -26,10 +26,9 @@ const PostDetails:React.FC<postDetailsProps> = ({ isOpen, onClose, user, showDel
   const [isCommentModalOpen, setIsCommentModalOpen] = useState(false);
   const [selectedCommentId, setSelectedCommentId] = useState(null);
   const [replyTo, setReplyTo] = useState("");
-  console.log(postId)
  const {
   data: post,
-  isSuccess,isError,error
+  isSuccess,isError,error,isPending
 } = useGetSinglePost(postId);
    useEffect(() => {
   if (isSuccess) {
@@ -39,7 +38,6 @@ const PostDetails:React.FC<postDetailsProps> = ({ isOpen, onClose, user, showDel
   }
 }, [isSuccess, isError, error])
 
-console.log(postId,"this is the postid")
 
   const handleReply = (userName) => {
     setReplyTo(`@${userName}`);
@@ -47,6 +45,10 @@ console.log(postId,"this is the postid")
   // if (!post) {
   //   return <div className="text-white">No Post Available.</div>;
   // }
+
+if(isPending){
+  <div>Loading...</div>
+}
 
 //   useEffect(() => {
 //     if (!post?.id) return;
@@ -168,6 +170,7 @@ console.log(postId,"this is the postid")
           <CommentLikesFooter
             post={post}
             replyTo={replyTo}
+            postId={postId}
             setReplyTo={setReplyTo}
           />
         </div>
