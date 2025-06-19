@@ -41,7 +41,6 @@ const PostComponent: React.FC<PostProps> = ({ isOpen, onClose }) => {
     const file = event.target.files?.[0];
 
     if (file && file.type.startsWith("image/")) {
-      console.log(file.type)
 
       setSelectedFile(file);
     } else {
