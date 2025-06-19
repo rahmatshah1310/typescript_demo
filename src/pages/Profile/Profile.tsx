@@ -9,6 +9,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import PostDetails from "./components/PostDetails";
 import { toast } from "react-toastify";
 import { useLocation } from "react-router-dom";
+import { useGetAllComments } from "@api";
 // import AvatarUpload from "./components/AvatarUpload";
 // import Tab from "./components/Tab";
 // import PostTab from "./components/PostTab";
@@ -26,6 +27,8 @@ interface Post {
 const Profile: React.FC = () => {
   const { userData } = useAuth()
   const { data: posts, isLoading: isPostLoading, error, isSuccess, isError } = useGetAllPosts();
+  const { data:comments  } = useGetAllComments();
+  console.log(comments)
   const location = useLocation();
   const uploadProfilePic = useAddProfilePicMutation();
   const [activeTab, setActiveTab] = useState<string | null>("posts")
@@ -49,7 +52,7 @@ const Profile: React.FC = () => {
     toast.error(`Failed to get post!\n${(error as any)?.message || "Unknown error"}`);
   }
 }, [isSuccess, isError, error]);
-
+console.log(posts,"posts in profile")
 
   const openPostModal = (post: Post) => {
     setSelectedPost(post);
