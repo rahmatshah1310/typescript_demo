@@ -1,6 +1,6 @@
 import React from "react";
 import Button from "@components";
-import { ICONS } from "@/assets/icons";
+import { ICONS } from "@constants";
 
 interface User {
   profilePic: string;
