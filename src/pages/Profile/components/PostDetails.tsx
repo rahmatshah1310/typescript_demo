@@ -5,6 +5,7 @@ import PostOptionsModal from "./PostOptionsModal";
 import { getShortTimeAgo } from "@utils";
 import { useGetSinglePost } from "@api";
 import { toast } from "react-toastify";
+import { useGetAllComments } from "../../../api";
 // import PostHeader from "@/components/header/PostHeader";
 
 
@@ -21,11 +22,12 @@ interface postDetailsProps{
 
 const PostDetails:React.FC<postDetailsProps> = ({ isOpen, onClose, user, showDeleteButton,postId }) => {
   const [comment, setComment] = useState([]);
-  const [loadingComments, setLoadingComments] = useState(false);
   const [isOptionsModalOpen, setIsOptionsModalOpen] = useState(false);
   const [isCommentModalOpen, setIsCommentModalOpen] = useState(false);
   const [selectedCommentId, setSelectedCommentId] = useState(null);
+  const { data:comments ,isLoading:loadingComments} = useGetAllComments(postId);
   const [replyTo, setReplyTo] = useState("");
+  console.log(comments,"comments in postdetails")
  const {
   data: post,
   isSuccess,isError,error,isPending
@@ -109,28 +111,28 @@ if(isPending){
                   <CommentSkeleton key={idx} />
                 ))}
               </>
-            ) : comment.length === 0 ? (
+            ) : !comment ? (
               <div className="text-gray-400 text-center py-4 h-screen flex flex-col items-center justify-center">
                 <h1 className="text-2xl"> No comments yet.</h1>
                 <p> Start the conversation!</p>
               </div>
             ) : (
-              comment.map((c) => (
+              comments?.data?.comments.map((c) => (
                 <div
                   key={c.id}
                   className="flex items-start justify-between gap-3 mb-2"
                 >
                   <div className="flex items-start gap-4">
                     <img
-                      src={c.profilePic}
+                      src={c.user?.profilePic}
                       alt="profilePic"
                       className="w-8 h-8 rounded-full object-cover"
                     />
                     <div>
                       <span className="font-semibold text-white text-sm pr-4">
-                        {c.username}
+                        {c.user?.userName}
                       </span>
-                      <span className="text-white text-sm">{c.text}</span>
+                      <span className="text-white text-sm">{c.comment}</span>
                       <div className="text-xs text-gray-400 flex items-center gap-2">
                         {getShortTimeAgo(c.createdAt)}
                         <span className="text-xs text-gray-400">
@@ -138,7 +140,7 @@ if(isPending){
                         </span>
                         <Button
                           className="text-xs text-gray-400"
-                          onClick={() => handleReply(c.username)}
+                          onClick={() => handleReply(c.user?.userName)}
                         >
                           Reply
                         </Button>
