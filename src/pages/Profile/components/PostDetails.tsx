@@ -6,6 +6,8 @@ import { getShortTimeAgo } from "@utils";
 import { useGetSinglePost } from "@api";
 import { toast } from "react-toastify";
 import { useGetAllComments } from "../../../api";
+import PostHeader from "../../../components/posts/PostHeader";
+import { useAuth } from "../../../context";
 // import PostHeader from "@/components/header/PostHeader";
 
 
@@ -25,6 +27,7 @@ const PostDetails:React.FC<postDetailsProps> = ({ isOpen, onClose, user, showDel
   const [isOptionsModalOpen, setIsOptionsModalOpen] = useState(false);
   const [isCommentModalOpen, setIsCommentModalOpen] = useState(false);
   const [selectedCommentId, setSelectedCommentId] = useState(null);
+  const {userData} =useAuth()
   const { data:comments ,isLoading:loadingComments} = useGetAllComments(postId);
   const [replyTo, setReplyTo] = useState("");
   console.log(comments,"comments in postdetails")
@@ -53,11 +56,11 @@ const PostDetails:React.FC<postDetailsProps> = ({ isOpen, onClose, user, showDel
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <section className="flex flex-col bg-black md:flex-row w-[90%] mx-auto max-w-[400px] md:max-w-[1500px] overflow-hidden">
-        {/* <PostHeader
-          user={user}
+         <PostHeader
+          user={userData}
           onOptionClick={() => setIsOptionsModalOpen(true)}
           className="flex md:hidden items-center justify-between p-4"
-        /> */}
+        /> 
         {/* Image section */}
         <div className="w-full md:w-[900px] aspect-square md:aspect-auto h-[200px] sm:h-[300px] md:h-[850px] bg-[#262626] flex items-center justify-center">
           <img
