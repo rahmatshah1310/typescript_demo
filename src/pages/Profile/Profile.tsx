@@ -52,7 +52,6 @@ const Profile: React.FC = () => {
     toast.error(`Failed to get post!\n${(error as any)?.message || "Unknown error"}`);
   }
 }, [isSuccess, isError, error]);
-console.log(posts,"posts in profile")
 
   const openPostModal = (post: Post) => {
     setSelectedPost(post);
