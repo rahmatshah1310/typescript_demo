@@ -14,30 +14,32 @@ interface CommentLikesFooterProps {
 
 const CommentLikesFooter: React.FC<CommentLikesFooterProps> = ({ post, postId, replyTo, setReplyTo }) => {
   const { userData } = useAuth();
-  const inputRef = useRef();
+  const inputRef = useRef<unknown>();
   const [isLiked, setIsLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
   //   const [comment, setComment] = useState([]);
   const [commentText, setCommentText] = useState("");
-  //   const [loadingComments, setLoadingComments] = useState(false);
   //   const [loadingLikes, setLoadingLikes] = useState(false);
   const commentMutation = useCreateCommentMutation();
   const { data:comments , error, isSuccess, isError } = useGetAllComments(postId);
-console.log(comments,"this is all comments")
 
-  const handleComment = () => {
-    if (!postId || !commentText.trim()) {
-      toast.error("Missing post ID, or comment text");
-      return;
-    }
-    const formData = new FormData();
-    formData.append("comment", commentText)
-    commentMutation.mutate(
-      {
-        postId, formData
-      },
-    );
-  };
+ const handleComment = () => {
+  if (!postId || !commentText.trim()) {
+    toast.error("Missing post ID or comment text");
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append("comment", commentText.trim());
+
+  // Include if your backend requires these:
+  if (userData?._id) formData.append("userId", userData._id);
+  if (replyTo) formData.append("replyTo", replyTo);
+
+  commentMutation.mutate({ postId, formData });
+  setCommentText(""); // clear input after submit
+};
+
 
   // <---------------------------------------- Loading if xPost is not Available ----------------------------------------->
   useEffect(() => {
