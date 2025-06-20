@@ -48,9 +48,6 @@ const PostDetails:React.FC<postDetailsProps> = ({ isOpen, onClose, user, showDel
   //   return <div className="text-white">No Post Available.</div>;
   // }
 
-if(isPending){
-  <div>Loading...</div>
-}
 
 //   useEffect(() => {
 //     if (!post?.id) return;
