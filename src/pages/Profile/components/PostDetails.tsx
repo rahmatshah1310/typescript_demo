@@ -49,33 +49,6 @@ const PostDetails:React.FC<postDetailsProps> = ({ isOpen, onClose, user, showDel
   // }
 
 
-//   useEffect(() => {
-//     if (!post?.id) return;
-//     setLoadingComments(true);
-//     const unsubscribe = onSnapshot(
-//       collection(firestore, "posts", post.id, "comments"),
-//       (snapshot) => {
-//         setComment(snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
-//         setLoadingComments(false);
-//       }
-//     );
-//     return () => unsubscribe();
-//   }, [post?.id]);
-
-//   const confirmDeleteComment = (id) => {
-//     setSelectedCommentId(id);
-//     setIsCommentModalOpen(true);
-//   };
-//   const handleDeleteComment = async () => {
-//     try {
-//       if (!post?.id || !selectedCommentId) return;
-//       await deleteComment(post?.id, selectedCommentId);
-//       setComment((prev) => prev.filter((c) => c.id !== selectedCommentId));
-//       setIsCommentModalOpen(false);
-//     } catch (error) {
-//       console.error("Error deleting comment:", error);
-//     }
-//   };
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
