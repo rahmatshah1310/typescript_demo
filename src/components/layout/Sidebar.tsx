@@ -30,7 +30,6 @@ const NavLink = React.memo(
           : ""
       }`;
 
-    // Determine content to display (icon or profile pic, and text if applicable)
     const displayContent = (
       <>
         {link.name === "Profile" && userProfilePic ? (
