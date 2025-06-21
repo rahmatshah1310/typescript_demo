@@ -25,7 +25,7 @@ const AppLayout = () => {
   useEffect(() => {
     if (!activeSection) {
       if (isMdOrLg) {
-        setIsCollapsed(true); // Collapse on medium/large desktops
+        setIsCollapsed(true); 
       } else if (isXlOrLarger) {
         setIsCollapsed(false); // Expand on extra-large desktops
       }
