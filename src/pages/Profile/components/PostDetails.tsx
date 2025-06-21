@@ -1,14 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { ICONS } from "@constants";
-import {Button,Modal,CommentModal,CommentSkeleton,CommentLikesFooter} from "@components";
+import {Button,Modal,CommentModal,CommentSkeleton,CommentLikesFooter,PostHeader} from "@components";
 import PostOptionsModal from "./PostOptionsModal";
 import { getShortTimeAgo } from "@utils";
-import { useGetSinglePost } from "@api";
+import { useGetSinglePost,useGetAllComments } from "@api";
 import { toast } from "react-toastify";
-import { useGetAllComments } from "../../../api";
-import PostHeader from "../../../components/posts/PostHeader";
-import { useAuth } from "../../../context";
-// import PostHeader from "@/components/header/PostHeader";
+import { useAuth } from "@context";
 
 
 interface postDetailsProps{
