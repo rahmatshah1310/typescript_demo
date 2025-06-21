@@ -4,3 +4,4 @@ export * from "./commentApi"
 export * from "./postApi";
 export * from "./profileApi";
 export * from "./storyApi";
+export * from "./likeApi";
