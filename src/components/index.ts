@@ -14,7 +14,7 @@ export {default as SearchComponent} from "./common/SearchComponent";
 export {default as InputField} from "./common/InputField";
 export {default as AppFooter} from "./layout/Footer";
 export * from "./skeletons/PostSkeleton"
-// export * from "./posts/PostHeader";
+export {default as PostHeader} from "./posts/PostHeader";
 export {default as Tab} from "./tabs/Tab";
 // export * from "./ui/dialog";
 export * from "./ui/skeleton";
