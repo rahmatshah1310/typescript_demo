@@ -8,7 +8,7 @@ const App: React.FC = () => {
     defaultOptions: {
       queries: {
         staleTime: 1000 * 60 * 5, // 5 minutes
-        gcTime: 1000 * 60 * 10, // 10 minutes (renamed from cacheTime in v5)
+        gcTime: 1000 * 60 * 10, 
       },
     },
   });
