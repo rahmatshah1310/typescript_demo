@@ -102,7 +102,7 @@ const SignUp = () => {
                 error={errors.fullName?.message}
                 inputClassname="block py-2 px-2.5 w-full text-sm text-[#F5F5F5] border border-[#555555] focus:outline-none focus:border-[#555555]"
               />
-            </div>            {/* userName input */}
+            </div>           
             <div className="relative">
               <InputField
                 name="userName"
