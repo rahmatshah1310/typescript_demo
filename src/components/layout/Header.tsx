@@ -13,7 +13,6 @@ const Header = () => {
         </div>
       </div>
 
-      {/* Right: Notification Icon */}
       <div className="flex-shrink-0">
         <button
           className="text-white p-2 rounded-full hover:bg-gray-700 focus:outline-none focus:bg-gray-700"
