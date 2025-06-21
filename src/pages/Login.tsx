@@ -81,7 +81,6 @@ const Login = () => {
           ))}
         </section>
 
-        {/* Login Form Section */}
         <section className="w-full max-w-[350px] sm:w-[20%] h-full mt-4">
           <form
             onSubmit={handleSubmit(onSubmit)}
