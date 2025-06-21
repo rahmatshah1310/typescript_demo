@@ -81,7 +81,6 @@ const SignUp = () => {
               />
             </div>
 
-            {/* Password input */}
             <div className="relative">
               <InputField
                 name="password"
