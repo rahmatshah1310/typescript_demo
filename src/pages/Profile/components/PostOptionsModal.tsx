@@ -1,20 +1,23 @@
 import { useState } from "react";
 import {Modal,Button} from "@components";
+import { useDeletePostMutation } from "../../../api";
 
 export default function PostOptionsModal({
   isOpen,
   onClose,
-  post,
+  postId,
   showDelete,
 }) {
 
-//   const handleOptionClick = async (post, options) => {
-//     if (!post?.id) return;
-//     if (options.id === "delete") {
-//       await deletePost(post?.id);
-//       onClose();
-//     }
-//   };
+  const deletePost=useDeletePostMutation();
+
+  const handleOptionClick = async (postId, options) => {
+    if (!postId) return;
+    if (options.id === "delete") {
+      deletePost.mutate(postId);
+      onClose();
+    }
+  };
   const options = [
     { id: "delete", label: "Delete", textColor: "text-red-500" },
     { id: "edit", label: "Edit" },
@@ -41,7 +44,7 @@ export default function PostOptionsModal({
             <Button
               key={option.id}
               className={`py-4 px-4 text-center border-b border-gray-500 text-white`}
-            //   onClick={() => handleOptionClick(post, option)}
+              onClick={() => handleOptionClick(postId, option)}
             >
               {option.label}
             </Button>
