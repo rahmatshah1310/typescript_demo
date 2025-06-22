@@ -4,12 +4,15 @@ import { Modal, Button, Skeleton, PostSkeleton } from "@components";
 import { useAuth } from "@context";
 import { useCreateCommentMutation } from "@api";
 import { toast } from "react-toastify";
-import { useGetAllComments } from "../../api";
+import { useLikeMutation } from "@api";
+import { useDislikeMutation } from "../../api";
 
 interface CommentLikesFooterProps {
-  post: Post[];
+  post: [];
   replyTo: string | null;
   setReplyTo: (value: string | null) => void;
+  postId:string;
+
 }
 
 const CommentLikesFooter: React.FC<CommentLikesFooterProps> = ({ post, postId, replyTo, setReplyTo }) => {
@@ -17,11 +20,30 @@ const CommentLikesFooter: React.FC<CommentLikesFooterProps> = ({ post, postId, r
   const inputRef = useRef<unknown>();
   const [isLiked, setIsLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
-  //   const [comment, setComment] = useState([]);
   const [commentText, setCommentText] = useState("");
-  //   const [loadingLikes, setLoadingLikes] = useState(false);
   const commentMutation = useCreateCommentMutation();
-  const { data:comments , error, isSuccess, isError } = useGetAllComments(postId);
+ const likeMutation = useLikeMutation();
+const dislikeMutation = useDislikeMutation();
+
+
+const handleLike=()=>{
+  if(!postId) return;
+  if(isLiked){
+    dislikeMutation.mutate(postId,{
+      onSuccess:()=>{
+        setIsLiked(false);
+        setLikeCount((prev)=>prev-1);
+      }
+    })
+  }else{
+    likeMutation.mutate(postId,{
+      onSuccess:()=>{
+        setIsLiked(false);
+        setLikeCount((prev)=>prev+1);
+      }
+    })
+  }
+}
 
  const handleComment = () => {
   if (!postId || !commentText.trim()) {
@@ -29,14 +51,11 @@ const CommentLikesFooter: React.FC<CommentLikesFooterProps> = ({ post, postId, r
     return;
   }
 
-  const formData = new FormData();
-  formData.append("comment", commentText.trim());
+  const payload={
+    comment:commentText.trim(),
+  }
 
-  // Include if your backend requires these:
-  if (userData?._id) formData.append("userId", userData._id);
-  if (replyTo) formData.append("replyTo", replyTo);
-
-  commentMutation.mutate({ postId, formData });
+  commentMutation.mutate({ postId, payload });
   setCommentText(""); // clear input after submit
 };
 
@@ -58,7 +77,7 @@ const CommentLikesFooter: React.FC<CommentLikesFooterProps> = ({ post, postId, r
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-4">
           <Button
-            // onClick={handleLike}
+            onClick={handleLike}
             className={`text-gray-400 ${isLiked ? "text-red-500 hover:text-red-600" : ""
               }`}
           >
