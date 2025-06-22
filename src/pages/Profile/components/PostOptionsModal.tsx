@@ -1,6 +1,6 @@
 import { useState } from "react";
 import {Modal,Button} from "@components";
-import { useDeletePostMutation } from "../../../api";
+import { useDeletePostMutation } from "@api";
 
 export default function PostOptionsModal({
   isOpen,
