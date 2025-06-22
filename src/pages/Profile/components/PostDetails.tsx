@@ -68,11 +68,11 @@ const PostDetails:React.FC<postDetailsProps> = ({ isOpen, onClose, user, showDel
         </div>
         {/* Right side: actions/comments */}
         <div className="w-full md:w-1/2 flex flex-col bg-black min-h-[200px] max-h-[30vh] md:min-h-[400px] md:max-h-[600px]">
-          {/* <PostHeader
-            user={user}
+          <PostHeader
+            user={userData}
             onOptionClick={() => setIsOptionsModalOpen(true)}
             className="hidden md:flex items-center justify-between p-4"
-          /> */}
+          />
           {/* Comments */}
          <div className="hidden md:flex md:flex-col md:min-h-[650px] md:max-h-[200px] overflow-y-auto px-4 p-2 border-t border-gray-700 pt-4">
             {loadingComments ? (
