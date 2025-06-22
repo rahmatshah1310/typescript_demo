@@ -27,3 +27,10 @@ export const useGetSinglePost = (postId: string) => {
     enabled:!!postId,
   });
 };
+
+// Delete Post Mutation
+export const useDeletePostMutation = () => {
+  return useMutation({
+    mutationFn: PostService.deletePost,
+  });
+};
