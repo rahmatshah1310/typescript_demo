@@ -1,7 +1,7 @@
 import { sendRequest } from "@utils";
 
 // ✅ Add Comment (POST to /post/comment/:postId with form data)
-export const addComment = async (postId: string, data: FormData) => {
+export const addComment = async (postId: string, data:any) => {
   try {
     const response = await sendRequest({
       method: "POST",
