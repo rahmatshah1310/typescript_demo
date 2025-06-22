@@ -44,9 +44,9 @@ const PostDetails:React.FC<postDetailsProps> = ({ isOpen, onClose, user, showDel
   const handleReply = (userName) => {
     setReplyTo(`@${userName}`);
   };
-  // if (!post) {
-  //   return <div className="text-white">No Post Available.</div>;
-  // }
+  if (!post) {
+    return <div className="text-white">No Post Available.</div>;
+  }
 
 
 
