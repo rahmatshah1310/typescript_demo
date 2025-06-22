@@ -2,12 +2,24 @@ import { useState } from "react";
 import {Modal,Button} from "@components";
 import { useDeletePostMutation } from "@api";
 
-export default function PostOptionsModal({
+interface PostOptionsModalProps{
+  isOpen:boolean;
+  showDelete:boolean;
+  onClsoe:()=>void;
+  user:{
+    userName:string;
+    imageUrls:string;
+  }
+  showDeleteButton?:boolean;
+  postId:string;
+}
+
+const PostOptionsModal:React.FC<PostOptionsModalProps>=({
   isOpen,
   onClose,
   postId,
   showDelete,
-}) {
+}) =>{
 
   const deletePost=useDeletePostMutation();
 
