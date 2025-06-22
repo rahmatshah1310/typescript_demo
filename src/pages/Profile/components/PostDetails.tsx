@@ -154,7 +154,7 @@ const PostDetails:React.FC<postDetailsProps> = ({ isOpen, onClose, user, showDel
         // onDelete={handleDeleteComment}
       />
       <PostOptionsModal
-        post={post}
+        postId={postId}
         isOpen={isOptionsModalOpen}
         // onDelete={handleDeleteComment}
         onClose={() => setIsOptionsModalOpen(false)}
