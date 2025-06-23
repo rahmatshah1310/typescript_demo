@@ -48,6 +48,7 @@ export const FacebookIcon = () => {
   );
 };
 
+//instagram icon
 export const InstagramText = (props) => {
   return (
     <svg
