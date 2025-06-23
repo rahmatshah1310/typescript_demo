@@ -8,7 +8,7 @@ export const useLikeMutation = () => {
   });
 };
 
-
+//mutation for dislike
 export const useDislikeMutation = () => {
   return useMutation({
     mutationFn: ({ postId }: { postId: string}) =>
