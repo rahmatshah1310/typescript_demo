@@ -8,6 +8,6 @@ export const COLORS = {
   border: '#DBDBDB', // Instagram border color
   error: '#ED4956', // Instagram error red
   success: '#78C800', // Instagram success green
-  white: '#FFFFFF', // White color
+  white: '#FFFFFF', 
   black: '#000000', 
 };
