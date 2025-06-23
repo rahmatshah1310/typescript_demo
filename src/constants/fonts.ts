@@ -4,5 +4,5 @@ export const FONTS = {
   bold: 'Roboto-Bold, Arial-Bold, sans-serif', // Bold font
   light: 'Roboto-Light, Arial-Light, sans-serif', // Light font
   medium: 'Roboto-Medium, Arial-Medium, sans-serif', // Medium font
-  italic: 'Roboto-Italic, Arial-Italic, sans-serif', // Italic font
+  italic: 'Roboto-Italic, Arial-Italic, sans-serif', 
 };
