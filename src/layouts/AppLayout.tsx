@@ -27,7 +27,7 @@ const AppLayout = () => {
       if (isMdOrLg) {
         setIsCollapsed(true); 
       } else if (isXlOrLarger) {
-        setIsCollapsed(false); // Expand on extra-large desktops
+        setIsCollapsed(false); 
       }
     }
   }, [isMdOrLg, isXlOrLarger, activeSection]);
