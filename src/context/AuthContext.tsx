@@ -53,7 +53,7 @@ export const AuthProvider: React.FC<{children: ReactNode}> = ({children}) => {
 
     const setAuthData = (responseData: any) => {
 
-        // Handle both nested and flat response structures
+       
         const data = responseData?.data || responseData;
         
         if (!data?.token || !data?.user) {
