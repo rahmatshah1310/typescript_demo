@@ -17,6 +17,7 @@ export const useAddProfilePicMutation = () => {
   });
 };
 
+//mutation for profile
 export const useUpdateProfileMutation = () => {
   return useMutation({
     mutationFn: async (formData: FormData) => {
