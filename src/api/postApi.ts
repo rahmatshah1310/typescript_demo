@@ -6,7 +6,6 @@ export const usePostMutation = () => {
   return useMutation({mutationFn:PostService.createPost})
 };
 
-// Update Post Mutation
 export const useUpdatePostMutation = () => {
   return useMutation({mutationFn: PostService.updatePost})
 };
