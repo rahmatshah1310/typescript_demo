@@ -18,7 +18,6 @@ export const useGetAllComments = (postId: string) => {
   });
 };
 
-// ✅ Delete Comment Mutation
 export const useDeleteCommentMutation = () => {
   return useMutation({
     mutationFn: (commentId: string) => CommentService.deleteComment(commentId),
