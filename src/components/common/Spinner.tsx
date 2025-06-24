@@ -2,6 +2,7 @@ import React from "react";
 import { HashLoader, FadeLoader, BeatLoader } from "react-spinners";
 
 
+// interface for spinerprops
 interface SpinnerProps{
   type?:"fade" | "sync" | "beat";
   color?:string;
