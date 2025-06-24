@@ -1,4 +1,3 @@
-// components/CommentModal.jsx
 import React from "react";
 import {Modal,Button} from "@components";
 
