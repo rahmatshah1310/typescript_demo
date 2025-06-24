@@ -1,5 +1,6 @@
 import React, { type ReactNode } from "react";
 
+// interface for buttonprops
 interface ButtonProps {
   children: ReactNode;
   className?: string;
