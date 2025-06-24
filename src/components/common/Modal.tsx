@@ -4,6 +4,7 @@ import {
 } from "@/components/ui/dialog";
 import type { ReactNode } from "react";
 
+// interface for modalprops
 interface ModalProps{
   children:ReactNode,
   isOpen:boolean,
