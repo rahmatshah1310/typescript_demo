@@ -5,6 +5,7 @@ import { useAuth } from "@context";
 import { useCreateCommentMutation,useDislikeMutation,useLikeMutation } from "@api";
 import { toast } from "react-toastify";
 
+// inteface for commentprops
 interface CommentLikesFooterProps {
   post: [];
   replyTo: string | null;
