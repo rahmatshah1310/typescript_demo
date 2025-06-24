@@ -49,7 +49,6 @@ const SearchComponent = ({ className }) => {
           className="w-full py-2 px-4 my-4 text-sm text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-400"
         />
 
-        {/* Result Dropdown */}
         <div
           className={`absolute top-full mt-1 left-0 w-full z-40 max-h-[300px] md:max-h-none overflow-y-auto ${className}`}
         >
