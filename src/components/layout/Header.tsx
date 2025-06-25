@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import { InstagramText,ICONS,ROUTES } from "@constants";
 import {SearchComponent} from "@components";
 
