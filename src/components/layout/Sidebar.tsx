@@ -53,7 +53,6 @@ const NavLink = React.memo(
       onLinkClick(link.section || link.name.toLowerCase());
     };
 
-    // Render logic for different link types
     if (link.route) {
       return (
         <Link to={link.route} className={classes} onClick={handleClick}>
