@@ -5,7 +5,6 @@ import {
 } from "@/components/ui/popover";
 import { ReactNode, ReactElement } from "react";
 
-// interface for shdcnprops
 interface ShadcnPopoverProps {
   triggerContent: ReactElement;
   children: ReactNode;
