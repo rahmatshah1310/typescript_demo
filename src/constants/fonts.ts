@@ -3,6 +3,6 @@ export const FONTS = {
   secondary: 'Helvetica, Arial, sans-serif', // Instagram secondary font
   bold: 'Roboto-Bold, Arial-Bold, sans-serif', // Bold font
   light: 'Roboto-Light, Arial-Light, sans-serif', // Light font
-  medium: 'Roboto-Medium, Arial-Medium, sans-serif', // Medium font
+  medium: 'Roboto-Medium, Arial-Medium, sans-serif', 
   italic: 'Roboto-Italic, Arial-Italic, sans-serif', 
 };
