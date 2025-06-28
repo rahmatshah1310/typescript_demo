@@ -39,3 +39,5 @@ export const isValidPanelSection = (section) =>
 
 export const isValidActiveSection = (section) =>
   [...PANEL_SECTIONS, "create", "more", null].includes(section);
+
+//new
