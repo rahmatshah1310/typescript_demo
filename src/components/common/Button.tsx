@@ -1,6 +1,5 @@
 import React, { type ReactNode } from "react";
 
-//button inrerface
 interface ButtonProps {
   children: ReactNode;
   className?: string;
