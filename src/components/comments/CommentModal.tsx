@@ -1,7 +1,6 @@
 import React from "react";
 import {Modal,Button} from "@components";
 
-//commentModal
 const CommentModal = ({ isOpen, onClose, onDelete }) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
