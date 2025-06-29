@@ -8,6 +8,7 @@ import type { IconType } from "react-icons";
 // import { ICONS } from "constants"; // Make sure this is correct
 import {ErrorMessage,Button} from "@components";
 
+//inputprops interface
 interface InputFieldProps
   extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
