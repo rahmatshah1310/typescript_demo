@@ -8,7 +8,6 @@ const SearchComponent = ({ className }) => {
   const [loading, setLoading] = useState(false);
   const inputRef = useRef();
 
-  console.log(results,"results")
   const searchUsers = async (text) => {
     const usersRef = collection(firestore, "users");
     const q = query(
