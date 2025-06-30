@@ -17,7 +17,7 @@ const FollowUnFollowModal = ({ isOpen, onClose, post }) => {
       case "follow":
         await followUser(post.userId);
         setIsFollowing(true);
-        onClose(); // Ensure modal closes
+        onClose(); 
         break;
       case "unfollow":
         await unfollowUser(post.userId);
