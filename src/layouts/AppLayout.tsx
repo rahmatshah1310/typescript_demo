@@ -55,7 +55,7 @@ const AppLayout = () => {
       activeSection === "notifications" ||
       activeSection === "messages"
     ) {
-      return "448px"; // 64 + 384 = 448px
+      return "448px"; 
     } else if (isCollapsed) {
       return "64px";
     } else {
