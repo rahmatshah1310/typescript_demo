@@ -12,7 +12,7 @@ const CreatePost:React.FC<CreatePostProps> = ({ isOpen, onClose }) => {
       <Modal
         isOpen={isOpen}
         title="Create Post"
-        onClose={onClose} // handles outside click
+        onClose={onClose} 
       >
         <PostComponent isOpen={isOpen} onClose={onClose} />
       </Modal>
