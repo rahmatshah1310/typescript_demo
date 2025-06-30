@@ -1,4 +1,3 @@
-// src/components/skeletons/PostSkeleton.jsx
 import React from "react";
 import { Skeleton } from "@components";
 
