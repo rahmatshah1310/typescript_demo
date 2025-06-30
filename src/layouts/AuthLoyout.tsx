@@ -30,7 +30,6 @@ const AuthLayout: React.FC = () => {
     return   <Navigate to={`/${userData?.userName}`} replace state={{ from: location }} />;
   }
 
-  // ✅ Otherwise, show the login/signup pages (i.e., nested Outlet)
   return (
     <React.Fragment>
       <Outlet />
