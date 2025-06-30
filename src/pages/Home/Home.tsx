@@ -22,6 +22,7 @@ const Home = () => {
     );
   }
 
+  //posts
   if (error || !posts || posts.length === 0) {
     return (
       <div className={error ? "text-red-500" : "text-white"}>
