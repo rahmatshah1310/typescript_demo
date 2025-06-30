@@ -17,7 +17,6 @@ export default function PostTab() {
           </button>
         </div>
         <div className="bg-gray-900 p-6 rounded-lg text-center">
-          {/* Add Profile Photo content */}
           <div className="w-16 h-16 mx-auto mb-4 bg-gray-800 rounded-full flex items-center justify-center">
             {/* Profile icon */}
           </div>
