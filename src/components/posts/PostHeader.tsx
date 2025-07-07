@@ -7,6 +7,7 @@ interface User {
   username: string;
 }
 
+//post interface
 interface PostHeaderProps {
   user: User | null;
   onOptionClick: () => void;
