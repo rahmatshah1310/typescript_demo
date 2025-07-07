@@ -34,7 +34,6 @@ export const sendRequest = async (
         return Promise.reject(responseError);
       }
 
-      // Flatten nested object (e.g., { email: ["error 1"], password: ["error 2"] })
       if (typeof responseError === "object" && responseError !== null) {
         const messages: string[] = [];
 
