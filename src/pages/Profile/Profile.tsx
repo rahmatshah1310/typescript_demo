@@ -12,7 +12,6 @@ import { useLocation } from "react-router-dom";
 import { useGetAllComments } from "@api";
 // import AvatarUpload from "./components/AvatarUpload";
 // import Tab from "./components/Tab";
-// import PostTab from "./components/PostTab";
 // import FollowModal from "./components/FollowModal";
 
 interface Post {
