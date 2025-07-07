@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { ICONS } from "@constants";
-import { Modal, Button, Skeleton, PostSkeleton } from "@components";
+import {  Button, Skeleton, PostSkeleton } from "@components";
 import { useAuth } from "@context";
 import { useCreateCommentMutation,useDislikeMutation,useLikeMutation } from "@api";
 import { toast } from "react-toastify";
