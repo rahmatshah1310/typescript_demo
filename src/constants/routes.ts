@@ -1,6 +1,6 @@
 export const ROUTES = {
     auth: "/auth",
-    login: "/auth/login",    // Updated to include parent path
+    login: "/auth/login",  
     signup: "/auth/signup", 
     home: "/",              
    profile: (username) => `/${username}`,
