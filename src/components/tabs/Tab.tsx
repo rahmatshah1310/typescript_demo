@@ -1,5 +1,6 @@
 import React from 'react';
 
+// tab content
 const Tab = ({ tabs, activeTab, onTabChange }) => {
   return (
     <div className="border-t border-gray-800">
