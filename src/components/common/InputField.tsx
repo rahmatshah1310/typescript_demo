@@ -5,7 +5,6 @@ import {
 
 import type { UseFormRegisterReturn } from "react-hook-form";
 import type { IconType } from "react-icons";
-// import { ICONS } from "constants"; // Make sure this is correct
 import {ErrorMessage,Button} from "@components";
 
 //inputprops interface
