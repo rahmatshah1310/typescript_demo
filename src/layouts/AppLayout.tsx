@@ -44,7 +44,6 @@ const AppLayout = () => {
     return <Navigate to={ROUTES.login} replace />;
   }
 
-  // Calculate dynamic left margin for the main content area
   const getMainContentMarginLeft = () => {
     if (isMobile) {
       return "0px"; // No margin on mobile
