@@ -14,7 +14,6 @@ import { useGetAllComments } from "@api";
 // import Tab from "./components/Tab";
 // import PostTab from "./components/PostTab";
 // import FollowModal from "./components/FollowModal";
-// import PostDetails from "@pages";
 
 interface Post {
   _id: string;
