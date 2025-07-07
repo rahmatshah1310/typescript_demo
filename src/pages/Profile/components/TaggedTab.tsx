@@ -1,9 +1,9 @@
-// import React from 'react'
+import React from 'react'
 
-// const TaggedTab = () => {
-//   return (
-//     <div>TaggedTab</div>
-//   )
-// }
+const TaggedTab = () => {
+  return (
+    <div>TaggedTab</div>
+  )
+}
 
-// export default TaggedTab
+export default TaggedTab
