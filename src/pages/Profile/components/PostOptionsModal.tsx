@@ -2,7 +2,6 @@ import { useState } from "react";
 import {Modal,Button} from "@components";
 import { useDeletePostMutation } from "@api";
 
-//adding postoptionmodal interface
 interface PostOptionsModalProps{
   isOpen:boolean;
   showDelete:boolean;
