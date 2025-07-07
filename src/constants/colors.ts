@@ -5,7 +5,7 @@ export const COLORS = {
   background: '#FAFAFA', // Instagram background color
   textPrimary: '#262626', // Instagram primary text color
   textSecondary: '#8E8E8E', // Instagram secondary text color
-  border: '#DBDBDB', // Instagram border color
+  border: '#DBDBDB',
   error: '#ED4956',
   success: '#78C800', 
   white: '#FFFFFF', 
