@@ -20,7 +20,7 @@ export const PostSkeleton = () => {
     </div>
   );
 };
-
+//commentskeleton
 export const CommentSkeleton = () => {
   return (
     <div className="flex items-center space-y-3 gap-3.5">
