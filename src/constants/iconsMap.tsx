@@ -71,5 +71,3 @@ export const InstagramText = (props) => {
     </svg>
   );
 };
-
-//icons
