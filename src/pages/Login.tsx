@@ -144,7 +144,6 @@ const Login = () => {
             </div>
           </form>
 
-          {/* Signup Redirect */}
           <div className="text-center flex justify-center gap-1.5 p-4 border text-xs sm:text-sm border-[#555555] mt-3">
             <span className="text-white">Don't have an account?</span>
             <Link to={ROUTES.signup} className="text-[#0095F6]">
