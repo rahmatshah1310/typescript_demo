@@ -47,7 +47,6 @@ const NavLink = React.memo(
       </>
     );
 
-    // Handle clicks, preventing default for non-route links with onClick
     const handleClick = (e) => {
       if (link.onClick && !link.route) e.preventDefault();
       onLinkClick(link.section || link.name.toLowerCase());
