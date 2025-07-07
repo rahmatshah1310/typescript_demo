@@ -27,7 +27,7 @@ export const getShortTimeAgo = (timestamp) => {
 
  export const formatTime = (timestamp) => {
     if (!timestamp) return '';
-    const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp); // Handle Firebase Timestamp objects
+    const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
     const now = new Date();
     const diffInHours = (now - date) / (1000 * 60 * 60);
 
