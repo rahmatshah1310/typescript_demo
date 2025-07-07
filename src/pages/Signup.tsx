@@ -69,7 +69,6 @@ const SignUp = () => {
               <div className="flex-1 h-px bg-[#555555]"></div>
             </div>
 
-            {/* Email input */}
             <div className="relative">
               <InputField
                 name="email"
