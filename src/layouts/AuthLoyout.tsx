@@ -22,7 +22,6 @@ const AuthLayout: React.FC = () => {
   const { userData, loading } = useAuth();
   const location = useLocation();
 
-  // While auth state is loading
   if (loading) return <LoadingScreen />;
 
   // ✅ If already logged in, redirect them away from login/signup
