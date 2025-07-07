@@ -1,4 +1,3 @@
-import React from "react";
 import {Modal,Button} from "@components";
 
 const CommentModal = ({ isOpen, onClose, onDelete }) => {
