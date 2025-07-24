@@ -1,11 +1,10 @@
-import { useState } from "react";
 import {Modal,Button} from "@components";
 import { useDeletePostMutation } from "@api";
 
 interface PostOptionsModalProps{
   isOpen:boolean;
   showDelete:boolean;
-  onClsoe:()=>void;
+  onClose:()=>void;
   user:{
     userName:string;
     imageUrls:string;
@@ -52,7 +51,7 @@ const PostOptionsModal:React.FC<PostOptionsModalProps>=({
     <Modal isOpen={isOpen} onClose={onClose}>
       <div className="bg-gray-800 rounded-lg w-full max-w-xs sm:max-w-sm md:max-w-md mx-auto  py-2 overflow-hidden">
         <div className="flex flex-col">
-          {filteredOptions.map((option, index) => (
+          {filteredOptions.map((option) => (
             <Button
               key={option.id}
               className={`py-4 px-4 text-center border-b border-gray-500 text-white`}
@@ -72,3 +71,4 @@ const PostOptionsModal:React.FC<PostOptionsModalProps>=({
     </Modal>
   );
 }
+export default PostOptionsModal;

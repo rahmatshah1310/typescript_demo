@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { ICONS } from "@constants";
 import {Button,Modal,CommentModal,CommentSkeleton,CommentLikesFooter,PostHeader} from "@components";
-import PostOptionsModal from "./PostOptionsModal";
+import PostOptionsModal from "@components";
 import { getShortTimeAgo } from "@utils";
 import { useGetSinglePost,useGetAllComments } from "@api";
 import { toast } from "react-toastify";
@@ -23,29 +23,29 @@ const PostDetails:React.FC<postDetailsProps> = ({ isOpen, onClose, user, showDel
   const [comment, setComment] = useState([]);
   const [isOptionsModalOpen, setIsOptionsModalOpen] = useState(false);
   const [isCommentModalOpen, setIsCommentModalOpen] = useState(false);
-  const [selectedCommentId, setSelectedCommentId] = useState(null);
+  // const [selectedCommentId, setSelectedCommentId] = useState(null);
   const {userData} =useAuth()
   const { data:comments ,isLoading:loadingComments} = useGetAllComments(postId);
   const [replyTo, setReplyTo] = useState("");
   console.log(comments,"comments in postdetails")
  const {
   data: post,
-  isSuccess,isError,error,isPending
+  isSuccess,isError,error,
 } = useGetSinglePost(postId);
    useEffect(() => {
   if (isSuccess) {
     toast.success(post?.message);
   } else if (isError) {
-    toast.error(`Failed to get single post!\n${(error as any)?.message || "Unknown error"}`);
+    toast.error(`Failed to get single post!\n${(error )?.message || "Unknown error"}`);
   }
-}, [isSuccess, isError, error])
+}, [post?.message,isSuccess, isError, error])
 
-  const handleReply = (userName) => {
-    setReplyTo(`@${userName}`);
-  };
-  if (!post) {
-    return <div className="text-white">No Post Available.</div>;
-  }
+  // const handleReply = (userName) => {
+  //   setReplyTo(`@${userName}`);
+  // };
+  // if (!post) {
+  //   return <div className="text-white">No Post Available.</div>;
+  // }
 
 
 
@@ -109,20 +109,20 @@ const PostDetails:React.FC<postDetailsProps> = ({ isOpen, onClose, user, showDel
                         </span>
                         <Button
                           className="text-xs text-gray-400"
-                          onClick={() => handleReply(c.user?.userName)}
+                          // onClick={() => handleReply(c.user?.userName)}
                         >
                           Reply
                         </Button>
                         <Button
                           className="text-xs text-gray-400"
-                          onClick={() => confirmDeleteComment(c.id)}
+                          // onClick={() => confirmDeleteComment(c.id)}
                         >
                           {ICONS.threeDots}
                         </Button>
                       </div>
                     </div>
                   </div>
-                  <Button
+                  {/* <Button
                     className="text-xs text-gray-400"
                     onClick={() =>
                       c.likedBy && c.likedBy.includes(user.uid)
@@ -133,7 +133,7 @@ const PostDetails:React.FC<postDetailsProps> = ({ isOpen, onClose, user, showDel
                     {c.likedBy && c.likedBy.includes(user.uid)
                       ? ICONS.heartFilled
                       : ICONS.ciHeart}
-                  </Button>
+                  </Button> */}
                 </div>
               ))
             )}

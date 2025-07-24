@@ -1,23 +1,23 @@
 {
   "compilerOptions": {
+    "jsx": "react-jsx",
     "baseUrl": ".",
+    "lib": ["DOM", "ESNext"],
+    "module": "ESNext",
+    "moduleResolution": "Node",
     "paths": {
-       "@components/*": ["src/components/*"],
-      "@context/*": ["src/context/*"],
-      "@api/*": ["src/api/*"],
-      "@constants/*": ["src/constants/*"],
-      "@pages/*": ["src/pages/*"],
-      "@types/*": ["src/types/*"],
-      "@utils/*": ["src/utils/*"],
-      "@services/*": ["src/services/*"],
-      "@layouts/*": ["src/layouts/*"],
-      "@hooks/*": ["src/hooks/*"],
-      "@/lib/*": ["src/lib/*"]
+      "@components": ["src/components/index.ts"],
+      "@context": ["src/context/index.ts"],
+      "@api": ["src/api/index.ts"],
+      "@constants": ["src/constants/index.ts"],
+      "@pages": ["src/pages/index.ts"],
+      "@types": ["src/types/index.ts"],
+      "@utils": ["src/utils/index.ts"],
+      "@services": ["src/services/index.ts"],
+      "@layouts": ["src/layouts/index.ts"],
+      "@hooks": ["src/hooks/index.ts"],
+      "@/lib": ["src/lib"]
     }
   },
-  "files": [],
-  "references": [
-    { "path": "./tsconfig.app.json" },
-    { "path": "./tsconfig.node.json" }
-  ]
+  "include": ["src"]
 }

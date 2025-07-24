@@ -1,16 +1,17 @@
-import React, { useState, useContext, createContext, type ReactNode, useEffect } from "react"
-import type { AuthContextType, IUser } from "@types";
+import * as React from "react"; 
+import  { useState, useContext, createContext, type ReactNode, useEffect } from "react"
+import type { IUser } from "@types";
 import { AuthService } from "@services";
 
-export const AuthContext = createContext<AuthContextType | null>(null)
+export const AuthContext = createContext(null)
 
-export const AuthProvider: React.FC<{children: ReactNode}> = ({children}) => {
+export const AuthProvider: React.FC<{children: ReactNode}> = ({children}:{children:React.ReactNode}) => {
     const [userData, setUserData] = useState<IUser | null>(null);
     const [token, setToken] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
 
     // Fetch current user data
-    const fetchCurrentUser = async (authToken: string) => {
+    // const fetchCurrentUser = async (authToken: string) => {
         try {
             const response = await AuthService.me();
             if (response?.data) {
