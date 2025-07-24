@@ -1,16 +1,15 @@
 import React, { useEffect, useRef, useState } from "react";
 import { ICONS } from "@constants";
-import {  Button, Skeleton, PostSkeleton } from "@components";
+import { Button } from "@components";
 import { useAuth } from "@context";
-import { useCreateCommentMutation,useDislikeMutation,useLikeMutation } from "@api";
+import { useCreateCommentMutation, useDislikeMutation, useLikeMutation } from "@api";
 import { toast } from "react-toastify";
 
 interface CommentLikesFooterProps {
   post: [];
   replyTo: string | null;
   setReplyTo: (value: string | null) => void;
-  postId:string;
-
+  postId: string;
 }
 
 const CommentLikesFooter: React.FC<CommentLikesFooterProps> = ({ post, postId, replyTo, setReplyTo }) => {
@@ -20,43 +19,41 @@ const CommentLikesFooter: React.FC<CommentLikesFooterProps> = ({ post, postId, r
   const [likeCount, setLikeCount] = useState(0);
   const [commentText, setCommentText] = useState("");
   const commentMutation = useCreateCommentMutation();
- const likeMutation = useLikeMutation();
-const dislikeMutation = useDislikeMutation();
+  const likeMutation = useLikeMutation();
+  const dislikeMutation = useDislikeMutation();
 
+  const handleLike = () => {
+    if (!postId) return;
+    if (isLiked) {
+      dislikeMutation.mutate(postId, {
+        onSuccess: () => {
+          setIsLiked(false);
+          setLikeCount((prev) => prev - 1);
+        },
+      });
+    } else {
+      likeMutation.mutate(postId, {
+        onSuccess: () => {
+          setIsLiked(false);
+          setLikeCount((prev) => prev + 1);
+        },
+      });
+    }
+  };
 
-const handleLike=()=>{
-  if(!postId) return;
-  if(isLiked){
-    dislikeMutation.mutate(postId,{
-      onSuccess:()=>{
-        setIsLiked(false);
-        setLikeCount((prev)=>prev-1);
-      }
-    })
-  }else{
-    likeMutation.mutate(postId,{
-      onSuccess:()=>{
-        setIsLiked(false);
-        setLikeCount((prev)=>prev+1);
-      }
-    })
-  }
-}
+  const handleComment = () => {
+    if (!postId || !commentText.trim()) {
+      toast.error("Missing post ID or comment text");
+      return;
+    }
 
- const handleComment = () => {
-  if (!postId || !commentText.trim()) {
-    toast.error("Missing post ID or comment text");
-    return;
-  }
+    const payload = {
+      comment: commentText.trim(),
+    };
 
-  const payload={
-    comment:commentText.trim(),
-  }
-
-  commentMutation.mutate({ postId, payload });
-  setCommentText(""); // clear input after submit
-};
-
+    commentMutation.mutate({ postId, payload });
+    setCommentText(""); // clear input after submit
+  };
 
   // <---------------------------------------- Loading if xPost is not Available ----------------------------------------->
   useEffect(() => {
@@ -68,17 +65,12 @@ const handleLike=()=>{
     }
   }, [commentMutation.status, commentMutation]);
 
-
   return (
     <div className="bg-black border-t border-gray-700 p-4">
       {/* Actions */}
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-4">
-          <Button
-            onClick={handleLike}
-            className={`text-gray-400 ${isLiked ? "text-red-500 hover:text-red-600" : ""
-              }`}
-          >
+          <Button onClick={handleLike} className={`text-gray-400 ${isLiked ? "text-red-500 hover:text-red-600" : ""}`}>
             {isLiked ? ICONS.heartFilled : ICONS.ciHeart}
           </Button>
           <Button
@@ -87,13 +79,9 @@ const handleLike=()=>{
           >
             {ICONS.commentIcon}
           </Button>
-          <Button className="text-gray-400 hover:text-white">
-            {ICONS.shareIcon}
-          </Button>
+          <Button className="text-gray-400 hover:text-white">{ICONS.shareIcon}</Button>
         </div>
-        <Button className="text-gray-400 hover:text-white">
-          {ICONS.bookMark}
-        </Button>
+        <Button className="text-gray-400 hover:text-white">{ICONS.bookMark}</Button>
       </div>
 
       <div className="h-4 pl-1">
@@ -116,11 +104,7 @@ const handleLike=()=>{
           onChange={(e) => setCommentText(e.target.value)}
           className="flex-1 text-white p-2 rounded-lg outline-none"
         />
-        <Button
-          className="text-blue-500 font-bold"
-          onClick={handleComment}
-          disabled={!commentText.trim()}
-        >
+        <Button className="text-blue-500 font-bold" onClick={handleComment} disabled={!commentText.trim()}>
           Post
         </Button>
       </div>
