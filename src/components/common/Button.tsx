@@ -1,24 +1,15 @@
-import React, { type ReactNode } from "react";
+import { ReactNode } from "react";
 
 interface ButtonProps {
   children: ReactNode;
   className?: string;
+  type?: string;
   onClick?: () => void;
-  type?: "button" | "submit" | "reset"; 
 }
 
-const Button: React.FC<ButtonProps> = ({
-  children,
-  className = "",
-  onClick,
-  type = "button", 
-}) => {
+const Button: React.FC<ButtonProps> = ({ children, className = "", onClick }) => {
   return (
-    <button
-      type={type}
-      className={`hover:cursor-pointer ${className}`}
-      onClick={onClick}
-    >
+    <button className={`hover:cursor-pointer ${className}`} onClick={onClick}>
       {children}
     </button>
   );
