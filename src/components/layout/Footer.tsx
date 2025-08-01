@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 
-const AppFooter:React.FC = () => {
-  const footerLinks:string[] = [
+const Footer: React.FC = () => {
+  const footerLinks: string[] = [
     "Meta",
     "About",
     "Blog",
@@ -21,14 +21,10 @@ const AppFooter:React.FC = () => {
   return (
     <footer className="hidden md:flex flex-col justify-center">
       <div className="flex justify-center gap-3 mb-4">
-        {footerLinks.map((links, index) => (
+        {footerLinks.map((link, index) => (
           <div key={index} className="flex gap-2">
-            <Link
-              key={index}
-              to="/"
-              className="text-sm text-[#A8A8A8] hover:underline transition duration-200"
-            >
-              {links}
+            <Link to="/" className="text-sm text-[#A8A8A8] hover:underline transition duration-200">
+              {link}
             </Link>
           </div>
         ))}
@@ -36,16 +32,13 @@ const AppFooter:React.FC = () => {
 
       <div>
         <div className="flex flex-col md:flex-row justify-center items-center gap-4">
-          <select
-            className="bg-transparent py-1 text-sm text-[#A8A8A8] "
-            defaultValue="en"
-          >
+          <select className="bg-transparent py-1 text-sm text-[#A8A8A8]" defaultValue="en">
             <option value="en">English</option>
             <option value="es">Español</option>
             <option value="fr">Français</option>
           </select>
 
-          <div className="text-s text-center text-[#A8A8A8] ">
+          <div className="text-s text-center text-[#A8A8A8]">
             <span>© {new Date().getFullYear()} Instagram from Meta</span>
           </div>
         </div>
@@ -54,4 +47,4 @@ const AppFooter:React.FC = () => {
   );
 };
 
-export default AppFooter;
+export default Footer;
