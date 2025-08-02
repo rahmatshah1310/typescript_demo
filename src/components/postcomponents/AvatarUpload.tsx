@@ -1,27 +1,30 @@
+import * as React from "react";
 import { useState } from "react";
-import { doc, updateDoc } from "firebase/firestore";
-import { db } from "@/firebase";
 import { useAuthContext } from "@context";
 import { InputField } from "../common";
 import { useUploadAvatar } from "@api";
-import * as React from "react";
+import { User } from "@types";
 
-const AvatarUpload: React.FC = () => {
-  const { user } = useAuthContext();
-  const [error, setError] = useState(null);
+type Props = {
+  user: User;
+};
 
+const AvatarUpload: React.FC<Props> = () => {
+  const { user, setUser } = useAuthContext();
+
+  const [error, setError] = useState<string | null>(null);
   const uploadAvatar = useUploadAvatar();
   const loading = uploadAvatar.isPending;
 
   const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files[0];
-    if (!file || !user.uid) return;
+    const file = e.target.files?.[0];
+    if (!file || !user?.uid) return;
 
     uploadAvatar.mutateAsync(
       { file, userId: user.uid },
       {
         onSuccess: (imageUrl) => {
-          setUser((prev) => ({ ...prev, profilePic: imageUrl }));
+          setUser((prev) => (prev ? { ...prev, profilePic: imageUrl } : null));
         },
         onError: (err: any) => {
           console.error(err);
@@ -37,9 +40,9 @@ const AvatarUpload: React.FC = () => {
         {user?.profilePic ? (
           <img src={user.profilePic} alt="Profile" className="object-cover w-full h-full" />
         ) : (
-          <span className="text-gray-400">{uploading ? "Uploading..." : "No Image"}</span>
+          <span className="text-gray-400">{loading ? "Uploading..." : "No Image"}</span>
         )}
-        <InputField type="file" accept="image/*" className="hidden" onChange={handleAvatarUpload} disabled={uploading} label="" />
+        <InputField type="file" accept="image/*" className="hidden" onChange={handleAvatarUpload} disabled={loading} label="" />
       </label>
       {error && <p className="text-red-500 mt-2">{error}</p>}
     </div>
