@@ -1,5 +1,10 @@
 export * from "./common";
-export { default as AvatarUpload } from "./postcomponents/AvatarUpload";
+export { default as AvatarUpload } from "./PostComponents/AvatarUpload";
+export { default as PostComponent } from "./PostComponents/PostComponent";
 export { default as Footer } from "./layout/Footer";
-// export { default as Header } from "./layout/Header";
-// export { default as Sidebar } from "./layout/Sidebar";
+export { default as Tab } from "./tabs/Tab";
+export { default as PostTab } from "./tabs/PostTab";
+export { default as NavLink } from "./layout/NavLink";
+export { default as Sidebar } from "./layout/Sidebar";
+export * from "./ui/sheet";
+export * from "./ui/dialog";
