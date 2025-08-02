@@ -1,10 +1,37 @@
-// src/firebase.ts
 import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
-import { getStorage } from "firebase/storage";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+  signInWithPopup,
+  onAuthStateChanged,
+  sendPasswordResetEmail,
+  confirmPasswordReset,
+  updateProfile,
+} from "firebase/auth";
+import {
+  getFirestore,
+  collection,
+  setDoc,
+  doc,
+  getDoc,
+  updateDoc,
+  deleteDoc,
+  query,
+  orderBy,
+  getDocs,
+  addDoc,
+  where,
+  Query,
+  onSnapshot,
+  Timestamp,
+  documentId,
+} from "firebase/firestore";
+import { getStorage, ref, uploadBytesResumable, getDownloadURL, deleteObject } from "firebase/storage";
+import { getFunctions, httpsCallable } from "firebase/functions";
 
-// Vite exposes environment variables with import.meta.env
+// Firebase config from Vite environment
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_API_KEY,
   authDomain: import.meta.env.VITE_AUTH_DOMAIN,
@@ -12,6 +39,7 @@ const firebaseConfig = {
   storageBucket: import.meta.env.VITE_STORAGE_BUCKET,
   messagingSenderId: import.meta.env.VITE_MESSAGING_SENDER_ID,
   appId: import.meta.env.VITE_APP_ID,
+  measurementId: import.meta.env.VITE_MEASUREMENT_ID,
   databaseURL: import.meta.env.VITE_DATABASE_URL,
 };
 
@@ -19,7 +47,44 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 
 // Firebase services
-export const auth = getAuth(app);
-export const db = getFirestore(app);
-export const storage = getStorage(app);
-export default app;
+const auth = getAuth(app);
+const db = getFirestore(app);
+const storage = getStorage(app);
+const functions = getFunctions(app);
+
+// Export everything
+export {
+  app,
+  auth,
+  db,
+  storage,
+  functions,
+  updateProfile,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+  signInWithPopup,
+  onAuthStateChanged,
+  sendPasswordResetEmail,
+  confirmPasswordReset,
+  collection,
+  setDoc,
+  doc,
+  getDoc,
+  updateDoc,
+  deleteDoc,
+  query,
+  orderBy,
+  getDocs,
+  addDoc,
+  where,
+  Query,
+  onSnapshot,
+  Timestamp,
+  documentId,
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+  deleteObject,
+  httpsCallable,
+};
