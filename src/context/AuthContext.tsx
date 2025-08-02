@@ -1,104 +1,44 @@
-import * as React from "react";
-import { useState, useContext, createContext, type ReactNode, useEffect } from "react";
-import type { IUser } from "@types";
-import { AuthService } from "@services";
+import { onAuthStateChanged, User } from "firebase/auth";
+import { createContext, useEffect, useState, useContext } from "react";
+import { auth } from "@/firebase";
+import { getUserProfile } from "@services";
 
-export const AuthContext = createContext(null);
+export interface AuthContextType {
+  user: User | null;
+  setUser: React.Dispatch<React.SetStateAction<User | null>>;
+  loading: boolean;
+}
 
-export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }: { children: React.ReactNode }) => {
-  const [userData, setUserData] = useState<IUser | null>(null);
-  const [token, setToken] = useState(null);
-  const [loading, setLoading] = useState<boolean>(true);
+export const AuthContext = createContext<AuthContextType | undefined>(undefined);
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  // Fetch current user data
-  const fetchCurrentUser = async () => {
-    try {
-      const response = await AuthService.me();
-      if (response?.data) {
-        setUserData(response.data);
-      }
-    } catch (error) {
-      console.error("Failed to fetch user data:", error);
-      handleLogout(); // Logout if token is invalid
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Load user data and token from storage on mount
   useEffect(() => {
-    const storedToken = localStorage.getItem("accessToken");
+    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+      if (firebaseUser) {
+        try {
+          const profile = await getUserProfile(firebaseUser.uid);
 
-    if (storedToken) {
-      setToken(storedToken);
-      fetchCurrentUser(storedToken);
-    } else {
+          setUser({ ...profile, ...firebaseUser });
+        } catch (error) {
+          console.error("Faild to fetch User", error);
+          setUser(firebaseUser);
+        }
+      } else {
+        setUser(null);
+      }
       setLoading(false);
-    }
+    });
+    return unsubscribe;
   }, []);
 
-  // Refetch user data when token changes
-  useEffect(() => {
-    if (token) {
-      fetchCurrentUser(token);
-    }
-  }, [token]);
-
-  const handleLogout = () => {
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("userData");
-    setToken(null);
-    setUserData(null);
-    alert("Logout Sucessfully");
-  };
-
-  const setAuthData = (responseData: any) => {
-    const data = responseData?.data || responseData;
-
-    if (!data?.token || !data?.user) {
-      console.error("Invalid auth data received:", responseData);
-      return;
-    }
-
-    // Extract token and remove "Bearer " prefix if present
-    const rawToken = data.token;
-    const cleanToken = rawToken.replace("Bearer ", "");
-    const user = data.user;
-
-    // Store in localStorage
-    localStorage.setItem("accessToken", cleanToken);
-    localStorage.setItem("userData", JSON.stringify(user));
-
-    // Update state
-    setToken(cleanToken);
-    setUserData(user);
-  };
-
-  // Get token method
-  const getToken = () => token;
-
-  return (
-    <AuthContext.Provider
-      value={{
-        userData,
-        setUserData,
-        handleLogout,
-        setAuthData,
-        getToken,
-        isAuthenticated: !!token,
-        loading,
-      }}
-    >
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={{ user, loading, setUser }}>{children}</AuthContext.Provider>;
 };
-
-//export auth
-export const useAuth = () => {
+export const useAuthContext = (): AuthContextType => {
   const context = useContext(AuthContext);
   if (!context) {
-    throw new Error("useAuth must be used within an AuthProvider");
+    throw new Error("useAuthContext must be used within an AuthProvider");
   }
   return context;
 };
