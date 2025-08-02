@@ -1,295 +1,107 @@
-// import { useState, useMemo, useCallback } from "react";
-// import { Link, useNavigate } from "react-router-dom";
-// import { useMediaQuery } from "react-responsive";
-// import { ROUTES, ICONS } from "@constants";
-// import { useAuthContext } from "@context";
-// import CreatePost from "@/pages/Create";
-// // import ShadcnPopover from "@/components/common/ShadcnPopover";
-// // import { Button } from "@components";
-// import * as React from "react";
-// // import SearchComponent from "@/components/common/SearchComponent";
-// // import Messages from "@/pages/messages/Messages";
-// // import SidebarHeader from "../chatsidebar/SidebarHeader";
+// Updated Sidebar using ShadCN (Sheet, Button) + Tailwind CSS
+import { useState, useMemo, useCallback } from "react";
+import { useMediaQuery } from "react-responsive";
+import { useNavigate } from "react-router-dom";
+import { useAuthContext } from "@context";
+import { ROUTES, ICONS } from "@constants";
+import { Button, Sheet, SheetContent } from "@components";
+import { CreatePost } from "@pages";
 
-// interface SidebarProps {
-//   link: string;
-//   isBottomBar: boolean;
-//   isMdSidebar: boolean;
-//   isCollapsed: boolean;
-//   activeSection: string;
-//   onLinkClick: (link: string) => void;
-//   userProfilePic: string;
-// }
-// // Helper component for individual navigation links - kept concise
-// const NavLink: React.FC<SidebarProps> = React.memo(({ link, isBottomBar, isMdSidebar, isCollapsed, activeSection, onLinkClick, userProfilePic }) => {
-//   // Determine base classes
-//   let classes = "flex items-center text-white rounded-lg hover:bg-gray-700 cursor-pointer transition-colors";
-//   if (isBottomBar) classes += " flex-col justify-center p-2 text-xs w-1/5";
-//   if (isMdSidebar)
-//     classes += ` gap-4 text-lg py-2 px-4 ${
-//       activeSection === (link.section || link.name.toLowerCase())
-//         ? link.name === "Messages"
-//           ? "bg-gray-600 opacity-50 hover:bg-gray-600 cursor-default"
-//           : "bg-gray-600"
-//         : ""
-//     }`;
+const Sidebar = ({ isCollapsed, setIsCollapsed, activeSection, setActiveSection }) => {
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const { user, logout } = useAuthContext();
+  const navigate = useNavigate();
 
-//   // Determine content to display (icon or profile pic, and text if applicable)
-//   const displayContent = (
-//     <>
-//       {link.name === "Profile" && userProfilePic ? (
-//         <img
-//           src={userProfilePic}
-//           alt="Profile"
-//           className="rounded-full object-cover border-2 border-white w-7 h-7 md:ml-[-5px] min-w-[1.75rem] min-h-[1.75rem]"
-//         />
-//       ) : (
-//         link.icon
-//       )}
-//       {(isBottomBar || (isMdSidebar && !isCollapsed)) && <span className={isBottomBar ? "mt-1" : ""}>{link.name}</span>}
-//     </>
-//   );
+  const isMobile = useMediaQuery({ maxWidth: 767 });
+  // const isMdOrLg = useMediaQuery({ minWidth: 768, maxWidth: 1279 });
 
-//   // Handle clicks, preventing default for non-route links with onClick
-//   const handleClick = (e) => {
-//     if (link.onClick && !link.route) e.preventDefault();
-//     onLinkClick(link.section || link.name.toLowerCase());
-//   };
+  const navigationLinks = useMemo(() => {
+    const profileIcon = user?.profilePic ? (
+      <img src={user.profilePic} alt="Profile" className="rounded-full w-7 h-7 object-cover border border-white" />
+    ) : (
+      <ICONS.profile size={24} />
+    );
 
-//   // Render logic for different link types
-//   if (link.route) {
-//     return (
-//       <Link to={link.route} className={classes} onClick={handleClick}>
-//         {displayContent}
-//       </Link>
-//     );
-//   }
+    return [
+      { name: "Home", icon: <ICONS.home size={24} />, route: ROUTES.home },
+      { name: "Search", icon: <ICONS.search size={24} />, section: "search" },
+      { name: "Explore", icon: <ICONS.explore size={24} />, route: ROUTES.explore },
+      { name: "Messages", icon: <ICONS.share size={24} />, section: "messages" },
+      { name: "Notifications", icon: <ICONS.likeOutline size={24} />, section: "notifications" },
+      { name: "Create", icon: <ICONS.addPost size={24} />, onClick: () => setIsCreateModalOpen(true), section: "create" },
+      { name: "Profile", icon: profileIcon, route: `/${user?.username}` },
+      { name: "More", icon: <ICONS.more size={24} />, onClick: () => {}, section: "more" },
+    ];
+  }, [user]);
 
-//   // if (link.name === "More") {
-//   //   return (
-//   //     <ShadcnPopover
-//   //       side="top"
-//   //       triggerContent={
-//   //         <button className={classes} onClick={handleClick}>
-//   //           {displayContent}
-//   //         </button>
-//   //       }
-//   //     >
-//   //       <div className="space-y-1 text-sm text-white w-48 p-1">
-//   //         {["Settings", "Your activity", "Saved", "Switch appearance", "Report a problem", "Switch accounts"].map((item) => (
-//   //           <Button key={item} className="w-full text-left hover:bg-gray-800 p-3 rounded">
-//   //             {item}
-//   //           </Button>
-//   //         ))}
-//   //         <Button onClick={link.onLogout} className="w-full text-left hover:bg-gray-800 p-3 rounded">
-//   //           Log out
-//   //         </Button>
-//   //       </div>
-//   //     </ShadcnPopover>
-//   //   );
-//   // }
+  const handleNavClick = useCallback(
+    (link) => {
+      if (link.onClick) return link.onClick();
+      if (link.route) return navigate(link.route);
+      if (link.section) return setActiveSection((prev) => (prev === link.section ? null : link.section));
+    },
+    [navigate, setActiveSection]
+  );
 
-//   return (
-//     <button className={classes} onClick={handleClick}>
-//       {displayContent}
-//     </button>
-//   );
-// });
+  const renderLink = (link, index) => (
+    <Button
+      key={index}
+      className={`flex w-full justify-start gap-3 text-white px-3 py-4 rounded-xl hover:bg-gray-800 text-md ${
+        activeSection === link.section ? "bg-gray-800" : ""
+      }`}
+      onClick={() => handleNavClick(link)}
+    >
+      {link.icon}
+      <span>{link.name}</span>
+    </Button>
+  );
 
-// // Main Sidebar component
-// const Sidebar = ({ isCollapsed, setIsCollapsed, activeSection, setActiveSection }) => {
-//   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-//   const { user, logout } = useAuthContext();
-//   const navigate = useNavigate();
+  return (
+    <>
+      {/* Mobile Bottom Navigation */}
+      {isMobile && (
+        <div className="fixed bottom-0 left-0 right-0 bg-black border-t border-gray-700 flex justify-around py-2 z-50">
+          {navigationLinks.slice(0, 5).map((link, i) => (
+            <Button key={i} className="flex flex-col items-center text-white" onClick={() => handleNavClick(link)}>
+              {link.icon}
+              <span className="text-xs">{link.name}</span>
+            </Button>
+          ))}
+        </div>
+      )}
 
-//   const isMobile = useMediaQuery({ maxWidth: 767 });
-//   const isMdOrLg = useMediaQuery({ minWidth: 768, maxWidth: 1279 });
+      {/* Desktop Sidebar */}
+      {!isMobile && (
+        <div
+          className={`fixed top-0 left-0 h-full bg-black border-r border-gray-800 p-4 flex flex-col justify-between transition-all duration-300 z-40 ${
+            isCollapsed ? "w-16" : "w-72"
+          }`}
+        >
+          <div>
+            <div className="text-white font-bold text-xl mb-6 pl-1">{isCollapsed ? <ICONS.instagram /> : "Instagram"}</div>
+            <nav className="space-y-2">{navigationLinks.slice(0, 7).map(renderLink)}</nav>
+          </div>
 
-//   // Memoized navigation links
-//   const navigationLinks = useMemo(() => {
-//     const profileIcon = user?.profilePic ? (
-//       <img src={user.profilePic} alt="Profile" className="rounded-full object-cover border-2 border-white w-7 h-7 md:ml-[-5px] min-w-[1rem] min-h-[1rem]" />
-//     ) : (
-//       ICONS.fiUser
-//     );
+          <div className="space-y-2">
+            {renderLink(navigationLinks[7])}
+            <Button onClick={logout} className="hover:bg-red-900 w-full flex justify-start p-2 rounded text-white">
+              Log out
+            </Button>
+          </div>
+        </div>
+      )}
 
-//     return [
-//       { name: "Home", icon: ICONS.goHome, route: ROUTES.home },
-//       { name: "Search", icon: ICONS.cgSearch, section: "search" },
-//       { name: "Explore", icon: ICONS.mdExplore, route: ROUTES.explore },
-//       {
-//         name: "Messages",
-//         // icon: ICONS.shareIcon,
-//         // route: ROUTES.messages,
-//         section: "messages",
-//       },
-//       { name: "Notifications", icon: ICONS.ciHeart, section: "notifications" },
-//       {
-//         name: "Create",
-//         // icon: ICONS.cgAddR,
-//         onClick: () => setIsCreateModalOpen(true),
-//         section: "create",
-//       },
-//       { name: "Profile", icon: profileIcon, route: `/${user?.username}` },
-//       // { name: "Meta AI", icon: ICONS.metaIcon, route: ROUTES.metaai },
-//       // { name: "Threads", icon: ICONS.threadsLogo, route: ROUTES.threads },
-//       // { name: "More", icon: ICONS.moreIcon, onLogout: logout, section: "more" },
-//     ];
-//   }, [user, logout]);
+      {/* Sliding Panel using ShadCN Sheet (for Search/Notifications) */}
+      <Sheet open={!!activeSection} onOpenChange={() => setActiveSection(null)}>
+        <SheetContent side="left" className="w-96 bg-black text-white border-r border-gray-700">
+          {activeSection === "search" && <div className="p-4">Search Component</div>}
+          {activeSection === "notifications" && <div className="p-4">Notifications Component</div>}
+          {activeSection === "messages" && <div className="p-4">Messages Component</div>}
+        </SheetContent>
+      </Sheet>
+      <CreatePost isOpen={isCreateModalOpen} onClose={() => setIsCreateModalOpen(false)} />
+    </>
+  );
+};
 
-//   // Map links for quick lookup
-//   const linkProperties = useMemo(
-//     () =>
-//       navigationLinks.reduce((acc, link) => {
-//         acc[link.name.toLowerCase()] = link;
-//         if (link.section) acc[link.section] = link;
-//         return acc;
-//       }, {}),
-//     [navigationLinks]
-//   );
-
-//   // Define links for bottom bar and desktop sidebar sections
-//   const bottomBarLinks = useMemo(
-//     () => [linkProperties.home, linkProperties.explore, linkProperties.create, linkProperties.messages, linkProperties.profile].filter(Boolean),
-//     [linkProperties]
-//   );
-//   const mainLinksMd = useMemo(() => navigationLinks.slice(0, 7), [navigationLinks]);
-//   const bottomLinksMd = useMemo(() => navigationLinks.slice(7), [navigationLinks]);
-
-//   // Unified handler for all navigation actions
-//   const handleNavAction = useCallback(
-//     (sectionName) => {
-//       const linkConfig = linkProperties[sectionName];
-//       if (!linkConfig) return;
-
-//       // If messages is already active, don't do anything
-//       if (sectionName === "messages" && activeSection === "messages") {
-//         return;
-//       }
-
-//       if (isMobile) {
-//         linkConfig.onClick?.();
-//         setActiveSection(null);
-//         return;
-//       }
-
-//       const isPanelSection = sectionName === "search" || sectionName === "notifications" || sectionName === "messages";
-
-//       if (isPanelSection) {
-//         setActiveSection((prev) => (prev === sectionName ? null : sectionName));
-//         setIsCollapsed(activeSection !== sectionName);
-
-//         // For messages, use React Router navigation instead of window.location
-//         if (sectionName === "messages" && linkConfig.route) {
-//           navigate(linkConfig.route);
-//         }
-//       } else {
-//         setActiveSection(null);
-//         linkConfig.onClick?.();
-//         setIsCollapsed(isMdOrLg);
-//       }
-//     },
-//     [isMobile, isMdOrLg, activeSection, setActiveSection, setIsCollapsed, linkProperties, navigate]
-//   );
-
-//   // Determine the actual width class for the fixed main sidebar
-//   const fixedSidebarWidthClass =
-//     activeSection === "search" || activeSection === "notifications" || activeSection === "messages" ? "w-16" : isCollapsed ? "w-84" : "w-84";
-
-//   // Helper for panel common classes
-//   const getPanelClasses = (sectionName) => {
-//     const isActive = activeSection === sectionName;
-//     const sidebarOffset = fixedSidebarWidthClass === "w-16" ? "left-16" : "left-84";
-
-//     return `
-//       fixed top-0 h-full z-40 w-96 text-white border-r border-gray-700 bg-black
-//       overflow-y-auto scrollbar-hide transition-all duration-300 ease-in-out transform
-//       ${sidebarOffset}
-//       ${isActive ? "translate-x-0 opacity-100" : "-translate-x-full opacity-0 pointer-events-none"}
-//     `;
-//   };
-
-//   return (
-//     <>
-//       {/* Mobile Bottom Navigation Bar */}
-//       <div className="md:hidden fixed bottom-0 left-0 right-0 h-16 bg-black z-40 flex items-center justify-around border-t border-gray-700">
-//         {bottomBarLinks.map((link, index) => (
-//           <NavLink key={`bottom-bar-${link.name}-${index}`} link={link} isBottomBar onLinkClick={handleNavAction} userProfilePic={user?.profilePic} />
-//         ))}
-//       </div>
-
-//       {/* Desktop Layout */}
-//       <div className="hidden md:block fixed top-0 left-0 h-full">
-//         {/* Sidebar and Panels Container */}
-//         <div className="relative h-full flex">
-//           {/* Fixed Main Sidebar */}
-//           <div
-//             className={`h-full bg-black text-white flex flex-col justify-between py-6 px-2 space-y-4 border-r border-gray-700 transition-all duration-300 ease-in-out ${fixedSidebarWidthClass}`}
-//           >
-//             {/* Instagram Logo/Text */}
-//             <h1 className="text-2xl font-bold mb-4 pl-3 py-2 text-white">
-//               {
-//                 activeSection === "search" || activeSection === "notifications" ? ICONS.instagramIcon : isCollapsed ? ICONS.instagramIcon : ICONS.instagramIcon
-//                 // <InstagramText />
-//               }
-//             </h1>
-//             {/* Main Nav Links */}
-//             <nav className="flex flex-col space-y-3">
-//               {mainLinksMd.map((link, index) => (
-//                 <NavLink
-//                   key={`md-main-${link.name}-${index}`}
-//                   // link={link}
-//                   isMdSidebar
-//                   isCollapsed={activeSection === "search" || activeSection === "notifications" || isCollapsed}
-//                   activeSection={activeSection}
-//                   onLinkClick={handleNavAction}
-//                   // userProfilePic={user?.profilePic}
-//                 />
-//               ))}
-//             </nav>
-//             {/* Bottom Nav Links */}
-//             <div className="flex flex-col space-y-3 mt-auto">
-//               {bottomLinksMd.map((link, index) => (
-//                 <NavLink
-//                   key={`md-bottom-${link.name}-${index}`}
-//                   // link={link}
-//                   isMdSidebar
-//                   isCollapsed={activeSection === "search" || activeSection === "notifications" || isCollapsed}
-//                   activeSection={activeSection}
-//                   onLinkClick={handleNavAction}
-//                   userProfilePic={user?.profilePic}
-//                 />
-//               ))}
-//             </div>
-//           </div>
-
-//           {/* Sliding Panels */}
-//           {/* Search Panel */}
-//           <div className={`${getPanelClasses("search")} bg-black`}>
-//             {activeSection === "search" && <div className="h-full p-3">{/* <SearchComponent /> */}</div>}
-//           </div>
-
-//           {/* Notifications Panel */}
-//           <div className={`${getPanelClasses("notifications")} bg-gray-700`}>
-//             {activeSection === "notifications" && (
-//               <div className="h-full">
-//                 <h2 className="text-xl font-bold mb-4">Notifications</h2>
-//                 <p className="text-gray-400">Notifications functionality goes here...</p>
-//               </div>
-//             )}
-//           </div>
-
-//           {/* Messages Panel */}
-//           <div className={`${getPanelClasses("messages")} bg-black`}>
-//             {activeSection === "messages" && <div className="h-full">{/* <SidebarHeader /> */}</div>}
-//           </div>
-//         </div>
-//       </div>
-
-//       {/* Create Post Modal */}
-//       <CreatePost isOpen={isCreateModalOpen} title="Create Post" onClose={() => setIsCreateModalOpen(false)} />
-//     </>
-//   );
-// };
-
-// export default Sidebar;
+export default Sidebar;
