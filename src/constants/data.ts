@@ -14,7 +14,7 @@ export const tabs = [
   {
     id: "tagged",
     label: "TAGGED",
-    icon: ICONS.userSquare,
+    // icon: ICONS.userSquare,
   },
 ];
 
