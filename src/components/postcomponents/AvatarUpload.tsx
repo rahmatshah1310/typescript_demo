@@ -4,6 +4,7 @@ import { useAuthContext } from "@context";
 import { InputField } from "../common";
 import { useUploadAvatar } from "@api";
 import { User } from "@types";
+import { toast } from "react-toastify";
 
 type Props = {
   user: User;
@@ -24,9 +25,11 @@ const AvatarUpload: React.FC<Props> = () => {
       { file, userId: user.uid },
       {
         onSuccess: (imageUrl) => {
+          toast.success("Avatar uploaded successfully");
           setUser((prev) => (prev ? { ...prev, profilePic: imageUrl } : null));
         },
-        onError: (err: any) => {
+        onError: (err) => {
+          toast.error("Failed to upload avatar");
           console.error(err);
           setError(err.message);
         },
