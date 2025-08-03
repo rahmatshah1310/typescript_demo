@@ -1,6 +1,12 @@
 export * from "./common";
 export { default as AvatarUpload } from "./PostComponents/AvatarUpload";
 export { default as PostComponent } from "./PostComponents/PostComponent";
+export { default as PostDetails } from "./PostComponents/PostDetails";
+export { default as CreatePost } from "./PostComponents/CreatePost";
+export { default as PostHeader } from "./PostComponents/PostHeader";
+export { default as PostOptionsModal } from "./PostComponents/PostOptionsModal";
+export { default as CommentLikesFooter } from "./comments/CommentLikesFooter";
+export { default as CommentModal } from "./comments/CommentModal";
 export { default as Footer } from "./layout/Footer";
 export { default as Tab } from "./tabs/Tab";
 export { default as PostTab } from "./tabs/PostTab";
@@ -8,3 +14,4 @@ export { default as NavLink } from "./layout/NavLink";
 export { default as Sidebar } from "./layout/Sidebar";
 export * from "./ui/sheet";
 export * from "./ui/dialog";
+export * from "./ui/skeleton";
