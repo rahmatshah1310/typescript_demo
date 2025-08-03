@@ -2,14 +2,18 @@ import { useRef, useState, useEffect } from "react";
 // import { usePost } from "@features/context/PostContext";
 import { ICONS } from "@constants";
 import { Spinner, Button, Modal, InputField } from "@components";
-import { useCreatePost } from "@api";
+import { useCreatePost, useUploadPostImage } from "@api";
+import { toast } from "react-toastify";
+import { useAuthContext } from "@context";
 
 const PostComponent = ({ isOpen, onClose }) => {
   const fileInputRef = useRef(null);
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
   const [showCancelContainer, setShowCancelContainer] = useState(false);
+  const { user } = useAuthContext();
   const createPost = useCreatePost();
+  const uploadPostImage = useUploadPostImage();
   const loading = createPost.isPending;
 
   // const [isPending, setIsPending] = useState(false);
@@ -36,14 +40,32 @@ const PostComponent = ({ isOpen, onClose }) => {
     fileInputRef.current.click();
   };
 
-  const handleUpload = () => {
-    createPost.mutate({
-      caption: "My first post!",
-      imageUrl: "https://...",
-      userId: "123456",
-      username: "rahmatshah",
-      profilePic: "https://...",
-    });
+  const handleUpload = async () => {
+    if (!selectedFile) return;
+
+    try {
+      const imageUrl = await uploadPostImage.mutateAsync(selectedFile);
+
+      if (!imageUrl) {
+        throw new Error("Image upload did not return a URL.");
+      }
+
+      await createPost.mutateAsync({
+        caption: "My first post!",
+        imageUrl,
+        userId: user?.uid,
+        username: user?.username,
+        profilePic: user?.profilePic,
+      });
+
+      toast.success("Post uploaded successfully!");
+      setSelectedFile(null);
+      setPreviewUrl(null);
+      onClose();
+    } catch (err) {
+      console.error("Upload Error:", err);
+      toast.error("Failed to upload post.");
+    }
   };
 
   const toggleCancelContainer = () => {
@@ -84,7 +106,7 @@ const PostComponent = ({ isOpen, onClose }) => {
           <Button onClick={toggleCancelContainer} className="text-white text-3xl">
             <ICONS.back />
           </Button>
-          <Button onClick={handleUpload} className="text-blue-500">
+          <Button onClick={handleUpload} className="text-blue-500" disabled={loading}>
             {loading ? <Spinner type="beat" color="blue" /> : "Next"}
           </Button>
         </div>
