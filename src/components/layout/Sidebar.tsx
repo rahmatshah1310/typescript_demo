@@ -4,8 +4,7 @@ import { useMediaQuery } from "react-responsive";
 import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "@context";
 import { ROUTES, ICONS } from "@constants";
-import { Button, Sheet, SheetContent } from "@components";
-import { CreatePost } from "@pages";
+import { Button, Sheet, SheetContent, CreatePost } from "@components";
 
 const Sidebar = ({ isCollapsed, setIsCollapsed, activeSection, setActiveSection }) => {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
@@ -59,19 +58,22 @@ const Sidebar = ({ isCollapsed, setIsCollapsed, activeSection, setActiveSection 
   return (
     <>
       {/* Mobile Bottom Navigation */}
-      {isMobile && (
-        <div className="fixed bottom-0 left-0 right-0 bg-black border-t border-gray-700 flex justify-around py-2 z-50">
-          {navigationLinks.slice(0, 5).map((link, i) => (
-            <Button key={i} className="flex flex-col items-center text-white" onClick={() => handleNavClick(link)}>
+      {/* Mobile Bottom Navigation (visible on <768px) */}
+      <div className="fixed bottom-0 left-0 right-0 bg-black border-t border-gray-700 flex justify-around py-2 z-50 md:hidden">
+        {["home", "explore", "create", "messages", "profile"].map((key) => {
+          const link = navigationLinks.find((l) => l.name.toLowerCase() === key);
+          return (
+            <Button key={key} className="flex flex-col items-center text-white" onClick={() => handleNavClick(link)}>
               {link.icon}
               <span className="text-xs">{link.name}</span>
             </Button>
-          ))}
-        </div>
-      )}
+          );
+        })}
+      </div>
 
       {/* Desktop Sidebar */}
-      {!isMobile && (
+      {/* Desktop Sidebar (visible on >=768px) */}
+      <div className="hidden md:flex">
         <div
           className={`fixed top-0 left-0 h-full bg-black border-r border-gray-800 p-4 flex flex-col justify-between transition-all duration-300 z-40 ${
             isCollapsed ? "w-16" : "w-72"
@@ -81,7 +83,6 @@ const Sidebar = ({ isCollapsed, setIsCollapsed, activeSection, setActiveSection 
             <div className="text-white font-bold text-xl mb-6 pl-1">{isCollapsed ? <ICONS.instagram /> : "Instagram"}</div>
             <nav className="space-y-2">{navigationLinks.slice(0, 7).map(renderLink)}</nav>
           </div>
-
           <div className="space-y-2">
             {renderLink(navigationLinks[7])}
             <Button onClick={logout} className="hover:bg-red-900 w-full flex justify-start p-2 rounded text-white">
@@ -89,7 +90,7 @@ const Sidebar = ({ isCollapsed, setIsCollapsed, activeSection, setActiveSection 
             </Button>
           </div>
         </div>
-      )}
+      </div>
 
       {/* Sliding Panel using ShadCN Sheet (for Search/Notifications) */}
       <Sheet open={!!activeSection} onOpenChange={() => setActiveSection(null)}>
