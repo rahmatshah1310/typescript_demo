@@ -1,9 +1,10 @@
 import { Dialog, DialogContent } from "@components";
 
-const Modal = ({ children, isOpen, onClose, className }) => {
+const Modal = ({ children, isOpen, onClose, className, title }) => {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className={`${className}`}>
+      <DialogContent className={className}>
+        <h2>{title}</h2>
         <div>{children}</div>
       </DialogContent>
     </Dialog>
