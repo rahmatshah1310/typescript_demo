@@ -1,13 +1,9 @@
 import { ROUTES } from "@constants";
-import { Login, Profile, SignUp } from "@pages";
+import { Home, Login, Profile, SignUp } from "@pages";
 import { Routes as RouterRoutes, Route } from "react-router-dom";
-// import { AuthLayout, AppLayout } from "@layouts";
-// import { Home, Profile } from "@pages";
 import { ToastContainer } from "react-toastify";
 import { AppLayout } from "@layouts";
-// import SignUp from "src/pages/Signup";
-// import Login from "src/pages/Login";
-// import PostDetails from "./src/pages/Profile/components/PostDetails";
+import { PostDetails } from "@components";
 
 const AppRoutes: React.FC = () => {
   return (
@@ -19,9 +15,9 @@ const AppRoutes: React.FC = () => {
         </Route>
 
         <Route path="/" element={<AppLayout />}>
-          {/* <Route index element={<Home />} /> */}
+          <Route index element={<Home />} />
           <Route path=":username" element={<Profile />} />
-          {/* <Route path="p/:postId" element={<PostDetails isOpen />} /> */}
+          <Route path="p/:postId" element={<PostDetails />} />
         </Route>
       </RouterRoutes>
       <ToastContainer position="top-right" autoClose={3000} pauseOnHover draggable theme="colored" />
