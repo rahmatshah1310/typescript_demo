@@ -21,6 +21,7 @@ import {
   MoreHorizontal,
   Image,
   Clapperboard,
+  Ellipsis,
 } from "lucide-react";
 
 export const ICONS = {
@@ -44,5 +45,6 @@ export const ICONS = {
   more: MoreHorizontal,
   media: Image,
   circle: Circle,
+  ellipsis: Ellipsis,
   clapperboard: Clapperboard,
 };
