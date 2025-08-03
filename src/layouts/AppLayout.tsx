@@ -1,15 +1,14 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import { useMediaQuery } from "react-responsive";
 import { ROUTES } from "@constants";
-// import Sidebar from "@components/layout/Sidebar";
-import {Spinner} from "@components";
-import { useAuth } from "@context";
-import {Sidebar} from "@components";
+// import Spinner from "./Spinner";
+// import { Sidebar } from "@components";
+import { useAuthContext } from "@context";
+import { Sidebar, Spinner } from "@components";
 
 const AppLayout = () => {
-  const { userData, isLoading } = useAuth();
-
+  const { user, loading } = useAuthContext();
   const isMobile = useMediaQuery({ maxWidth: 767 });
   const isMdOrLg = useMediaQuery({ minWidth: 768, maxWidth: 1279 });
   const isXlOrLarger = useMediaQuery({ minWidth: 1280 });
@@ -25,36 +24,33 @@ const AppLayout = () => {
   useEffect(() => {
     if (!activeSection) {
       if (isMdOrLg) {
-        setIsCollapsed(true); 
+        setIsCollapsed(true); // Collapse on medium/large desktops
       } else if (isXlOrLarger) {
-        setIsCollapsed(false); 
+        setIsCollapsed(false); // Expand on extra-large desktops
       }
     }
   }, [isMdOrLg, isXlOrLarger, activeSection]);
 
-  if (isLoading) {
+  if (loading) {
     return (
       <div className="flex items-center justify-center w-full h-screen bg-gray-900">
-        <Spinner type="sync" />
+        <Spinner type="beat" />
       </div>
     );
   }
 
-  if (!userData) {
+  if (!user) {
     return <Navigate to={ROUTES.login} replace />;
   }
 
+  // Calculate dynamic left margin for the main content area
   const getMainContentMarginLeft = () => {
     if (isMobile) {
       return "0px"; // No margin on mobile
     }
 
-    if (
-      activeSection === "search" ||
-      activeSection === "notifications" ||
-      activeSection === "messages"
-    ) {
-      return "448px"; 
+    if (activeSection === "search" || activeSection === "notifications" || activeSection === "messages") {
+      return "448px"; // 64 + 384 = 448px
     } else if (isCollapsed) {
       return "64px";
     } else {
@@ -67,16 +63,9 @@ const AppLayout = () => {
       {/* Mobile-only Navbar */}
       {/* {isMobile && <Navbar />} */}
 
-      <div
-        className={`flex flex-1 overflow-hidden ${isMobile ? "pt-16" : "pt-0"}`}
-      >
+      <div className={`flex flex-1 overflow-hidden ${isMobile ? "pt-16" : "pt-0"}`}>
         {/* Sidebar for Desktop/Tablet views - It's always positioned on the left */}
-        <Sidebar
-          isCollapsed={isCollapsed}
-          setIsCollapsed={setIsCollapsed}
-          activeSection={activeSection}
-          setActiveSection={setActiveSection}
-        />
+        <Sidebar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} activeSection={activeSection} setActiveSection={setActiveSection} />
 
         {/* Main content area */}
         <div
