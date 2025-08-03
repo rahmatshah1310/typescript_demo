@@ -27,6 +27,8 @@ import {
   onSnapshot,
   Timestamp,
   documentId,
+  arrayUnion,
+  arrayRemove,
 } from "firebase/firestore";
 import { getStorage, ref, uploadBytesResumable, getDownloadURL, deleteObject } from "firebase/storage";
 import { getFunctions, httpsCallable } from "firebase/functions";
@@ -86,5 +88,7 @@ export {
   uploadBytesResumable,
   getDownloadURL,
   deleteObject,
+  arrayUnion,
+  arrayRemove,
   httpsCallable,
 };
