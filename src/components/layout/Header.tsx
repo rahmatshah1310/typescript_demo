@@ -1,36 +1,29 @@
-// import React from "react";
-// import { Link } from "react-router-dom";
-// import { ROUTES } from "@constants";
-// import { ICONS } from "@/constants/icons"
-// // import { InstagramText } from "@/constants/icons";
+import { Link } from "react-router-dom";
+import { ROUTES, ICONS } from "@constants";
+// import { InstagramText } from "@/constants/icons";
 // import SearchComponent from "@/components/common/SearchComponent";
 
-// const Header = () => {
-//   return (
-//     <header className="fixed top-0 left-0 right-0 h-16 bg-black z-50 flex items-center justify-between px-4 md:px-6 border-b border-gray-700">
-//       <div className="flex-1 flex justify-center items-center min-w-0 pr-4">
-//         <div className="flex items-center w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg gap-3">
-//           {/* <InstagramText className="text-white" /> */}
-//           <span>{ ICONS.instagramIcon}</span>
-//           <SearchComponent className="bg-gray-800 w-100vw " />
-//         </div>
-//       </div>
+const Header = () => {
+  return (
+    <header className="fixed top-0 left-0 right-0 h-16 bg-black z-50 flex items-center justify-between px-4 md:px-6 border-b border-gray-700">
+      <div className="flex-1 flex justify-center items-center min-w-0 pr-4">
+        <div className="flex items-center w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg gap-3">
+          {/* <InstagramText className="text-white" /> */}
+          <span>
+            <ICONS.instagram />
+          </span>
+          {/* <SearchComponent className="bg-gray-800 w-100vw " /> */}
+        </div>
+      </div>
 
-//       {/* Right: Notification Icon */}
-//       <div className="flex-shrink-0">
-//         <button
-//           className="text-white p-2 rounded-full hover:bg-gray-700 focus:outline-none focus:bg-gray-700"
-//           aria-label="Notifications"
-//         >
-//           {ICONS.ciHeart ? (
-//             React.cloneElement(ICONS.ciHeart, { className: "w-6 h-6" })
-//           ) : (
-//             <span className="w-6 h-6 inline-block">N</span>
-//           )}
-//         </button>
-//       </div>
-//     </header>
-//   );
-// };
+      {/* Right: Notification Icon */}
+      <div className="flex-shrink-0">
+        <button className="text-white p-2 rounded-full hover:bg-gray-700 focus:outline-none focus:bg-gray-700" aria-label="Notifications">
+          {/* {<ICONS.likeOutline /> ? React.cloneElement(<ICONS.likeOutline />, { className: "w-6 h-6" }) : <span className="w-6 h-6 inline-block">N</span>} */}
+        </button>
+      </div>
+    </header>
+  );
+};
 
-// export default Header;
+export default Header;
