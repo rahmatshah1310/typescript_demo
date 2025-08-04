@@ -1,4 +1,3 @@
-export * from "./common";
 export { default as AvatarUpload } from "./PostComponents/AvatarUpload";
 export { default as PostComponent } from "./PostComponents/PostComponent";
 export { default as PostDetails } from "./PostComponents/PostDetails";
@@ -12,6 +11,9 @@ export { default as Tab } from "./tabs/Tab";
 export { default as PostTab } from "./tabs/PostTab";
 export { default as NavLink } from "./layout/NavLink";
 export { default as Sidebar } from "./layout/Sidebar";
+export { default as Header } from "./layout/Header";
+export * from "./skeletons/PostSkeleton";
 export * from "./ui/sheet";
 export * from "./ui/dialog";
 export * from "./ui/skeleton";
+export * from "./common";
