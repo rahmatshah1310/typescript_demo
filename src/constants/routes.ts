@@ -1,7 +1,9 @@
 export const ROUTES = {
   auth: "/auth",
-  login: "/auth/login",
-  signup: "/auth/signup",
+  login: "login",
+  signup: "signup",
+  forgotPassword: "forgot-password",
+  resetPassword: "reset-password",
   home: "/",
   profile: (username) => `/${username}`,
   search: "/search",
