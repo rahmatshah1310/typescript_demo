@@ -8,7 +8,7 @@ import { Button, Sheet, SheetContent, CreatePost } from "@components";
 
 const Sidebar = ({ isCollapsed, setIsCollapsed, activeSection, setActiveSection }) => {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-  const { user, logout } = useAuthContext();
+  const { user, handleLogout, isLoading } = useAuthContext();
   const navigate = useNavigate();
 
   const isMobile = useMediaQuery({ maxWidth: 767 });
@@ -85,8 +85,8 @@ const Sidebar = ({ isCollapsed, setIsCollapsed, activeSection, setActiveSection 
           </div>
           <div className="space-y-2">
             {renderLink(navigationLinks[7])}
-            <Button onClick={logout} className="hover:bg-red-900 w-full flex justify-start p-2 rounded text-white">
-              Log out
+            <Button onClick={handleLogout} className="hover:bg-red-900 w-full flex justify-start p-2 rounded text-white" disabled={isLoading}>
+              {isLoading ? "Logout..." : "  Log out"}
             </Button>
           </div>
         </div>
