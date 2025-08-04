@@ -40,32 +40,32 @@ const PostComponent = ({ isOpen, onClose }) => {
     fileInputRef.current.click();
   };
 
-  const handleUpload = async () => {
-    if (!selectedFile) return;
-
-    try {
-      const imageUrl = await uploadPostImage.mutateAsync(selectedFile);
-
-      if (!imageUrl) {
-        throw new Error("Image upload did not return a URL.");
-      }
-
-      await createPost.mutateAsync({
-        caption: "My first post!",
-        imageUrl,
-        userId: user?.uid,
-        username: user?.username,
-        profilePic: user?.profilePic,
-      });
-
-      toast.success("Post uploaded successfully!");
+  useEffect(() => {
+    if (createPost.status === "success") {
+      toast.success("Post created successfully");
       setSelectedFile(null);
       setPreviewUrl(null);
       onClose();
-    } catch (err) {
-      console.error("Upload Error:", err);
-      toast.error("Failed to upload post.");
+    } else if (createPost.status === "error") {
+      toast.error(createPost.error?.message || "Failed to create post");
     }
+  }, [createPost.status, createPost.error, onClose]);
+
+  const handleUpload = async () => {
+    if (!selectedFile) return;
+    const imageUrl = await uploadPostImage.mutateAsync(selectedFile);
+    if (!imageUrl) {
+      throw new Error("Image upload did not return a URL.");
+    }
+
+    const postData = {
+      caption: "My first post!",
+      imageUrl,
+      userId: user?.uid,
+      username: user?.username,
+      profilePic: user?.profilePic,
+    };
+    createPost.mutate(postData);
   };
 
   const toggleCancelContainer = () => {
