@@ -2,8 +2,6 @@ import { useState, useEffect } from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import { useMediaQuery } from "react-responsive";
 import { ROUTES } from "@constants";
-// import Spinner from "./Spinner";
-// import { Sidebar } from "@components";
 import { useAuthContext } from "@context";
 import { Sidebar, Spinner } from "@components";
 
@@ -24,9 +22,9 @@ const AppLayout = () => {
   useEffect(() => {
     if (!activeSection) {
       if (isMdOrLg) {
-        setIsCollapsed(true); // Collapse on medium/large desktops
+        setIsCollapsed(true);
       } else if (isXlOrLarger) {
-        setIsCollapsed(false); // Expand on extra-large desktops
+        setIsCollapsed(false);
       }
     }
   }, [isMdOrLg, isXlOrLarger, activeSection]);
@@ -40,7 +38,7 @@ const AppLayout = () => {
   }
 
   if (!user) {
-    return <Navigate to={ROUTES.login} replace />;
+    return <Navigate to={`${ROUTES.auth}/${ROUTES.login}`} replace />;
   }
 
   // Calculate dynamic left margin for the main content area
@@ -64,7 +62,7 @@ const AppLayout = () => {
       {/* {isMobile && <Navbar />} */}
 
       <div className={`flex flex-1 overflow-hidden ${isMobile ? "pt-16" : "pt-0"}`}>
-        {/* Sidebar for Desktop/Tablet views - It's always positioned on the left */}
+        {/* Sidebar for Desktop/Tablet views - It's always positiaoned on the left */}
         <Sidebar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} activeSection={activeSection} setActiveSection={setActiveSection} />
 
         {/* Main content area */}
