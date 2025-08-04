@@ -5,6 +5,7 @@ import { Button, Modal, PostSkeleton } from "@components";
 import { ICONS } from "@constants";
 import { useAuthContext } from "@context";
 import { useCommentOnPost } from "@api";
+import { toast } from "react-toastify";
 
 const CommentLikesFooter = ({ post, replyTo, setReplyTo }) => {
   const { user } = useAuthContext();
@@ -41,15 +42,23 @@ const CommentLikesFooter = ({ post, replyTo, setReplyTo }) => {
   };
 
   // <---------------------------------------- Add Comments ----------------------------------------->
-  const handleComment = async () => {
+  useEffect(() => {
+    if (postComment.status === "success") {
+      toast.success("Comment posted successfully");
+      setCommentText("");
+      setReplyTo("");
+    } else if (postComment.status === "error") {
+      toast.error(postComment.error?.message || "Failed to post comment");
+    }
+  }, [postComment.status, postComment.error, setReplyTo]);
+
+  const handleComment = () => {
     if (!commentText.trim()) return;
-    postComment.mutateAsync({
+    postComment.mutate({
       postId: post?.id,
       text: commentText.trim(),
-      user: user,
+      user,
     });
-    setCommentText("");
-    setReplyTo("");
   };
 
   return (
@@ -57,9 +66,9 @@ const CommentLikesFooter = ({ post, replyTo, setReplyTo }) => {
       {/* Actions */}
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-4">
-          {/* <Button onClick={handleLike} className={`text-gray-400 ${isLiked ? "text-red-500 hover:text-red-600" : ""}`}>
+          <Button className={`text-gray-400 ${isLiked ? "text-red-500 hover:text-red-600" : ""}`}>
             {isLiked ? <ICONS.likeOutline /> : <ICONS.likeFilled />}
-          </Button> */}
+          </Button>
           <Button onClick={handleFocusInput} className="text-gray-400 hover:text-white">
             <ICONS.comment />
           </Button>
