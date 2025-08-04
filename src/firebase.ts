@@ -88,6 +88,7 @@ export {
   uploadBytesResumable,
   getDownloadURL,
   deleteObject,
+  getAuth,
   arrayUnion,
   arrayRemove,
   httpsCallable,
