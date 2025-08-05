@@ -1,19 +1,26 @@
 import { useDeletePost } from "@api";
 import { Button, Modal } from "@components";
-// import { usePost } from "@/features/context/PostContext";
-import { useState } from "react";
+import { useEffect } from "react";
+import { toast } from "react-toastify";
 
 export default function PostOptionsModal({ isOpen, onClose, post, showDelete }) {
   const deletePost = useDeletePost();
-  const isLoading = deletePost.isPending;
+
+  useEffect(() => {
+    if (deletePost.status === "success") {
+      toast.success("Post deleted successfully");
+      deletePost.reset();
+      onClose();
+    } else if (deletePost.status === "error") {
+      toast.error(deletePost.error?.message || "Failed to delete post");
+      deletePost.reset();
+    }
+  }, [deletePost.status, deletePost.error, onClose, deletePost]);
+
   const handleOptionClick = async (post, options) => {
     if (options.id === "delete") {
-      try {
-        await deletePost.mutateAsync(post.id);
-        onClose();
-      } catch (error) {
-        console.error("Failed to delete post:", error);
-      }
+      await deletePost.mutateAsync(post.id);
+      onClose();
     }
   };
   const options = [
@@ -33,13 +40,13 @@ export default function PostOptionsModal({ isOpen, onClose, post, showDelete }) 
   if (!isOpen) return null;
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} className="w-[85%] sm:w-[450px]">
+    <Modal title="" isOpen={isOpen} onClose={onClose} className="w-[85%] sm:w-[450px]">
       <div className="bg-gray-800 rounded-lg w-full py-2 overflow-hidden">
         <div className="flex flex-col">
           {filteredOptions.map((option) => (
             <Button
               key={option.id}
-              disabled={isLoading}
+              disabled={deletePost.isPending}
               className="py-4 px-4 text-center border-b border-gray-500 text-white"
               onClick={() => handleOptionClick(post, option)}
             >
