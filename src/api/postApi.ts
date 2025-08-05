@@ -14,8 +14,12 @@ import {
 } from "@services";
 
 export const useCreatePost = () => {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (data: CreatePostInput) => createPost(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
+    },
   });
 };
 
@@ -51,8 +55,13 @@ export const useDeletePost = () => {
 };
 
 export const useCommentOnPost = () => {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: commentOnPost,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["comments"] });
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
+    },
   });
 };
 
@@ -64,19 +73,24 @@ export const useComments = (postId: string) => {
   });
 };
 
-export const useDeleteComment = () => {
+export const useDeleteCommentMutation = () => {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: deleteComment,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["comments"] });
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
+    },
   });
 };
 
-export const useLikePost = () => {
+export const useLikePostMutation = () => {
   return useMutation({
     mutationFn: likePost,
   });
 };
 
-export const useDislikePost = () => {
+export const useDislikePostMutation = () => {
   return useMutation({
     mutationFn: dislikePost,
   });
