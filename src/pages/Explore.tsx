@@ -22,9 +22,7 @@ const Explore = () => {
   const location = useLocation();
   const openPostModal = (posts) => {
     setSelectedPost(posts);
-    navigate(`/${posts.id}`, {
-      state: { backgroundLocation: location },
-    });
+    navigate(`/explore?postId=${posts.id}`);
     setIsModalOpen(true);
   };
 
@@ -47,8 +45,8 @@ const Explore = () => {
 
   const closePostModal = () => {
     setSelectedPost(null);
-    // setIsModalOpen(false);
-    // navigate(ROUTES.explore);
+    setIsModalOpen(false);
+    navigate(ROUTES.explore);
   };
 
   return (
