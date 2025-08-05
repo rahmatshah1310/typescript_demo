@@ -29,6 +29,7 @@ import {
   documentId,
   arrayUnion,
   arrayRemove,
+  increment,
 } from "firebase/firestore";
 import { getStorage, ref, uploadBytesResumable, getDownloadURL, deleteObject } from "firebase/storage";
 import { getFunctions, httpsCallable } from "firebase/functions";
@@ -72,6 +73,7 @@ export {
   collection,
   setDoc,
   doc,
+  increment,
   getDoc,
   updateDoc,
   deleteDoc,
