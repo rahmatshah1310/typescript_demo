@@ -7,7 +7,7 @@ import { useForgotPasswordMutation } from "@api";
 import { toast } from "react-toastify";
 import { forgotPasswordSchema, ForgotPasswordSchema } from "@types";
 import { useEffect } from "react";
-import { Button, InputField } from "@components";
+import { Button } from "@components";
 
 export default function ForgotPasswordForm() {
   const {
@@ -39,9 +39,8 @@ export default function ForgotPasswordForm() {
       <p className="text-sm text-gray-600 text-center mb-6">Enter your email, phone, or username and we’ll send you a link to get back into your account.</p>
 
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
-        <InputField
+        <input
           type="email"
-          label=""
           placeholder="Email address"
           {...register("email", { required: "Email is required" })}
           className="border px-4 py-2 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-black "
