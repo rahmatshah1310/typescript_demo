@@ -1,12 +1,11 @@
 import { useRef, useState, useEffect } from "react";
-// import { usePost } from "@features/context/PostContext";
 import { ICONS } from "@constants";
 import { Spinner, Button, Modal, InputField } from "@components";
 import { useCreatePost, useUploadPostImage } from "@api";
 import { toast } from "react-toastify";
 import { useAuthContext } from "@context";
 
-const PostComponent = ({ isOpen, onClose }) => {
+const PostComponent = ({ onClose }) => {
   const fileInputRef = useRef(null);
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
@@ -15,8 +14,6 @@ const PostComponent = ({ isOpen, onClose }) => {
   const createPost = useCreatePost();
   const uploadPostImage = useUploadPostImage();
   const loading = createPost.isPending;
-
-  // const [isPending, setIsPending] = useState(false);
 
   useEffect(() => {
     if (selectedFile) {
@@ -43,13 +40,16 @@ const PostComponent = ({ isOpen, onClose }) => {
   useEffect(() => {
     if (createPost.status === "success") {
       toast.success("Post created successfully");
+      createPost.reset();
+      setShowCancelContainer(false);
       setSelectedFile(null);
       setPreviewUrl(null);
       onClose();
     } else if (createPost.status === "error") {
       toast.error(createPost.error?.message || "Failed to create post");
+      createPost.reset();
     }
-  }, [createPost.status, createPost.error, onClose]);
+  }, [createPost.status, createPost.error, onClose, createPost]);
 
   const handleUpload = async () => {
     if (!selectedFile) return;
@@ -75,7 +75,7 @@ const PostComponent = ({ isOpen, onClose }) => {
   return (
     <section className="w-full h-auto m-0">
       {/* <---------------------------------------- Modal For Discard and Cancel -----------------------------------------> */}
-      <Modal isOpen={showCancelContainer} className="bg-[#262626]" onClose={() => setShowCancelContainer(false)}>
+      <Modal title="" isOpen={showCancelContainer} className="bg-[#262626]" onClose={() => setShowCancelContainer(false)}>
         <div className="flex flex-col items-center justify-center space-y-2 p-6 rounded-lg shadow-md">
           <h2 className="text-white">Discard post? </h2>
           <p className="text-[#A8A8A8]">If you leave, your edits won't be saved.</p>
@@ -121,7 +121,6 @@ const PostComponent = ({ isOpen, onClose }) => {
             const file = e.dataTransfer.files[0];
             if (file && file.type.startsWith("image/")) {
               setSelectedFile(file);
-              setIsPending(true);
             } else {
               console.error("Invalid file type.");
             }
