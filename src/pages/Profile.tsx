@@ -16,7 +16,7 @@ import { useComments, usePosts } from "@api";
 const Profile: React.FC = () => {
   const { data: posts = [], isLoading: postLoading } = usePosts() || {};
   const { data: comments = [], isLoading: loadingComments } = useComments(posts.id);
-  console.log(comments, "comments");
+  console.log(posts, "posts............");
   const [activeTab, setActiveTab] = useState<string>("posts");
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -67,11 +67,11 @@ const Profile: React.FC = () => {
                 <div className="text-white font-semibold flex items-center gap-4">
                   <div className="flex items-center gap-1">
                     <ICONS.likeOutline />
-                    <span>{post.likes?.length || 0}</span>
+                    <span>{post.likeCount || 0}</span>
                   </div>
                   <div className="flex items-center gap-1">
                     <ICONS.comment />
-                    <span>{comments.length || 0}</span>
+                    <span>{post.commentCount || 0}</span>
                   </div>
                 </div>
               </div>
