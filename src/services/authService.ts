@@ -24,6 +24,8 @@ export const signupUser = async (email: string, password: string, username: stri
     username,
     fullName,
     createdAt: new Date().toISOString(),
+    followers: [],
+    following: [],
   });
   console.log(user);
   return user;
