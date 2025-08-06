@@ -1,25 +1,20 @@
 import React, { useState } from "react";
-// import { UserPosts } from "@hooks/UserPosts";
 import { useAuthContext } from "@context";
 import { Skeleton, PostDetails } from "@components";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { ROUTES, ICONS } from "@constants";
 import { usePosts } from "@api";
+import { User } from "@types";
 
 const Explore = () => {
   const [selectedPost, setSelectedPost] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { user } = useAuthContext();
 
-  const { data: posts, isLoading: loading, error } = usePosts(user.id);
-
-  // if (!posts) {
-  //   return <div className="text-white">Loading kai sabar waka.......</div>;
-  // }
+  const { data: posts, isLoading: loading, error } = usePosts();
 
   /* <------------------------------- Implementing Route for PostDetails with id -------------------------------> */
   const navigate = useNavigate();
-  const location = useLocation();
   const openPostModal = (posts) => {
     setSelectedPost(posts);
     navigate(`/explore?postId=${posts.id}`);
@@ -41,7 +36,7 @@ const Explore = () => {
     );
   }
 
-  if (error) return <p>Error: {error}</p>;
+  if (error) return <p>Error: {error.message}</p>;
 
   const closePostModal = () => {
     setSelectedPost(null);
@@ -59,14 +54,15 @@ const Explore = () => {
               <img src={post?.imageUrl} alt={post?.caption} className="w-full h-full object-cover" />
               {/* Hover overlay */}
               <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                <div className="text-white font-semibold flex items-center gap-6">
-                  <span className="flex">
-                    <ICONS.likeFilled />
-                    {post?.likes?.length || 0}
-                  </span>
-                  <span className="flex">
-                    <ICONS.comment /> {post?.commentCount || 0}
-                  </span>
+                <div className="text-white font-semibold flex items-center gap-4">
+                  <div className="flex items-center gap-1">
+                    <ICONS.likeOutline />
+                    <span>{post.likeCount || 0}</span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <ICONS.comment />
+                    <span>{post.commentCount || 0}</span>
+                  </div>
                 </div>
               </div>
             </div>
