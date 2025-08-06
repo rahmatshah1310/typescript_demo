@@ -1,22 +1,18 @@
-interface TabItem {
-  id: string | number;
-  icon: React.ReactNode;
-  label: string;
+import { TabItem } from "@types";
+
+interface TabProps {
+  tabs: TabItem[];
+  activeTab: string;
+  onTabChange: (tabId: string) => void;
 }
 
-interface TabsProps {
-  tabs: TabItem[] | null;
-  activeTab: string | number;
-  onTabChange: (id: string | number) => void;
-}
-
-const Tab: React.FC<TabsProps> = ({ tabs, activeTab, onTabChange }) => {
+const Tab: React.FC<TabProps> = ({ tabs, activeTab, onTabChange }) => {
   if (!tabs) return null;
 
   return (
     <div className="border-t border-gray-800">
       <div className="flex justify-center gap-12">
-        {tabs.map((tab) => (
+        {tabs.map((tab: TabItem) => (
           <button
             key={tab.id}
             onClick={() => onTabChange(tab.id)}
