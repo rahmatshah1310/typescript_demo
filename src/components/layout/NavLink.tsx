@@ -1,16 +1,6 @@
-import { LinkConfig } from "@types";
+import { LinkConfig, NavLinkProps } from "@types";
 import * as React from "react";
 import { Link } from "react-router-dom";
-
-interface NavLinkProps {
-  link: LinkConfig;
-  isBottomBar?: boolean;
-  isMdSidebar?: boolean;
-  isCollapsed?: boolean;
-  activeSection?: string;
-  onLinkClick: (section: string) => void;
-  userProfilePic?: string;
-}
 
 const NavLink: React.FC<NavLinkProps> = ({ link, isBottomBar, isMdSidebar, isCollapsed, activeSection, onLinkClick, userProfilePic }) => {
   let classes = "flex items-center text-white rounded-lg hover:bg-gray-700 cursor-pointer transition-colors";
