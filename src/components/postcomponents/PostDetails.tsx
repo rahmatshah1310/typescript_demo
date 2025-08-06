@@ -5,6 +5,7 @@ import { getShortTimeAgo } from "@utils";
 import { useComments, useDeleteCommentMutation, useGetPostById } from "@api";
 import { CommentSkeleton } from "../skeletons/PostSkeleton";
 import { toast } from "react-toastify";
+import { Post, User, Comment } from "@types";
 
 type PostDetailsProps = {
   isOpen: boolean;
@@ -25,10 +26,13 @@ const PostDetails: React.FC<PostDetailsProps> = ({ isOpen, onClose, post }) => {
   const { data: singlePost, isLoading: loadingPost } = useGetPostById(post?.id);
   const { data: comments = [], isLoading: loadingComments } = useComments(post?.id);
   const deleteCommentMutation = useDeleteCommentMutation();
-  const [selectedCommentId, setSelectedCommentId] = useState(null);
+  const [selectedCommentId, setSelectedCommentId] = useState<string | null>(null);
   const [replyTo, setReplyTo] = useState("");
 
-  const handleReply = (username) => {
+  // Use singlePost if available, otherwise fall back to the original post
+  const currentPost = singlePost || post;
+
+  const handleReply = (username: string) => {
     setReplyTo(`@${username}`);
   };
 
@@ -42,7 +46,7 @@ const PostDetails: React.FC<PostDetailsProps> = ({ isOpen, onClose, post }) => {
       toast.error(deleteCommentMutation.error?.message || "Failed to delete comment");
       deleteCommentMutation.reset();
     }
-  }, [deleteCommentMutation.status, deleteCommentMutation.error]);
+  }, [deleteCommentMutation.status, deleteCommentMutation.error, setIsCommentModalOpen, setSelectedCommentId, deleteCommentMutation]);
 
   const handleDeleteComment = async () => {
     if (!selectedCommentId || !post?.id) return;
@@ -53,16 +57,16 @@ const PostDetails: React.FC<PostDetailsProps> = ({ isOpen, onClose, post }) => {
     });
   };
 
-  if (!PostDetails) {
+  if (!post) {
     return <div className="text-white">No Post Available.</div>;
   }
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} className="w-[70%] bg-white">
+    <Modal isOpen={isOpen} onClose={onClose} className="w-[70%] bg-white" title="">
       <section className="flex flex-col bg-black md:flex-row w-[100%] mx-auto max-w-[400px] md:max-w-[1500px] overflow-hidden border border-white">
         <PostHeader onOptionClick={() => setIsOptionsModalOpen(true)} className="flex md:hidden items-center justify-between p-2" />
         <div className="w-full md:w-[1500px] aspect-square md:aspect-auto h-[200px] sm:h-[300px] md:h-[850px] bg-[#262626] flex items-center justify-center">
-          {loadingPost ? <Spinner type="beat" /> : <img src={singlePost?.imageUrl} alt="Post" className="object-cover w-full h-full" />}
+          {loadingPost ? <Spinner type="beat" /> : <img src={currentPost?.imageUrl} alt="Post" className="object-cover w-full h-full" />}
         </div>
         <div className="w-full md:w-3/3 flex flex-col bg-black min-h-[200px] max-h-[30vh] md:min-h-[400px] md:max-h-[600px] p-2">
           <PostHeader onOptionClick={() => setIsOptionsModalOpen(true)} className="hidden md:flex items-center justify-between p-4" />
@@ -79,7 +83,7 @@ const PostDetails: React.FC<PostDetailsProps> = ({ isOpen, onClose, post }) => {
                 <p> Start the conversation!</p>
               </div>
             ) : (
-              comments.map((c) => (
+              comments.map((c: Comment) => (
                 <div key={c.id} className="flex items-start justify-between gap-3 mb-2">
                   <div className="flex items-start gap-4">
                     <img src={c.profilePic} alt="profilePic" className="w-8 h-8 rounded-full object-cover" />
@@ -116,7 +120,7 @@ const PostDetails: React.FC<PostDetailsProps> = ({ isOpen, onClose, post }) => {
               ))
             )}
           </div>
-          <CommentLikesFooter post={singlePost} replyTo={replyTo} setReplyTo={setReplyTo} />
+          <CommentLikesFooter post={currentPost} replyTo={replyTo} setReplyTo={setReplyTo} />
         </div>
       </section>
       {/* Modals */}
