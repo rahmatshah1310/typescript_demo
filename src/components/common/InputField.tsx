@@ -1,9 +1,5 @@
-import { forwardRef, InputHTMLAttributes } from "react";
-
-interface InputFieldProps extends InputHTMLAttributes<HTMLInputElement> {
-  label: string;
-  className?: string;
-}
+import { forwardRef } from "react";
+import { InputFieldProps } from "@types";
 
 const InputField = forwardRef<HTMLInputElement, InputFieldProps>(({ type, id, name, className = "", label, ...rest }, ref) => {
   return (
