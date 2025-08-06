@@ -1,35 +1,22 @@
-import { useEffect, useState } from "react";
-import { AvatarUpload, Button, Footer, PostDetails, PostTab, Skeleton, Tab } from "@components";
-import { ROUTES, ICONS, tabs } from "@constants";
-// import AvatarUpload from "./components/AvatarUpload";
-import { data, Navigate, useLocation, useNavigate, useParams } from "react-router-dom";
-// import PostDetails from "@pages/Profile/components/PostDetails";
-// import { UserPosts } from "@hooks/UserPosts";
-// import { Skeleton } from "@/components/ui/skeleton";
-// import FollowModal from "./components/FollowModal";
-// import { useUser } from "@features/context/FollowerContext";
-import { Post } from "@/types/post";
-import { User } from "@/types/user";
+import { useState } from "react";
+import { AvatarUpload, Button, Footer, PostDetails, PostTab, Skeleton, Tab, FollowModal, TabContent } from "@components";
+import { ICONS, tabs } from "@constants";
+import { useNavigate } from "react-router-dom";
+import { Post } from "@types";
+import { useAllUsers, usePosts } from "@api";
 import { useAuthContext } from "@context";
-import { useComments, usePosts } from "@api";
 
 const Profile: React.FC = () => {
   const { data: posts = [], isLoading: postLoading } = usePosts() || {};
-  const { data: comments = [], isLoading: loadingComments } = useComments(posts.id);
-  console.log(posts, "posts............");
+  const { user } = useAuthContext();
   const [activeTab, setActiveTab] = useState<string>("posts");
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [profile, setProfile] = useState<User | null>(null);
-  // const [isLoading, setIsLoading] = useState<boolean>(false);
-  // const [isFollowModalOpen, setIsFollowModalOpen] = useState<boolean>(false);
-  // const [followType, setFollowType] = useState<string>("");
-  // const [followUsers, setFollowUsers] = useState<User[]>([]);
+  const [isOpenFollowModal, setIsOpenFollowModal] = useState<boolean>(false);
+  const [followType, setFollowType] = useState<"followers" | "following" | null>(null);
 
-  const { user, loading } = useAuthContext();
-  // const { posts, loading } = UserPosts(user?.uid);
+  const { data: users } = useAllUsers();
   const navigate = useNavigate();
-  const location = useLocation();
 
   const openPostModal = (post: Post) => {
     navigate(`/${post.id}`);
@@ -42,55 +29,12 @@ const Profile: React.FC = () => {
     setSelectedPost(null);
   };
 
-  const TabContent = () => {
-    if (postLoading) {
-      return (
-        <div className="mt-8 grid grid-cols-3 gap-4">
-          {[...Array(9)].map((_, idx) => (
-            <div key={idx}>
-              <Skeleton className="h-[250px] bg-gray-800 w-full rounded" />
-            </div>
-          ))}
-        </div>
-      );
-    }
-
-    if (activeTab === "posts") {
-      return !posts && user?.uid === user?.uid ? (
-        <PostTab />
-      ) : (
-        <div className="mt-8 grid grid-cols-3 gap-4">
-          {posts?.map((post) => (
-            <div key={post.id} className="relative group cursor-pointer" onClick={() => openPostModal(post)}>
-              <img src={post.imageUrl} alt={post.caption} className="w-full  md:h-[300px] rounded object-cover" />
-              <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                <div className="text-white font-semibold flex items-center gap-4">
-                  <div className="flex items-center gap-1">
-                    <ICONS.likeOutline />
-                    <span>{post.likeCount || 0}</span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <ICONS.comment />
-                    <span>{post.commentCount || 0}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      );
-    }
-
-    if (activeTab === "saved") {
-      return <div className="mt-8">Saved content</div>;
-    }
-
-    if (activeTab === "tagged") {
-      return <div className="mt-8">Tagged content</div>;
-    }
-
-    return null;
-  };
+  const filteredUsers =
+    followType === "followers"
+      ? users?.filter((u) => user?.followers?.includes(u.uid)) || []
+      : followType === "following"
+      ? users?.filter((u) => user?.following?.includes(u.uid)) || []
+      : [];
 
   return (
     <>
@@ -102,7 +46,7 @@ const Profile: React.FC = () => {
           <div className="flex-1 w-full">
             <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 mb-4">
               <h1 className="text-xl sm:text-2xl">{user.username}</h1>
-              {user ? (
+              {users ? (
                 <div className="flex flex-wrap gap-2 w-full sm:w-auto">
                   <button className="flex-1 sm:flex-none px-3 py-1.5 text-sm sm:text-base bg-gray-800 rounded-md font-medium">Edit profile</button>
                   <button className="flex-1 sm:flex-none px-3 py-1.5 text-sm sm:text-base bg-gray-800 rounded-md font-medium">View archive</button>
@@ -116,11 +60,11 @@ const Profile: React.FC = () => {
               <span className="text-center sm:text-left">
                 <strong>{posts?.length}</strong> posts
               </span>
-              <Button onClick={() => openFollowModal("followers")} className="text-sm sm:text-base">
-                <strong>{profile?.followers?.length || 0}</strong> followers
+              <Button onClick={() => setFollowType("followers")} className="text-sm sm:text-base">
+                <strong>{user?.followers?.length || 0}</strong> followers
               </Button>
-              <Button onClick={() => openFollowModal("following")} className="text-sm sm:text-base">
-                <strong>{profile?.following?.length || 0}</strong> following
+              <Button onClick={() => setFollowType("following")} className="text-sm sm:text-base">
+                <strong>{user?.following?.length || 0}</strong> following
               </Button>
             </div>
             <div className="text-center sm:text-left">
@@ -130,11 +74,11 @@ const Profile: React.FC = () => {
         </div>
         <Tab tabs={tabs} activeTab={activeTab} onTabChange={setActiveTab} className="overflow-x-auto sm:overflow-visible" />
         <div className="px-2 sm:px-0">
-          <TabContent />
+          <TabContent posts={posts} postLoading={postLoading} activeTab={activeTab} />
         </div>
       </div>
       <Footer />
-      {/* <FollowModal isOpen={isFollowModalOpen} onClose={() => setIsFollowModalOpen(false)} users={followUsers} post={posts} type={followType} /> */}
+      <FollowModal isOpen={!!followType} onClose={() => setFollowType(null)} type={followType} users={filteredUsers} isLoading={!users} />
       {selectedPost && <PostDetails isOpen={isModalOpen} onClose={closePostModal} user={user} post={selectedPost} showDeleteButton={true} />}
     </>
   );
