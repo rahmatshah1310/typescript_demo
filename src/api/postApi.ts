@@ -7,6 +7,7 @@ import {
   deletePost,
   dislikePost,
   getComments,
+  getPostByFollowers,
   getPostById,
   getPosts,
   likePost,
@@ -30,6 +31,12 @@ export const usePosts = () => {
   });
 };
 
+export const useGetPostsByFollowers = (followUserIds: string[]) => {
+  return useQuery({
+    queryKey: ["posts", "followers", followUserIds],
+    queryFn: () => getPostByFollowers(followUserIds),
+  });
+};
 export const useUploadPostImage = () => {
   return useMutation({
     mutationFn: (file: File) => uploadPostImage(file),
@@ -85,13 +92,25 @@ export const useDeleteCommentMutation = () => {
 };
 
 export const useLikePostMutation = () => {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: likePost,
+    onSuccess: (_, variables) => {
+      // Invalidate both the specific post and all posts
+      queryClient.invalidateQueries({ queryKey: ["post", variables.postId] });
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
+    },
   });
 };
 
 export const useDislikePostMutation = () => {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: dislikePost,
+    onSuccess: (_, variables) => {
+      // Invalidate both the specific post and all posts
+      queryClient.invalidateQueries({ queryKey: ["post", variables.postId] });
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
+    },
   });
 };
