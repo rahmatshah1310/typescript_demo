@@ -6,9 +6,10 @@ import { useLogout } from "@api";
 import { toast } from "react-toastify";
 import { ROUTES } from "@constants";
 import { useNavigate } from "react-router-dom";
+import { AppUser } from "@types";
 
 export interface AuthContextType {
-  user: User | null;
+  user: AppUser | null;
   setUser: React.Dispatch<React.SetStateAction<User | null>>;
   loading: boolean;
   handleLogout: () => void;

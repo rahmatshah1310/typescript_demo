@@ -1,16 +1,31 @@
 import React, { useState } from "react";
 import { ICONS } from "@constants";
-import { Button, HomeUsersSkeleton, PostSkeleton, CommentLikesFooter, Header, FollowUnFollowModal } from "@components";
+import { Button, HomeUsersSkeleton, PostSkeleton, CommentLikesFooter, Header, FollowUnFollowModal, PostDetails } from "@components";
 import { useAuthContext } from "@context";
 import { useGetPostsByFollowers, usePosts } from "@api";
 import { User } from "@types";
 
-const Home: React.FC<User> = () => {
+interface HomeProps {
+  user?: User;
+}
+
+const Home: React.FC<HomeProps> = () => {
   const { user } = useAuthContext();
   const { data: posts, isLoading: loading } = usePosts();
-  const { data: users } = useGetPostsByFollowers(user.following);
-  console.log(users, "user.......................");
+  const { data: users = [] } = useGetPostsByFollowers(user.following);
   const [isFollowModalOpen, setIsFollowModalOpen] = useState(false);
+  const [selectedPost, setSelectedPost] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openPostModal = (post) => {
+    setSelectedPost(post);
+    setIsModalOpen(true);
+  };
+
+  const closePostModal = () => {
+    setSelectedPost(null);
+    setIsModalOpen(false);
+  };
 
   if (loading) {
     return (
@@ -25,7 +40,7 @@ const Home: React.FC<User> = () => {
   }
 
   if (!posts || posts.length === 0) {
-    return <div className="text-white">No posts Available.</div>;
+    return <div className="text-white text-center h-screen justify-center items-center w-full">No posts Available.</div>;
   }
 
   return (
@@ -71,11 +86,12 @@ const Home: React.FC<User> = () => {
             <div className="relative h-[400px] cursor-pointer border border-gray-800">
               <img src={u.imageUrl} alt={u.caption} className="w-full h-full object-cover rounded" />
             </div>
-            <CommentLikesFooter post={u} />
+            <CommentLikesFooter post={u} openPostModal={() => openPostModal(u)} />
           </div>
         ))}
 
         <FollowUnFollowModal post={posts[0]} isOpen={isFollowModalOpen} onClose={() => setIsFollowModalOpen(false)} currentUserId={user?.uid} />
+        {selectedPost && <PostDetails isOpen={isModalOpen} onClose={closePostModal} user={user} post={selectedPost} showDeleteButton={true} />}
       </section>
     </section>
   );

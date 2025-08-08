@@ -1,33 +1,15 @@
 import { useState } from "react";
-import { AvatarUpload, Button, Footer, PostDetails, PostTab, Skeleton, Tab, FollowModal, TabContent } from "@components";
-import { ICONS, tabs } from "@constants";
-import { useNavigate } from "react-router-dom";
-import { Post } from "@types";
+import { AvatarUpload, Button, Footer, Tab, FollowModal, TabContent } from "@components";
+import { tabs } from "@constants";
 import { useAllUsers, usePosts } from "@api";
 import { useAuthContext } from "@context";
 
 const Profile: React.FC = () => {
-  const { data: posts = [], isLoading: postLoading } = usePosts() || {};
   const { user } = useAuthContext();
-  const [activeTab, setActiveTab] = useState<string>("posts");
-  const [selectedPost, setSelectedPost] = useState<Post | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [isOpenFollowModal, setIsOpenFollowModal] = useState<boolean>(false);
-  const [followType, setFollowType] = useState<"followers" | "following" | null>(null);
-
   const { data: users } = useAllUsers();
-  const navigate = useNavigate();
-
-  const openPostModal = (post: Post) => {
-    navigate(`/${post.id}`);
-    setSelectedPost(post);
-    setIsModalOpen(true);
-  };
-
-  const closePostModal = () => {
-    setIsModalOpen(false);
-    setSelectedPost(null);
-  };
+  const { data: posts = [], isLoading: postLoading } = usePosts() || {};
+  const [activeTab, setActiveTab] = useState<string>("posts");
+  const [followType, setFollowType] = useState<"followers" | "following" | null>(null);
 
   const filteredUsers =
     followType === "followers"
@@ -79,7 +61,6 @@ const Profile: React.FC = () => {
       </div>
       <Footer />
       <FollowModal isOpen={!!followType} onClose={() => setFollowType(null)} type={followType} users={filteredUsers} isLoading={!users} />
-      {selectedPost && <PostDetails isOpen={isModalOpen} onClose={closePostModal} user={user} post={selectedPost} showDeleteButton={true} />}
     </>
   );
 };

@@ -8,18 +8,18 @@ import { toast } from "react-toastify";
 import { Post, User, Comment } from "@types";
 
 type PostDetailsProps = {
-  isOpen: boolean;
-  onClose: () => void;
-  user: User | null;
-  imageUrl: string | null;
-  showCommentButton: boolean;
-  showDeleteButton: boolean;
-  post: Post | null;
+  isOpen?: boolean;
+  onClose?: () => void;
+  user?: User | null;
+  imageUrl?: string | null;
+  showCommentButton?: boolean;
+  showDeleteButton?: boolean;
+  post?: Post | null;
+  createdAt?: Date;
+  onDelete?: () => void;
 };
 
 const PostDetails: React.FC<PostDetailsProps> = ({ isOpen, onClose, post }) => {
-  // const [comment, setComment] = useState([]);
-  // const [loadingComments, setLoadingComments] = useState(false);
   const [isOptionsModalOpen, setIsOptionsModalOpen] = useState(false);
   const [isCommentModalOpen, setIsCommentModalOpen] = useState(false);
 

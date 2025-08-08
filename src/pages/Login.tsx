@@ -6,7 +6,7 @@ import homePhones from "@assets/images/homePhones.png";
 import playstore from "@assets/images/playstore.png";
 import microsoft from "@assets/images/microsoft.png";
 import { Link } from "react-router-dom";
-import { ROUTES } from "@constants";
+import { ICONS, ROUTES } from "@constants";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { InputField, Button, Footer } from "@components";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -127,8 +127,8 @@ const Login: React.FC = () => {
               </div>
 
               {/* Facebook Login Button */}
-              <Button className="flex items-center justify-center gap-2 w-full text-[#0095F6] rounded text-sm sm:text-base font-semibold bg-transparent">
-                {/* <FaFacebook className="text-[##0095F6]" /> */}
+              <Button className="flex items-center justify-center gap-2 w-full text-white rounded text-sm sm:text-base font-semibold p-1 bg-[#0069AD]">
+                <ICONS.facebook className="text-[##0095F6] w-4 h-4" />
                 Log in with Facebook
               </Button>
 

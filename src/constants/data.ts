@@ -1,5 +1,3 @@
-import { ICONS } from "./icons";
-
 export const tabs = [
   {
     id: "posts",

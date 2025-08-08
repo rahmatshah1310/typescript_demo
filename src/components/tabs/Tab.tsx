@@ -2,8 +2,11 @@ import { TabItem } from "@types";
 
 interface TabProps {
   tabs: TabItem[];
-  activeTab: string;
-  onTabChange: (tabId: string) => void;
+  activeTab: string | number;
+  onTabChange: (tabId: string | number) => void;
+  label?: string;
+  className?: string;
+  icon?: React.ReactNode;
 }
 
 const Tab: React.FC<TabProps> = ({ tabs, activeTab, onTabChange }) => {

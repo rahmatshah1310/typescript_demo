@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import playstore from "@assets/images/playstore.png";
 import microsoft from "@assets/images/microsoft.png";
 import { Link } from "react-router-dom";
-import { ROUTES } from "@constants";
+import { ICONS, ROUTES } from "@constants";
 import { toast } from "react-toastify";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Button, Footer, InputField } from "@components";
@@ -54,8 +54,8 @@ const SignUp: React.FC = () => {
             <h4 className="flex justify-center text-sm sm:text-base px-2 sm:px-4 pb-3 text-center text-[#A8A8A8]">
               Sign up to see photos and videos from your friends.
             </h4>
-            <Button className="flex items-center justify-center gap-2 w-full py-1 my-2 bg-primaryColor rounded-md text-white text-sm sm:text-base font-semibold">
-              {/* {ICONS} */}
+            <Button className="flex items-center justify-center gap-2 w-full py-1 my-2 bg-primaryColor rounded-md text-white text-sm sm:text-base font-semibold bg-[#0069AD]">
+              <ICONS.facebook className="w-4 h-4 " />
               Log in with Facebook
             </Button>
             <div className="flex items-center gap-4 my-5">

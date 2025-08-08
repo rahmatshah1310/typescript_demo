@@ -1,6 +1,5 @@
 // src/utils/formatTime.js
-import * as moment from "moment";
-
+import moment from "moment";
 
 export const getShortTimeAgo = (timestamp) => {
   if (!timestamp || !timestamp.toDate) return ""; // safely return empty string or fallback
@@ -24,18 +23,17 @@ export const getShortTimeAgo = (timestamp) => {
   return `${diffInWeeks}w`;
 };
 
+export const formatTime = (timestamp) => {
+  if (!timestamp) return "";
+  const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
+  const now = new Date();
+  const diffInHours = (now.getTime() - date) / (1000 * 60 * 60);
 
- export const formatTime = (timestamp) => {
-    if (!timestamp) return '';
-    const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
-    const now = new Date();
-    const diffInHours = (now.getTime() - date) / (1000 * 60 * 60);
-
-    if (diffInHours < 1) {
-      return 'now';
-    } else if (diffInHours < 24) {
-      return `${Math.floor(diffInHours)}h`;
-    } else {
-      return `${Math.floor(diffInHours / 24)}d`;
-    }
-  };
+  if (diffInHours < 1) {
+    return "now";
+  } else if (diffInHours < 24) {
+    return `${Math.floor(diffInHours)}h`;
+  } else {
+    return `${Math.floor(diffInHours / 24)}d`;
+  }
+};

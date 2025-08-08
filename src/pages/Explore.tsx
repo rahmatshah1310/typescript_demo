@@ -4,7 +4,6 @@ import { Skeleton, PostDetails } from "@components";
 import { useNavigate } from "react-router-dom";
 import { ROUTES, ICONS } from "@constants";
 import { usePosts } from "@api";
-import { User } from "@types";
 
 const Explore = () => {
   const [selectedPost, setSelectedPost] = useState(null);
@@ -43,6 +42,10 @@ const Explore = () => {
     setIsModalOpen(false);
     navigate(ROUTES.explore);
   };
+
+  if (!posts || posts.length === 0) {
+    return <div className="text-white text-center h-screen justify-center items-center w-full">No posts Available.</div>;
+  }
 
   return (
     <>

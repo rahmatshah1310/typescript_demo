@@ -3,10 +3,9 @@ import { useState } from "react";
 import { useAuthContext } from "@context";
 import { InputField } from "../common";
 import { useUploadAvatar } from "@api";
-import { AvatarUploadProps } from "@types";
 import { toast } from "react-toastify";
 
-const AvatarUpload: React.FC<AvatarUploadProps> = () => {
+const AvatarUpload: React.FC = () => {
   const { user, setUser } = useAuthContext();
 
   const [error, setError] = useState<string | null>(null);
