@@ -1,4 +1,3 @@
-import { ReactNode } from "react";
 import { ButtonProps } from "@types";
 
 const Button: React.FC<ButtonProps> = ({ children, className = "", onClick, disabled }) => {
