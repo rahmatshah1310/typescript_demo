@@ -4,8 +4,15 @@ import { ICONS } from "@constants";
 import { useAuthContext } from "@context";
 import { useCommentOnPost, useDislikePostMutation, useLikePostMutation } from "@api";
 import { toast } from "react-toastify";
+import { Post } from "@types";
 
-const CommentLikesFooter = ({ post, replyTo, setReplyTo }) => {
+interface CommentLikesFooterProps {
+  post: Post | null;
+  replyTo?: string;
+  setReplyTo?: (reply: string) => void;
+  openPostModal?: () => void;
+}
+const CommentLikesFooter: React.FC<CommentLikesFooterProps> = ({ post, replyTo, setReplyTo, openPostModal }) => {
   const { user } = useAuthContext();
   const postComment = useCommentOnPost();
   const likeMutation = useLikePostMutation();
@@ -77,9 +84,16 @@ const CommentLikesFooter = ({ post, replyTo, setReplyTo }) => {
           >
             {isLiked ? <ICONS.likeFilled /> : <ICONS.likeOutline />}
           </Button>
-          <Button onClick={handleFocusInput} className="text-gray-400 hover:text-white">
+          <Button
+            onClick={() => {
+              handleFocusInput();
+              openPostModal();
+            }}
+            className="text-gray-400 hover:text-white"
+          >
             <ICONS.comment />
           </Button>
+
           <Button className="text-gray-400 hover:text-white">
             <ICONS.share />
           </Button>
